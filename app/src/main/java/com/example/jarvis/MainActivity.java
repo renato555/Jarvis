@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        chipNavigationBar.showBadge( R.id.home, 1);
+        chipNavigationBar.showBadge( R.id.colleague, 1);
     }
 
 }
