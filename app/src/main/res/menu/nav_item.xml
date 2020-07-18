@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!--TODO: Dodaj boje-->
+    <item
+        android:id="@+id/home"
+        android:icon="@drawable/ic_home"
+        app:cnb_backgroundColor="@color/iconColor"
+        app:cnb_iconColor="@color/iconColor"
+        app:cnb_textColor="@color/iconColor"
+        android:title="@string/home"/>
+
+    <item
+        android:id="@+id/calendar"
+        android:icon="@drawable/ic_calendar"
+        app:cnb_backgroundColor="@color/iconColor"
+        app:cnb_iconColor="@color/iconColor"
+        app:cnb_textColor="@color/iconColor"
+        android:title="@string/calendar"/>
+
+    <item
+        android:id="@+id/colleague"
+        android:icon="@drawable/ic_colleague"
+        app:cnb_backgroundColor="@color/iconColor"
+        app:cnb_iconColor="@color/iconColor"
+        app:cnb_textColor="@color/iconColor"
+        android:title="@string/colleague"/>
+
+    <item
+        android:id="@+id/toDo"
+        android:icon="@drawable/ic_todo"
+        app:cnb_backgroundColor="@color/iconColor"
+        app:cnb_iconColor="@color/iconColor"
+        app:cnb_textColor="@color/iconColor"
+        android:title="@string/to_do"/>
+
+    <item
+        android:id="@+id/weather"
+        android:icon="@drawable/ic_weather"
+        app:cnb_backgroundColor="@color/iconColor"
+        app:cnb_iconColor="@color/iconColor"
+        app:cnb_textColor="@color/iconColor"
+        android:title="@string/weather"/>
+</menu>

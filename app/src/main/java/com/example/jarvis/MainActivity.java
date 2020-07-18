@@ -9,16 +9,52 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 package com.example.jarvis;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import android.os.Bundle;
 
+import com.ismaeldivita.chipnavigation.ChipNavigationBar;
+
 public class MainActivity extends AppCompatActivity {
+
+    private ChipNavigationBar chipNavigationBar;
+    private Fragment fragment = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //Renato je luzer
+        chipNavigationBar = findViewById( R.id.chipNavigation);
+
+        chipNavigationBar.setItemSelected( R.id.home, true);
+        getSupportFragmentManager().beginTransaction().replace( R.id.container, fragment).commit();
+
+        chipNavigationBar.setOnItemSelectedListener(new ChipNavigationBar.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(int i) {
+                switch( i){
+                    case R.id.home:
+                        fragment = new HomeFragment();
+                        break;
+                    case R.id.calendar:
+                        fragment = new CalendarFragment();
+                        break;
+                    case R.id.colleague:
+                        fragment = new ColleagueFragments();
+                        break;
+                    case R.id.toDo:
+                        fragment = new ToDoListFragment();
+                        break;
+                    case R.id.weather:
+                        fragment = new WeatherFragment();
+                        break;
+                }
+
+                if( fragment != null){
+                    getSupportFragmentManager().beginTransaction().replace( R.id.container, fragment).commit();
+                }
+            }
+        });
     }
 }
