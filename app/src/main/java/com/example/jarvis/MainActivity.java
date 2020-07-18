@@ -18,7 +18,7 @@ import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 public class MainActivity extends AppCompatActivity {
 
     private ChipNavigationBar chipNavigationBar;
-    private Fragment fragment = null;
+    private Fragment fragment = new HomeFragment();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +26,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         chipNavigationBar = findViewById( R.id.chipNavigation);
+        setUpNavigationBar();
 
+    }
+
+    private void setUpNavigationBar(){
+        //set starting fragment to homeFragment
         chipNavigationBar.setItemSelected( R.id.home, true);
         getSupportFragmentManager().beginTransaction().replace( R.id.container, fragment).commit();
 
@@ -50,11 +55,13 @@ public class MainActivity extends AppCompatActivity {
                         fragment = new WeatherFragment();
                         break;
                 }
-
                 if( fragment != null){
                     getSupportFragmentManager().beginTransaction().replace( R.id.container, fragment).commit();
                 }
             }
         });
+
+        chipNavigationBar.showBadge( R.id.home, 1);
     }
+
 }
