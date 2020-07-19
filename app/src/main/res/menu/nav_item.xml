@@ -8,7 +8,7 @@
         android:id="@+id/calendar"
         android:icon="@drawable/ic_calendar"
         app:cnb_backgroundColor="@color/colorPrimary"
-        app:cnb_iconColor="@color/white"
+        app:cnb_iconColor="@color/iconColor"
         app:cnb_textColor="@color/white"
         android:title="@string/calendar"/>
 
@@ -16,7 +16,7 @@
         android:id="@+id/colleague"
         android:icon="@drawable/ic_colleague"
         app:cnb_backgroundColor="@color/colorPrimary"
-        app:cnb_iconColor="@color/white"
+        app:cnb_iconColor="@color/iconColor"
         app:cnb_textColor="@color/white"
         android:title="@string/colleague"/>
 
@@ -24,7 +24,7 @@
         android:id="@+id/home"
         android:icon="@drawable/ic_home"
         app:cnb_backgroundColor="@color/colorPrimary"
-        app:cnb_iconColor="@color/white"
+        app:cnb_iconColor="@color/iconColor"
         app:cnb_textColor="@color/white"
         android:title="@string/home"/>
 
@@ -32,7 +32,7 @@
         android:id="@+id/toDo"
         android:icon="@drawable/ic_todo"
         app:cnb_backgroundColor="@color/colorPrimary"
-        app:cnb_iconColor="@color/white"
+        app:cnb_iconColor="@color/iconColor"
         app:cnb_textColor="@color/white"
         android:title="@string/to_do"/>
 
@@ -40,7 +40,7 @@
         android:id="@+id/weather"
         android:icon="@drawable/ic_weather"
         app:cnb_backgroundColor="@color/colorPrimary"
-        app:cnb_iconColor="@color/white"
+        app:cnb_iconColor="@color/iconColor"
         app:cnb_textColor="@color/white"
         android:title="@string/weather"/>
 </menu>
