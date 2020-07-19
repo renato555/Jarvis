@@ -7,5 +7,7 @@
     <color name="backgroundNavigationBarColor">#c9d1d3</color>
 
     <color name = "white">#fff</color>
-    <color name = "iconColor">#fff</color>
+
+    <color name = "iconColor">@color/colorAccent</color>
+
 </resources>
