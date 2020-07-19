@@ -3,13 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <!--TODO: Dodaj boje-->
-    <item
-        android:id="@+id/home"
-        android:icon="@drawable/ic_home"
-        app:cnb_backgroundColor="@color/iconColor"
-        app:cnb_iconColor="@color/iconColor"
-        app:cnb_textColor="@color/iconColor"
-        android:title="@string/home"/>
 
     <item
         android:id="@+id/calendar"
@@ -26,6 +19,14 @@
         app:cnb_iconColor="@color/iconColor"
         app:cnb_textColor="@color/iconColor"
         android:title="@string/colleague"/>
+
+    <item
+        android:id="@+id/home"
+        android:icon="@drawable/ic_home"
+        app:cnb_backgroundColor="@color/iconColor"
+        app:cnb_iconColor="@color/iconColor"
+        app:cnb_textColor="@color/iconColor"
+        android:title="@string/home"/>
 
     <item
         android:id="@+id/toDo"
