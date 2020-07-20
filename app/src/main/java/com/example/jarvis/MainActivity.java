@@ -27,7 +27,6 @@ public class MainActivity extends AppCompatActivity {
 
         chipNavigationBar = findViewById( R.id.chipNavigation);
         setUpNavigationBar();
-
     }
 
     private void setUpNavigationBar(){
@@ -63,5 +62,4 @@ public class MainActivity extends AppCompatActivity {
 
         chipNavigationBar.showBadge( R.id.colleague, 1);
     }
-
 }
