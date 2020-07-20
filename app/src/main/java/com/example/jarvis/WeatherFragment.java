@@ -2,11 +2,11 @@ package com.example.jarvis;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.EditText;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,49 +15,63 @@ import androidx.fragment.app.Fragment;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.w3c.dom.Text;
+import org.jsoup.select.Elements;
 
-import java.io.File;
 import java.io.IOException;
+import java.util.Map;
 
 
 public class WeatherFragment extends Fragment {
 
-    private TextView textView;
+    private EditText textView;
+    private ImageView image;
+    private final String TODAY_WEATHER_LINK = "https://meteo.hr/prognoze.php?section=prognoze_metp&param=zgdanas";
+    private final String TOMORROW_WEATHER_LINK = "https://meteo.hr/prognoze.php?section=prognoze_metp&param=zgsutra";
+    private String[] weatherLinks = {TODAY_WEATHER_LINK, TOMORROW_WEATHER_LINK};
+
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_weather, container, false);
-
-        loadHTML(view);
+        textView = (EditText) view.findViewById(R.id.weatherText);
+        image = (ImageView) view.findViewById(R.id.imageView);
+        new MyAsyncTask(0).execute();
         return view;
     }
 
-    public void loadHTML(View view){
-        try {
 
-            textView = (TextView) view.findViewById(R.id.testView);
-            Log.i("TEST", "Shit happens");
+    private class MyAsyncTask extends AsyncTask<Void, Void, Void>{
 
-            Document doc = Jsoup.connect("http://example.com").get();
+        private View view;
+        private String words;
+        private String imageLink;
+        private int dayNumber;
 
-
-
-            Element content = doc.getElementById("primary");
-
-            textView.setText(content.text());
-        }catch(IOException ex){
-            ex.printStackTrace();
+        public MyAsyncTask(int dayNumber) {
+            this.dayNumber = dayNumber;
         }
-
-    }
-
-    public class MyAsyncTask extends AsyncTask<Void, Void, Void>{
 
         @Override
         protected Void doInBackground(Void... voids) {
+            try {
+                Document doc = Jsoup.connect(weatherLinks[dayNumber]).get();
+
+                imageLink = doc.select("img").last().absUrl("src");
+
+            }catch(IOException ex){
+                ex.printStackTrace();
+            }
             return null;
         }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            new DownloadImageTask(image).execute(imageLink);
+            //textView.setText(words);
+        }
     }
+
+
 }
