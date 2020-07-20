@@ -10,21 +10,34 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-
+        android:paddingTop="5dp"
 
         android:background="@drawable/todo_top_bar"
         >
-        <TextView
+
+        <Spinner
+            android:id="@+id/spinner"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_weight="17"
+            android:layout_marginLeft="@dimen/balloon_margin"
+            android:spinnerMode="dropdown"
+            />
 
-            android:layout_marginHorizontal="@dimen/balloon_margin"
-            android:layout_marginTop="3dp"
+        <Button
+            android:id="@+id/addList"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Add list" />
 
-            android:text="Must Read"
-            android:textColor="@color/white"
-            android:textSize="@dimen/title_size"
-            android:textStyle="bold"/>
+        <Button
+            android:id="@+id/deleteList"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:layout_marginRight="5dp"
+            android:drawableLeft="@drawable/ic_delete" />
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -42,4 +55,23 @@
 
         android:clickable="true"
         app:srcCompat="@drawable/ic_plus_sign" />
+
+    <ScrollView
+        android:id="@+id/tasks_scroll"
+        android:layout_below="@+id/todo_top_bar"
+        android:layout_marginHorizontal="@dimen/balloon_margin"
+        android:layout_marginTop="@dimen/balloon_margin"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/tasks_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+        </LinearLayout>
+    </ScrollView>
+
+
 </RelativeLayout>
