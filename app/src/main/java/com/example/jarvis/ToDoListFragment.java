@@ -33,7 +33,7 @@ public class ToDoListFragment extends Fragment {
     private FloatingActionButton addTask;
 
     private static String currentList = "All tasks";
-    private static Map<String, List<String>> todoTasks; //< lista, zadaci>
+    private static Map<String, List<String>> todoTasks; //< listaName, tasks>
     private LinearLayout taskLayout;
 
     @Nullable
@@ -124,6 +124,7 @@ public class ToDoListFragment extends Fragment {
                         for( String t : task.split( "\n"))
                             todoTasks.get( "All tasks").add( t);
                     }
+                    //TODO mozda dodati da se samo updejta a da se ispisuje ispocetka lista
                     printTasks();
                 }
             });
@@ -172,6 +173,7 @@ public class ToDoListFragment extends Fragment {
                 taskLayout.removeView( v);
                 String taskText = ((CheckBox) v).getText().toString();
                 //if true find if another list has that tasks. If so, delete it
+                //else remove task from All tasks and current list
                 if( currentList.equals( "All tasks")){
                     todoTasks.get( "All tasks").remove( taskText);
                     for( Map.Entry< String, List<String>> entry : todoTasks.entrySet() ){
