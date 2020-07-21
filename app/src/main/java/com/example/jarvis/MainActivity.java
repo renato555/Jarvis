@@ -27,19 +27,18 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         if(savedInstanceState != null){
-            fragment = getSupportFragmentManager().getFragment(savedInstanceState, "Fragment");
+            fragment = getSupportFragmentManager().findFragmentByTag("FragmentTag");
+        }else{
+            chipNavigationBar = findViewById(R.id.chipNavigation);
+            setUpNavigationBar();
         }
-
-        chipNavigationBar = findViewById( R.id.chipNavigation);
-        setUpNavigationBar();
     }
-
 
 
     private void setUpNavigationBar(){
         //set starting fragment to homeFragment
         chipNavigationBar.setItemSelected( R.id.home, true);
-        getSupportFragmentManager().beginTransaction().replace( R.id.container, fragment).commit();
+        getSupportFragmentManager().beginTransaction().replace( R.id.container, fragment, "FragmentTag").commit();
 
         chipNavigationBar.setOnItemSelectedListener(new ChipNavigationBar.OnItemSelectedListener() {
             @Override
@@ -69,14 +68,4 @@ public class MainActivity extends AppCompatActivity {
 
         chipNavigationBar.showBadge( R.id.colleague, 1);
     }
-<<<<<<< HEAD
-
-    @Override
-    protected void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-        getSupportFragmentManager().putFragment(outState, "Fragment", fragment);
-    }
-=======
->>>>>>> 4784516b837a24efd62a7eed19666b0c82e98143
 }

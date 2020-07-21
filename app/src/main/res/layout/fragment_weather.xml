@@ -90,6 +90,13 @@
                 android:gravity="center"/>
         </LinearLayout>
 
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="wrap_content"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_height="wrap_content"
+            android:text="Press Me"
+            android:layout_gravity="center" />
+
     </LinearLayout>
 
 </RelativeLayout>
