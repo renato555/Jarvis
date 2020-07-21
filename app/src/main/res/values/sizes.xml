@@ -3,4 +3,5 @@
     <dimen name="balloon_margin"> 20dp</dimen>
     <dimen name="stroke_width"> 3dp</dimen>
     <dimen name="title_size"> 35dp</dimen>
+    <dimen name="spinner_text_size"> 20dp</dimen>
 </resources>
