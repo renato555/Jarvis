@@ -3,10 +3,10 @@
     <dimen name="balloon_margin"> 20dp</dimen>
     <dimen name="stroke_width"> 3dp</dimen>
     <dimen name="title_size"> 35dp</dimen>
-<<<<<<< HEAD
+
     <dimen name="weather_picture_dim">60dp</dimen>
     <dimen name="weather_information_size">100dp</dimen>
-=======
+
     <dimen name="spinner_text_size"> 20dp</dimen>
->>>>>>> c4ea8de411a3f67a87a29f2b9e4b18fd5df21d6f
+
 </resources>
