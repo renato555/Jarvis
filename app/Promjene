@@ -1,0 +1,14 @@
+-> zamjenio iz activity_mail.xml
+    android:layout_marginRight="5dp"
+    android:layout_marginLeft="5dp"
+    android:layout_marginBottom="7dp"
+    android:elevation="5dp"
+
+    app:cnb_iconSize="35dp"
+
+->sa
+    android:elevation="5dp"
+    android:layout_marginBottom="5dp"
+    android:layout_marginTop="5dp"
+
+    app:cnb_iconSize="27dp"

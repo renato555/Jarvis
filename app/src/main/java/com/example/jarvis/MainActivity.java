@@ -8,6 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 package com.example.jarvis;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
@@ -25,10 +26,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        if(savedInstanceState != null){
+            fragment = getSupportFragmentManager().getFragment(savedInstanceState, "Fragment");
+        }
+
         chipNavigationBar = findViewById( R.id.chipNavigation);
         setUpNavigationBar();
 
     }
+
+
 
     private void setUpNavigationBar(){
         //set starting fragment to homeFragment
@@ -46,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
                         fragment = new CalendarFragment();
                         break;
                     case R.id.colleague:
-                        fragment = new ColleagueFragments();
+                        fragment = new ColleagueFragment();
                         break;
                     case R.id.toDo:
                         fragment = new ToDoListFragment();
@@ -64,4 +71,10 @@ public class MainActivity extends AppCompatActivity {
         chipNavigationBar.showBadge( R.id.colleague, 1);
     }
 
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        getSupportFragmentManager().putFragment(outState, "Fragment", fragment);
+    }
 }

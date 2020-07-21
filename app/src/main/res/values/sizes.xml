@@ -3,4 +3,6 @@
     <dimen name="balloon_margin"> 20dp</dimen>
     <dimen name="stroke_width"> 3dp</dimen>
     <dimen name="title_size"> 35dp</dimen>
+    <dimen name="weather_picture_dim">60dp</dimen>
+    <dimen name="weather_information_size">100dp</dimen>
 </resources>
