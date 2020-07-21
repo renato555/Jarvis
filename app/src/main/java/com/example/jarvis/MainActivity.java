@@ -32,7 +32,6 @@ public class MainActivity extends AppCompatActivity {
 
         chipNavigationBar = findViewById( R.id.chipNavigation);
         setUpNavigationBar();
-
     }
 
 
@@ -70,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
 
         chipNavigationBar.showBadge( R.id.colleague, 1);
     }
+<<<<<<< HEAD
 
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
@@ -77,4 +77,6 @@ public class MainActivity extends AppCompatActivity {
 
         getSupportFragmentManager().putFragment(outState, "Fragment", fragment);
     }
+=======
+>>>>>>> 4784516b837a24efd62a7eed19666b0c82e98143
 }

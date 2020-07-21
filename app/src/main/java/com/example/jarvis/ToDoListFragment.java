@@ -1,6 +1,8 @@
 package com.example.jarvis;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,26 +22,33 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 public class ToDoListFragment extends Fragment {
+    public static final String DATABASE = "todoFragmentDataBase.txt";
 
     private Spinner dropdown;
     private Button addList;
     private Button deleteList;
     private FloatingActionButton addTask;
 
-    private static String currentList = "All tasks";
+    private static String currentList;
     private static Map<String, List<String>> todoTasks; //< listaName, tasks>
     private LinearLayout taskLayout;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_to_do_list, container, false);
+        View view = inflater.inflate( R.layout.fragment_to_do_list, container, false);
 
         //link views with attributes
         dropdown = (Spinner) view.findViewById( R.id.spinner);
@@ -49,26 +58,22 @@ public class ToDoListFragment extends Fragment {
         taskLayout = (LinearLayout) view.findViewById( R.id.tasks_layout);
 
         //setup dropdown menu
-        todoTasks = new LinkedHashMap<>();
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>( container.getContext(), android.R.layout.simple_spinner_dropdown_item);
-        dropdown.setAdapter( adapter);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(container.getContext(), android.R.layout.simple_spinner_dropdown_item);
+        dropdown.setAdapter(adapter);
         dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long id) {
-                currentList = adapter.getItem( pos);
-                printTasks();
-            }
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int pos, long id) {
+                    currentList = adapter.getItem(pos);
+                    printTasks();
+                }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-            }
-        });
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+                }
+            });
 
-        //privremeno dok ne napravimo spremanje------------
-        todoTasks.put( "All tasks", new LinkedList<>());
-        adapter.add( "All tasks");
-        //-------------------------------------------------
-
+        //ucitavanje podataka iz DATABASE
+        setUpDataOnCreate( adapter);
 
         //setup buttons
         setUpButtons();
@@ -189,5 +194,60 @@ public class ToDoListFragment extends Fragment {
             });
             taskLayout.addView( check);
         }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        writeData();
+    }
+
+    @Override
+    public void onDetach(){
+        super.onDetach();
+        writeData();
+    }
+
+    private void writeData(){
+        try{
+            FileOutputStream fos = getContext().openFileOutput( DATABASE, Context.MODE_PRIVATE);
+            ObjectOutputStream o = new ObjectOutputStream( fos);
+            o.writeObject( todoTasks);
+            o.close();
+            fos.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void setUpDataOnCreate(ArrayAdapter<String> adapter){
+
+        try{
+            FileInputStream fis = getContext().openFileInput( DATABASE);
+            ObjectInputStream oi = new ObjectInputStream( fis);
+            todoTasks = (Map<String, List<String>>) oi.readObject();
+            fis.close();
+            oi.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        if( todoTasks != null){
+            for( String list : todoTasks.keySet()){
+                adapter.add( list);
+            }
+        }else{ //file is empty, (first creation)
+            todoTasks = new LinkedHashMap<>();
+            todoTasks.put( "All tasks", new LinkedList<>());
+            adapter.add( "All tasks");
+        }
+
+        currentList = "All tasks";
     }
 }

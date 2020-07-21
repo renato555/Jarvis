@@ -19,10 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
+import org.w3c.dom.Document;
 
 
 import java.io.ByteArrayOutputStream;
@@ -138,6 +135,7 @@ public class WeatherFragment extends Fragment {
 
         @Override
         protected Void doInBackground(Void... voids) {
+            /*
             try {
                 Document doc = Jsoup.connect(WEATHER_LINK).get();
                 Element imageElement;
@@ -157,6 +155,7 @@ public class WeatherFragment extends Fragment {
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
+            */
             return null;
         }
 
