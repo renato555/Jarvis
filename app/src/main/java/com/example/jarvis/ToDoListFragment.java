@@ -1,8 +1,9 @@
 package com.example.jarvis;
 
+import android.app.ActionBar;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -20,6 +22,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.FileInputStream;
@@ -58,7 +61,8 @@ public class ToDoListFragment extends Fragment {
         taskLayout = (LinearLayout) view.findViewById( R.id.tasks_layout);
 
         //setup dropdown menu
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(container.getContext(), android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(container.getContext(), R.layout.spinner_item);
+        adapter.setDropDownViewResource( R.layout.spinner_dropdown_item);
         dropdown.setAdapter(adapter);
         dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
@@ -192,6 +196,14 @@ public class ToDoListFragment extends Fragment {
                     todoTasks.get( currentList).remove( taskText);
                 }
             });
+            check.setBackgroundResource( R.drawable.bottom_edge);
+            check.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 22);
+
+            //set button margin
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams( LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            params.setMargins(0, 15, 0, 0);
+            check.setLayoutParams( params);
+
             taskLayout.addView( check);
         }
     }
