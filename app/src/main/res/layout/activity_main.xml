@@ -20,11 +20,7 @@
         android:layout_alignParentBottom="true"
         android:background="@drawable/navigacija_radius"
 
-
-
         app:cnb_menuResource="@menu/nav_item"/>
-
-
 
     <FrameLayout
         android:id="@+id/container"

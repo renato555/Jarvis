@@ -27,7 +27,8 @@
                 android:id="@+id/todayImage"
                 android:layout_width="@dimen/weather_picture_dim"
                 android:layout_height="@dimen/weather_picture_dim"
-                android:layout_gravity="center"/>
+                android:layout_gravity="center"
+                android:src="@drawable/ic_white_screen"/>
 
             <TextView
                 android:id="@+id/todayText"
@@ -54,7 +55,8 @@
                 android:id="@+id/tomorrowImage"
                 android:layout_width="@dimen/weather_picture_dim"
                 android:layout_height="@dimen/weather_picture_dim"
-                android:layout_gravity="center"/>
+                android:layout_gravity="center"
+                android:src="@drawable/ic_white_screen"/>
             <TextView
                 android:id="@+id/tomorrowText"
                 android:layout_width="@dimen/weather_information_size"
@@ -80,7 +82,8 @@
                 android:id="@+id/dayAfterTomorrowImage"
                 android:layout_width="@dimen/weather_picture_dim"
                 android:layout_height="@dimen/weather_picture_dim"
-                android:layout_gravity="center"/>
+                android:layout_gravity="center"
+                android:src="@drawable/ic_white_screen"/>
             <TextView
                 android:id="@+id/dayAFterTomorrowText"
                 android:layout_width="@dimen/weather_information_size"
@@ -91,12 +94,12 @@
         </LinearLayout>
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/reloadButton"
             android:layout_width="wrap_content"
             style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_height="wrap_content"
-            android:text="Press Me"
+            android:text="@string/reload"
             android:layout_gravity="center" />
-
     </LinearLayout>
 
 </RelativeLayout>

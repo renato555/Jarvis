@@ -19,6 +19,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.button.MaterialButton;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -40,21 +42,26 @@ public class WeatherFragment extends Fragment {
     private TextView dayAfterTomorrowDescription;
     private ImageView dayAfterTomorrowImage;
     private TextView dayAfterTomorrowText;
+    private MaterialButton reloadButton;
 
     private static Bundle savedState;
-
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_weather, container, false);
-        System.out.println("onCreateView");
+        reloadButton = (MaterialButton) view.findViewById(R.id.reloadButton);
+        reloadButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                loadWeather();
+            }
+        });
         loadViews(view);
         if (savedState != null) {
             restoreState();
         } else {
-            pleaseWait();
-            loadWeather(view);
+            loadWeather();
         }
         return view;
     }
@@ -77,6 +84,12 @@ public class WeatherFragment extends Fragment {
         dayAfterTomorrowImage = (ImageView) view.findViewById(R.id.dayAfterTomorrowImage);
     }
 
+    public void loadWeather(){
+        pleaseWait();
+        startLoading(getView());
+        saveState();
+    }
+
     public void saveState() {
         savedState = new Bundle();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -90,6 +103,7 @@ public class WeatherFragment extends Fragment {
         savedState.putString(Constants.TODAY_DESCRIPTION_KEY, todayDescription.getText().toString());
 
         //Save Tomorrow State
+        baos = new ByteArrayOutputStream();
         savedState.putString(Constants.TOMORROW_KEY, tomorrowText.getText().toString());
         bitmap = ((BitmapDrawable) tomorrowImage.getDrawable()).getBitmap();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
@@ -97,17 +111,22 @@ public class WeatherFragment extends Fragment {
         savedState.putString(Constants.TOMORROW_DESCRIPTION_KEY, tomorrowDescription.getText().toString());
 
         //Save Day After Tomorrow state
+        baos = new ByteArrayOutputStream();
         savedState.putString(Constants.DAY_AFTER_TOMORROW_KEY, dayAfterTomorrowText.getText().toString());
         bitmap = ((BitmapDrawable) dayAfterTomorrowImage.getDrawable()).getBitmap();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
         savedState.putByteArray(Constants.DAY_AFTER_TOMORROW_IMAGE_KEY, baos.toByteArray());
         savedState.putString(Constants.DAY_AFTER_TOMORROW_DESCRIPTION_KEY, dayAfterTomorrowDescription.getText().toString());
-
     }
 
     public void restoreState() {
         Bitmap bitmap;
         byte[] byteArray;
+
+        if(savedState.get(Constants.DAY_AFTER_TOMORROW_DESCRIPTION_KEY).toString().equals("")){
+            loadWeather();
+            return;
+        }
 
         //Restore Today State
         todayText.setText(savedState.get(Constants.TODAY_KEY).toString());
@@ -121,7 +140,7 @@ public class WeatherFragment extends Fragment {
         byteArray = ((byte[]) savedState.get(Constants.TOMORROW_IMAGE_KEY));
         bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
         tomorrowImage.setImageBitmap(Bitmap.createBitmap(bitmap));
-        tomorrowDescription.setText(savedState.get(Constants.TODAY_DESCRIPTION_KEY).toString());
+        tomorrowDescription.setText(savedState.get(Constants.TOMORROW_DESCRIPTION_KEY).toString());
 
         //Restore Day After Tomorrow state
         dayAfterTomorrowText.setText(savedState.get(Constants.DAY_AFTER_TOMORROW_KEY).toString());
@@ -129,7 +148,6 @@ public class WeatherFragment extends Fragment {
         bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
         dayAfterTomorrowImage.setImageBitmap(Bitmap.createBitmap(bitmap));
         dayAfterTomorrowDescription.setText(savedState.get(Constants.DAY_AFTER_TOMORROW_DESCRIPTION_KEY).toString());
-
     }
 
     public void pleaseWait(){
@@ -138,7 +156,7 @@ public class WeatherFragment extends Fragment {
             Toast.makeText(getContext(), "Please wait...", Toast.LENGTH_LONG).show();
     }
 
-    public void loadWeather(View view) {
+    public void startLoading(View view) {
         new MyAsyncTask(todayText, todayDescription, todayImage, Constants.TODAY_IMAGE_CLASS_STRING, 0).execute();
         new MyAsyncTask(tomorrowText, tomorrowDescription, tomorrowImage, Constants.OTHER_DAY_IMAGE_CLASS_STRING, 1).execute();
         new MyAsyncTask(dayAfterTomorrowText, dayAfterTomorrowDescription, dayAfterTomorrowImage, Constants.OTHER_DAY_IMAGE_CLASS_STRING, 2).execute();
