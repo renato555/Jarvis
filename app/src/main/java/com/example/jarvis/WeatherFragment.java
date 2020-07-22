@@ -48,7 +48,6 @@ public class WeatherFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_weather, container, false);
-        System.out.println("onCreateView");
         loadViews(view);
         if (savedState != null) {
             restoreState();

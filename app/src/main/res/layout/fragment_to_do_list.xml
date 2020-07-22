@@ -11,8 +11,9 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:paddingTop="5dp"
+        android:elevation="@dimen/title_elevation"
         android:gravity="center_vertical"
-        android:background="@drawable/todo_top_bar"
+        android:background="@drawable/fragment_top_bar"
         >
 
         <Spinner
