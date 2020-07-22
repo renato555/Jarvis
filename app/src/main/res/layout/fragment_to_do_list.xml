@@ -11,8 +11,9 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:paddingTop="5dp"
+        android:elevation="@dimen/title_elevation"
         android:gravity="center_vertical"
-        android:background="@drawable/todo_top_bar"
+        android:background="@drawable/fragment_top_bar"
         >
 
         <Spinner
@@ -30,11 +31,13 @@
             android:id="@+id/addList"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
             android:text="Add list" />
 
         <Button
             android:id="@+id/deleteList"
-            android:layout_width="47dp"
+            style="@style/Widget.AppCompat.Button.Small"
+            android:layout_width="55dp"
             android:layout_height="wrap_content"
             android:layout_marginRight="5dp"
             android:drawableLeft="@drawable/ic_delete"/>
@@ -50,11 +53,10 @@
         android:layout_marginBottom="@dimen/balloon_margin"
         android:layout_marginRight="@dimen/balloon_margin"
 
-        app:borderWidth="@dimen/stroke_width"
-        app:fabSize="normal"
-
-        android:clickable="true"
-        app:srcCompat="@drawable/ic_plus_sign" />
+        app:srcCompat="@drawable/ic_plus_sign"
+        app:tint="@color/white"
+        app:backgroundTint="@color/colorAccent"
+     />
 
     <ScrollView
         android:id="@+id/tasks_scroll"

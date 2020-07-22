@@ -50,6 +50,7 @@ public class WeatherFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_weather, container, false);
+
         reloadButton = (MaterialButton) view.findViewById(R.id.reloadButton);
         reloadButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,6 +58,7 @@ public class WeatherFragment extends Fragment {
                 loadWeather();
             }
         });
+
         loadViews(view);
         if (savedState != null) {
             restoreState();

@@ -2,11 +2,52 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:background="@color/white">
-    <TextView
-        android:layout_width="wrap_content"
+
+    <LinearLayout
+        android:id="@+id/calendar_naslov"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/calendar"
-        android:textSize="30sp"
-        android:layout_centerInParent="true"
-        />
+        android:orientation="horizontal"
+        android:paddingTop="5dp"
+        android:elevation="@dimen/title_elevation"
+        android:gravity="center_vertical"
+        android:background="@drawable/fragment_top_bar">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/balloon_margin"
+            android:textSize="@dimen/title_size"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:text="Wed, Jul 22"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/balloon_margin"
+            android:text="Today"
+            android:textColor="@color/white"/>
+    </LinearLayout>
+
+    <ScrollView
+        style="@android:style/Widget.DeviceDefault.Light.ScrollView"
+        android:layout_below="@id/calendar_naslov"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <CalendarView
+                android:id="@+id/calendarView1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bottom_edge_primary_color"
+                android:elevation="6dp"/>
+
+        </RelativeLayout>
+    </ScrollView>
 </RelativeLayout>

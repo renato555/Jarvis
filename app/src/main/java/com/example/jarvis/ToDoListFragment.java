@@ -38,6 +38,7 @@ import java.util.Map;
 
 public class ToDoListFragment extends Fragment {
     public static final String DATABASE = "todoFragmentDataBase.txt";
+    public static final String allTasks = "All tasks";
 
     private Spinner dropdown;
     private Button addList;
@@ -53,7 +54,7 @@ public class ToDoListFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate( R.layout.fragment_to_do_list, container, false);
 
-        //link views with attributes
+        //link attributes
         dropdown = (Spinner) view.findViewById( R.id.spinner);
         addList = (Button) view.findViewById( R.id.addList);
         deleteList = (Button) view.findViewById( R.id.deleteList);
@@ -77,7 +78,7 @@ public class ToDoListFragment extends Fragment {
             });
 
         //ucitavanje podataka iz DATABASE
-        setUpDataOnCreate( adapter);
+        setUpData( adapter);
 
         //setup buttons
         setUpButtons();
@@ -88,7 +89,7 @@ public class ToDoListFragment extends Fragment {
 
     private void setUpButtons(){
         deleteList.setOnClickListener(( View v) -> {
-            if( !currentList.equals( "All tasks")){
+            if( !currentList.equals( allTasks)){
                deleteList();
             }else{
                 Toast.makeText( getContext(), "You can't delete this list.", Toast.LENGTH_SHORT).show();
@@ -129,9 +130,9 @@ public class ToDoListFragment extends Fragment {
                 if( !task.isEmpty()){
                     for( String t : task.split( "\n"))
                         todoTasks.get( currentList).add( t);
-                    if( !currentList.equals( "All tasks")){
+                    if( !currentList.equals( allTasks)){
                         for( String t : task.split( "\n"))
-                            todoTasks.get( "All tasks").add( t);
+                            todoTasks.get( allTasks).add( t);
                     }
                     //TODO mozda dodati da se samo updejta a da se ispisuje ispocetka lista
                     printTasks();
@@ -163,7 +164,7 @@ public class ToDoListFragment extends Fragment {
         ((ArrayAdapter) dropdown.getAdapter()).remove( currentList);
         todoTasks.remove( currentList);
         String deletedList = currentList;
-        currentList = "All tasks";
+        currentList = allTasks;
         printTasks();
 
         dropdown.setSelection( 0); //show All tasks on dropdown
@@ -175,37 +176,40 @@ public class ToDoListFragment extends Fragment {
         List<String> currentTasks = todoTasks.get( currentList);
         for( String task : currentTasks){
             CheckBox check = new CheckBox( getContext());
-            check.setText( task);
-            //TODO dodati animaciju
-            //deletes task from task layout and deletes strings in database
-            check.setOnClickListener((View v) -> {
-                taskLayout.removeView( v);
-                String taskText = ((CheckBox) v).getText().toString();
-                //if true find if another list has that tasks. If so, delete it
-                //else remove task from All tasks and current list
-                if( currentList.equals( "All tasks")){
-                    todoTasks.get( "All tasks").remove( taskText);
-                    for( Map.Entry< String, List<String>> entry : todoTasks.entrySet() ){
-                        String key = entry.getKey(); List<String> list = entry.getValue();
-                        if( !key.equals( "All tasks") && list.contains( taskText)){
-                            list.remove( taskText);
-                        }
-                    }
-                }else{
-                    todoTasks.get( "All tasks").remove( taskText);
-                    todoTasks.get( currentList).remove( taskText);
-                }
-            });
-            check.setBackgroundResource( R.drawable.bottom_edge);
-            check.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 22);
-
-            //set button margin
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams( LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            params.setMargins(0, 15, 0, 0);
-            check.setLayoutParams( params);
-
+            setTaskButtonParams( check, task);
             taskLayout.addView( check);
         }
+    }
+
+    private void setTaskButtonParams(CheckBox check, String task) {
+        check.setText( task);
+        //TODO dodati animaciju
+        //deletes task from task layout and deletes strings in database
+        check.setOnClickListener((View v) -> {
+            taskLayout.removeView( v);
+            String taskText = ((CheckBox) v).getText().toString();
+            //if true find if another list has that tasks. If so, delete it
+            //else remove task from All tasks and current list
+            if( currentList.equals( allTasks)){
+                todoTasks.get( allTasks).remove( taskText);
+                for( Map.Entry< String, List<String>> entry : todoTasks.entrySet() ){
+                    String key = entry.getKey(); List<String> list = entry.getValue();
+                    if( !key.equals( allTasks) && list.contains( taskText)){
+                        list.remove( taskText);
+                    }
+                }
+            }else{
+                todoTasks.get( allTasks).remove( taskText);
+                todoTasks.get( currentList).remove( taskText);
+            }
+        });
+        check.setBackgroundResource( R.drawable.bottom_edge);
+        check.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 22);
+
+        //set button margin
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams( LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        params.setMargins(0, 15, 0, 0);
+        check.setLayoutParams( params);
     }
 
     @Override
@@ -234,7 +238,7 @@ public class ToDoListFragment extends Fragment {
         }
     }
 
-    private void setUpDataOnCreate(ArrayAdapter<String> adapter){
+    private void setUpData(ArrayAdapter<String> adapter){
 
         try{
             FileInputStream fis = getContext().openFileInput( DATABASE);
@@ -256,10 +260,10 @@ public class ToDoListFragment extends Fragment {
             }
         }else{ //file is empty, (first creation)
             todoTasks = new LinkedHashMap<>();
-            todoTasks.put( "All tasks", new LinkedList<>());
-            adapter.add( "All tasks");
+            todoTasks.put( allTasks, new LinkedList<>());
+            adapter.add( allTasks);
         }
 
-        currentList = "All tasks";
+        currentList = allTasks;
     }
 }
