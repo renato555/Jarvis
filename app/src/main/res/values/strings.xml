@@ -6,4 +6,6 @@
     <string name="colleague">Colleague</string>
     <string name="weather">Weather</string>
     <string name="reload">Reload</string>
+
+    <string name="dateFormat">EEE, MMM d</string>
 </resources>
