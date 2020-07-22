@@ -89,13 +89,18 @@ public class WeatherFragment extends Fragment {
     public void loadWeather(){
         pleaseWait();
         startLoading(getView());
-        saveState();
     }
 
     public void saveState() {
         savedState = new Bundle();
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         Bitmap bitmap;
+
+        //Check if it didn't finish loading
+        if(((BitmapDrawable) dayAfterTomorrowImage.getDrawable()).getBitmap().equals(((BitmapDrawable) getResources().getDrawable(R.drawable.ic_white_screen)).getBitmap())){
+            savedState = null;
+            return;
+        }
 
         //Save Today State
         savedState.putString(Constants.TODAY_KEY, todayText.getText().toString());
@@ -124,11 +129,6 @@ public class WeatherFragment extends Fragment {
     public void restoreState() {
         Bitmap bitmap;
         byte[] byteArray;
-
-        if(savedState.get(Constants.DAY_AFTER_TOMORROW_DESCRIPTION_KEY).toString().equals("")){
-            loadWeather();
-            return;
-        }
 
         //Restore Today State
         todayText.setText(savedState.get(Constants.TODAY_KEY).toString());
