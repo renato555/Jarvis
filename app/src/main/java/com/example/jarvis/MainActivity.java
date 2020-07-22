@@ -22,20 +22,16 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        
+        chipNavigationBar = findViewById(R.id.chipNavigation);
+        setUpNavigationBar();
 
-        if(savedInstanceState != null){
-            fragment = getSupportFragmentManager().findFragmentByTag("FragmentTag");
-        }else{
-            chipNavigationBar = findViewById(R.id.chipNavigation);
-            setUpNavigationBar();
-        }
     }
 
 
     private void setUpNavigationBar(){
         //set starting fragment to homeFragment
         chipNavigationBar.setItemSelected( R.id.home, true);
-        getSupportFragmentManager().beginTransaction().replace( R.id.container, fragment, "FragmentTag").commit();
 
         chipNavigationBar.setOnItemSelectedListener(new ChipNavigationBar.OnItemSelectedListener() {
             @Override
