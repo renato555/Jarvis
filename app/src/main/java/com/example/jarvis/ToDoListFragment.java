@@ -7,6 +7,9 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -181,14 +184,16 @@ public class ToDoListFragment extends Fragment {
 
     private void setTaskButtonParams(CheckBox check, String task) {
         check.setText( task);
-        //TODO dodati animaciju
+
         //deletes task from task layout and deletes strings in database
         check.setOnClickListener((View v) -> {
-            taskLayout.removeView( v);
+
+            startFadeOutAnimation(v);
+
             String taskText = ((CheckBox) v).getText().toString();
             //if true find if another list has that tasks. If so, delete it
             //else remove task from All tasks and current list
-            if( currentList.equals( Constants.ALL_TASKS)){
+                if( currentList.equals( Constants.ALL_TASKS)){
                 todoTasks.get( Constants.ALL_TASKS).remove( taskText);
                 for( Map.Entry< String, List<String>> entry : todoTasks.entrySet() ){
                     String key = entry.getKey(); List<String> list = entry.getValue();
@@ -208,6 +213,26 @@ public class ToDoListFragment extends Fragment {
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams( LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         params.setMargins(0, 15, 0, 0);
         check.setLayoutParams( params);
+    }
+
+    private void startFadeOutAnimation(View v){
+        Animation aniFade = AnimationUtils.loadAnimation(getContext(), R.anim.fade_out);
+        aniFade.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {}
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                taskLayout.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        taskLayout.removeView(v);
+                    }
+                }, 0);
+            }
+            @Override
+            public void onAnimationRepeat(Animation animation) {}
+        });
+        v.startAnimation(aniFade);
     }
 
     @Override
