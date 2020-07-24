@@ -8,7 +8,6 @@
     <string name="reload">Reload</string>
     <string name="all_tasks"><u>All tasks...</u></string>
     <string name="add_colleague">Add Colleague</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="colleague_id">Colleague ID</string>
     <string name="colleague_nickname">Colleague Nickname</string>
@@ -16,4 +15,5 @@
     <string name="_176">176</string>
     <string name="_177">177</string>
     <string name="dont_press_me">Don\'t press me!</string>
+    <string name="dateFormat">EEE, MMM d</string>
 </resources>

@@ -52,7 +52,7 @@ public class ToDoListFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate( R.layout.fragment_to_do_list, container, false);
 
-        //link attributes
+        //link views
         dropdown = (Spinner) view.findViewById( R.id.spinner);
         addList = (Button) view.findViewById( R.id.addList);
         deleteList = (Button) view.findViewById( R.id.deleteList);

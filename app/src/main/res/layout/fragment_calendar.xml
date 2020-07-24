@@ -14,6 +14,7 @@
         android:background="@drawable/fragment_top_bar">
 
         <TextView
+            android:id="@+id/currentDateView"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
@@ -24,6 +25,7 @@
             android:text="Wed, Jul 22"/>
 
         <Button
+            android:id="@+id/buttonToday"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="@dimen/balloon_margin"
@@ -42,7 +44,7 @@
             android:layout_height="wrap_content">
 
             <CalendarView
-                android:id="@+id/calendarView1"
+                android:id="@+id/calendarView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bottom_edge_primary_color"
