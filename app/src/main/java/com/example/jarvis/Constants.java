@@ -1,6 +1,7 @@
 package com.example.jarvis;
 
 public class Constants {
+    //Weather
     public static final String WEATHER_LINK = "https://www.google.com/search?q=weather+forecast&rlz=1C1CHBD_enHR853HR853&oq=weather&aqs=chrome.0.69i59l2j69i57j0j69i60l4.2743j1j9&sourceid=chrome&ie=UTF-8";
     public static final String TODAY_IMAGE_CLASS_STRING = "wob_df wob_ds";
     public static final String OTHER_DAY_IMAGE_CLASS_STRING = "wob_df";
@@ -17,4 +18,14 @@ public class Constants {
     public static final String DAY_AFTER_TOMORROW_KEY = "DayAfterTomorrowKey";
     public static final String DAY_AFTER_TOMORROW_IMAGE_KEY = "DayAfterTomorrowImageKey";
     public static final String DAY_AFTER_TOMORROW_DESCRIPTION_KEY = "DayAfterTomorrowDescriptionKey";
+
+    //TodoList
+    public static final String DATABASE = "todoFragmentDataBase.txt";
+    public static final String ALL_TASKS = "All tasks";
+
+    //Colleague
+    public static final String COLLEAGUES_FILE = "colleagues.txt";
+
+    //DontPressMe
+    public static final String DONT_PRESS_ME_LINK = "https://www.zet.hr/autobusni-prijevoz/dnevne-linije-251/251";
 }

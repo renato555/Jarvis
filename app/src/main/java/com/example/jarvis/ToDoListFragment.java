@@ -1,6 +1,6 @@
 package com.example.jarvis;
 
-import android.app.ActionBar;
+
 import android.content.Context;
 import android.os.Bundle;
 import android.util.TypedValue;
@@ -13,7 +13,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -22,7 +21,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
-import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.FileInputStream;
@@ -37,8 +35,8 @@ import java.util.List;
 import java.util.Map;
 
 public class ToDoListFragment extends Fragment {
-    public static final String DATABASE = "todoFragmentDataBase.txt";
-    public static final String allTasks = "All tasks";
+
+
 
     private Spinner dropdown;
     private Button addList;
@@ -89,7 +87,7 @@ public class ToDoListFragment extends Fragment {
 
     private void setUpButtons(){
         deleteList.setOnClickListener(( View v) -> {
-            if( !currentList.equals( allTasks)){
+            if( !currentList.equals(Constants.ALL_TASKS)){
                deleteList();
             }else{
                 Toast.makeText( getContext(), "You can't delete this list.", Toast.LENGTH_SHORT).show();
@@ -130,9 +128,9 @@ public class ToDoListFragment extends Fragment {
                 if( !task.isEmpty()){
                     for( String t : task.split( "\n"))
                         todoTasks.get( currentList).add( t);
-                    if( !currentList.equals( allTasks)){
+                    if( !currentList.equals( Constants.ALL_TASKS)){
                         for( String t : task.split( "\n"))
-                            todoTasks.get( allTasks).add( t);
+                            todoTasks.get( Constants.ALL_TASKS).add( t);
                     }
                     //TODO mozda dodati da se samo updejta a da se ispisuje ispocetka lista
                     printTasks();
@@ -164,7 +162,7 @@ public class ToDoListFragment extends Fragment {
         ((ArrayAdapter) dropdown.getAdapter()).remove( currentList);
         todoTasks.remove( currentList);
         String deletedList = currentList;
-        currentList = allTasks;
+        currentList = Constants.ALL_TASKS;
         printTasks();
 
         dropdown.setSelection( 0); //show All tasks on dropdown
@@ -190,16 +188,16 @@ public class ToDoListFragment extends Fragment {
             String taskText = ((CheckBox) v).getText().toString();
             //if true find if another list has that tasks. If so, delete it
             //else remove task from All tasks and current list
-            if( currentList.equals( allTasks)){
-                todoTasks.get( allTasks).remove( taskText);
+            if( currentList.equals( Constants.ALL_TASKS)){
+                todoTasks.get( Constants.ALL_TASKS).remove( taskText);
                 for( Map.Entry< String, List<String>> entry : todoTasks.entrySet() ){
                     String key = entry.getKey(); List<String> list = entry.getValue();
-                    if( !key.equals( allTasks) && list.contains( taskText)){
+                    if( !key.equals( Constants.ALL_TASKS) && list.contains( taskText)){
                         list.remove( taskText);
                     }
                 }
             }else{
-                todoTasks.get( allTasks).remove( taskText);
+                todoTasks.get( Constants.ALL_TASKS).remove( taskText);
                 todoTasks.get( currentList).remove( taskText);
             }
         });
@@ -226,7 +224,7 @@ public class ToDoListFragment extends Fragment {
 
     private void writeData(){
         try{
-            FileOutputStream fos = getContext().openFileOutput( DATABASE, Context.MODE_PRIVATE);
+            FileOutputStream fos = getContext().openFileOutput( Constants.DATABASE, Context.MODE_PRIVATE);
             ObjectOutputStream o = new ObjectOutputStream( fos);
             o.writeObject( todoTasks);
             o.close();
@@ -241,7 +239,7 @@ public class ToDoListFragment extends Fragment {
     private void setUpData(ArrayAdapter<String> adapter){
 
         try{
-            FileInputStream fis = getContext().openFileInput( DATABASE);
+            FileInputStream fis = getContext().openFileInput( Constants.DATABASE);
             ObjectInputStream oi = new ObjectInputStream( fis);
             todoTasks = (Map<String, List<String>>) oi.readObject();
             fis.close();
@@ -260,10 +258,10 @@ public class ToDoListFragment extends Fragment {
             }
         }else{ //file is empty, (first creation)
             todoTasks = new LinkedHashMap<>();
-            todoTasks.put( allTasks, new LinkedList<>());
-            adapter.add( allTasks);
+            todoTasks.put( Constants.ALL_TASKS, new LinkedList<>());
+            adapter.add( Constants.ALL_TASKS);
         }
 
-        currentList = allTasks;
+        currentList = Constants.ALL_TASKS;
     }
 }
