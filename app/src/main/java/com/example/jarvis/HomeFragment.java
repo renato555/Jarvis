@@ -93,6 +93,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void setUpWelcomeText(){
-        welcomeText.setText("Welcome...");
+        welcomeText.setText("Welcome, " + getResources().getString(R.string.yourName));
+
     }
 }
