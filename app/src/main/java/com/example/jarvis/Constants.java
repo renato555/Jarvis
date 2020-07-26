@@ -20,7 +20,7 @@ public class Constants {
     public static final String DAY_AFTER_TOMORROW_DESCRIPTION_KEY = "DayAfterTomorrowDescriptionKey";
 
     //TodoList
-    public static final String DATABASE = "todoFragmentDataBase.txt";
+    public static final String TODO_DATABASE_FILE = "todoFragmentDataBase.txt";
     public static final String ALL_TASKS = "All tasks";
 
     //Colleague

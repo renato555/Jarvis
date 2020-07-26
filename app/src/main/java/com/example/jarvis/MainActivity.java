@@ -8,14 +8,21 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 package com.example.jarvis;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+    private static final int WRITE_PERMISSION = 1001;
 
     private ChipNavigationBar chipNavigationBar;
     private Fragment fragment = new HomeFragment();
@@ -29,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
         chipNavigationBar = findViewById(R.id.chipNavigation);
         setUpNavigationBar();
 
+        askPermissions();
     }
 
 
@@ -63,5 +71,13 @@ public class MainActivity extends AppCompatActivity {
         });
 
         chipNavigationBar.showBadge( R.id.colleague, 1);
+    }
+
+    private void askPermissions() {
+        if( Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+            if( ContextCompat.checkSelfPermission( this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+                requestPermissions( new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, WRITE_PERMISSION);
+            }
+        }
     }
 }

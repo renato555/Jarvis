@@ -36,8 +36,6 @@ import java.util.Map;
 
 public class ToDoListFragment extends Fragment {
 
-
-
     private Spinner dropdown;
     private Button addList;
     private Button deleteList;
@@ -224,7 +222,7 @@ public class ToDoListFragment extends Fragment {
 
     private void writeData(){
         try{
-            FileOutputStream fos = getContext().openFileOutput( Constants.DATABASE, Context.MODE_PRIVATE);
+            FileOutputStream fos = getContext().openFileOutput( Constants.TODO_DATABASE_FILE, Context.MODE_PRIVATE);
             ObjectOutputStream o = new ObjectOutputStream( fos);
             o.writeObject( todoTasks);
             o.close();
@@ -239,7 +237,7 @@ public class ToDoListFragment extends Fragment {
     private void setUpData(ArrayAdapter<String> adapter){
 
         try{
-            FileInputStream fis = getContext().openFileInput( Constants.DATABASE);
+            FileInputStream fis = getContext().openFileInput( Constants.TODO_DATABASE_FILE);
             ObjectInputStream oi = new ObjectInputStream( fis);
             todoTasks = (Map<String, List<String>>) oi.readObject();
             fis.close();

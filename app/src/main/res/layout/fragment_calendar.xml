@@ -50,6 +50,19 @@
                 android:background="@drawable/bottom_edge_primary_color"
                 android:elevation="6dp"/>
 
+            <LinearLayout
+                android:id="@+id/eventsLayout"
+                android:layout_below="@id/calendarView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tekstTest"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+
         </RelativeLayout>
     </ScrollView>
 </RelativeLayout>

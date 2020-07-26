@@ -1,15 +1,12 @@
 package com.example.jarvis;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -18,8 +15,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.button.MaterialButton;
-
-import org.w3c.dom.Text;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -60,7 +55,7 @@ public class HomeFragment extends Fragment {
     public void loadAllTasks(){
         Map<String, List<String>> todoTasks;
         try{
-            FileInputStream fis = getContext().openFileInput( Constants.DATABASE);
+            FileInputStream fis = getContext().openFileInput( Constants.TODO_DATABASE_FILE);
             ObjectInputStream oi = new ObjectInputStream( fis);
             todoTasks = (Map<String, List<String>>) oi.readObject();
             fis.close();
