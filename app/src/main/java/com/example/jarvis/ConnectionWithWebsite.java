@@ -22,40 +22,51 @@ import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import javax.net.ssl.HttpsURLConnection;
 
-//new Login().execute( "https://www.fer.unizg.hr/login/?frompage=%2F&return=%2F");
 //new DownloadCalendar().execute( "https://www.fer.unizg.hr/kalendar");
 
 public class ConnectionWithWebsite {
     public static final String CALENDAR_DATA_FILE = "calendarData.ics";
-    private static final String USERNAME = "rj52171";
-    private static final String PASSWORD = "92564161";
 
     private Context mainContext;
-    private List<String> cookies;
-    private HttpsURLConnection conn;
+    private static List<String> cookies;
+    private static HttpsURLConnection conn;
 
     public ConnectionWithWebsite( Context context ){
         mainContext = context;
     }
 
-    class Login extends AsyncTask<String, Void, Void> {
+    public static boolean tryLogin( String username, String password){
+        try {
+            return new Login().execute( "https://www.fer.unizg.hr/login/?frompage=%2F&return=%2F", username, password).get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    static class Login extends AsyncTask<String, Void, Boolean> {
         private final String USER_AGENT = "Mozilla/5.0";
         private final String BOUNDARY = "----WebKitFormBoundary1ALBGLxu9B9GXZ93";
 
         @Override
-        protected Void doInBackground(String... urlString) {
+        protected Boolean doInBackground(String... urlString) {
 
             String urlAuth = urlString[0];
-
+            String username = urlString[1];
+            String password = urlString[2];
             try {
                 //NOTE in getFormParams we assume the names of input elements which might cause issues if they ever get changed
-                String postParams = getFormParams( USERNAME, PASSWORD);
+                String postParams = getFormParams( username, password);
                 //construct above post's contentn and then send a POST request for authentication
-                sendPost( urlAuth, postParams);
-                return null;
+                int responseCode = sendPost( urlAuth, postParams);
+                return responseCode == 302; // 302 means that the username was found
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             } catch (IOException e) {
@@ -81,7 +92,7 @@ public class ConnectionWithWebsite {
             return result;
         }
 
-        private void sendPost(String urlAuth, String postParams) throws IOException {
+        private int sendPost(String urlAuth, String postParams) throws IOException {
             URL url = new URL( urlAuth);
             conn = (HttpsURLConnection) url.openConnection();
 
@@ -111,6 +122,7 @@ public class ConnectionWithWebsite {
             wr.close();
 
             setCookies(conn.getHeaderFields().get("Set-Cookie"));
+            return conn.getResponseCode();
         }
 
         private void setCookies( List<String> keksi){

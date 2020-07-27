@@ -46,12 +46,12 @@ public class LoginActivity extends AppCompatActivity {
         usernameEditText = (EditText) findViewById(R.id.username);
         passwordEditText = (EditText) findViewById(R.id.password);
         loginButton = (MaterialButton) findViewById(R.id.loginBtn);
-
-        username = usernameEditText.getText().toString();
-        password = passwordEditText.getText().toString();
-
+        
         loginButton.setOnClickListener(view -> {
-            if(true){ // Tu metoda za provjeru usenamea i passworda
+            username = usernameEditText.getText().toString();
+            password = passwordEditText.getText().toString();
+
+            if( ConnectionWithWebsite.tryLogin( username, password)){ // Tu metoda za provjeru usenamea i passworda
                 saveAccount();
                 startMain();
             }else
@@ -63,7 +63,11 @@ public class LoginActivity extends AppCompatActivity {
         try{
             FileInputStream fis = getApplicationContext().openFileInput( Constants.TODO_DATABASE_FILE);
             ObjectInputStream oi = new ObjectInputStream( fis);
+<<<<<<< HEAD
             String temp =(String) oi.readObject();
+=======
+            String temp = (String) oi.readObject();
+>>>>>>> ccebb50c73b14086f89d6bad8272070bca1847fd
             String[] split = temp.split("/");
             username = split[0];
             password = split[1];
@@ -95,6 +99,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void startMain(){
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        //TODO mozda umjesto ovoga dole promijenit Constants
         intent.putExtra("Username", username);
         intent.putExtra("Password", password);
         startActivity(intent);
