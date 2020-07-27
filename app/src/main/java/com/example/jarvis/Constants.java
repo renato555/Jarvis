@@ -28,4 +28,16 @@ public class Constants {
 
     //DontPressMe
     public static final String DONT_PRESS_ME_LINK = "https://www.zet.hr/autobusni-prijevoz/dnevne-linije-251/251";
-}
+
+    //Home
+    public static final String NAME_LINK = "https://www.fer.unizg.hr";
+    public static final String NAME_CLASS = "dropdown-toggle";
+
+    //Calendar
+    public static final String CALENDAR_DATA_FILE = "calendarData.ics";
+    public static final String USERNAME = "lg52173";
+    public static final String PASSWORD = "97453388";
+
+    //Login
+    public static final String USERNAME_AND_PASSWORD_FILE = "accountData.txt"; // format: "username/password"
+ }

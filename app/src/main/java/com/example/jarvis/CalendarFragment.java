@@ -173,6 +173,25 @@ public class CalendarFragment extends Fragment {
         }
     }
 
+
+    private void loadCalendarData() {
+        //TODO wait for it to download and then load
+        FileInputStream fin = null;
+        do {
+            try {
+                fin = new FileInputStream(Constants.CALENDAR_DATA_FILE);
+                CalendarBuilder builder = new CalendarBuilder();
+                Calendar calendar = builder.build(fin);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (ParserException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } while (fin == null);
+    }
+
     private TextView makeTextView( String event){
         TextView textView = new TextView( getContext());
         textView.setText( event);
@@ -198,7 +217,7 @@ public class CalendarFragment extends Fragment {
 
             try {
                 //NOTE in getFormParams we assume the names of input elements which might cause issues if they ever get changed
-                String postParams = getFormParams( USERNAME, PASSWORD);
+                String postParams = getFormParams( Constants.USERNAME, Constants.PASSWORD);
                 //construct above post's contentn and then send a POST request for authentication
                 sendPost( urlAuth, postParams);
                 return null;
@@ -320,12 +339,12 @@ public class CalendarFragment extends Fragment {
                 if( manager != null){
                     DownloadManager.Request request = new DownloadManager.Request( downloadURI);
                     request.setAllowedNetworkTypes( DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE)
-                            .setTitle( CALENDAR_DATA_FILE)
-                            .setDescription( "Downloading " + CALENDAR_DATA_FILE)
+                            .setTitle( Constants.CALENDAR_DATA_FILE)
+                            .setDescription( "Downloading " + Constants.CALENDAR_DATA_FILE)
                             .setAllowedOverMetered( true)
                             .setAllowedOverRoaming( true)
                             .setNotificationVisibility( DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-                            .setDestinationInExternalFilesDir( CalendarFragment.this.getContext(), null, CALENDAR_DATA_FILE)
+                            .setDestinationInExternalFilesDir( CalendarFragment.this.getContext(), null, Constants.CALENDAR_DATA_FILE)
                             .setMimeType( getMimeType( downloadURI));
                     manager.enqueue( request);
                 }else{
@@ -368,6 +387,12 @@ public class CalendarFragment extends Fragment {
 
         in.close();
         return sb.toString();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        System.out.println("Destroy");
     }
 
 }

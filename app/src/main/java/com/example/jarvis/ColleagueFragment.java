@@ -75,6 +75,12 @@ public class ColleagueFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        System.out.println("Destroy");
+    }
+
     private void setupSingleColleagueLayout(LinearLayout singleColleagueLayout, Map.Entry<String, String> entry) {
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         params.setMargins(15, 20, 15, 0);
