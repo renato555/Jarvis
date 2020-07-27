@@ -63,7 +63,7 @@ public class LoginActivity extends AppCompatActivity {
         try{
             FileInputStream fis = getApplicationContext().openFileInput( Constants.TODO_DATABASE_FILE);
             ObjectInputStream oi = new ObjectInputStream( fis);
-            String temp = oi.readLine();
+            String temp =(String) oi.readObject();
             String[] split = temp.split("/");
             username = split[0];
             password = split[1];
@@ -73,6 +73,8 @@ public class LoginActivity extends AppCompatActivity {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
 
     }
@@ -81,7 +83,7 @@ public class LoginActivity extends AppCompatActivity {
         try{
             FileOutputStream fos = getApplicationContext().openFileOutput( Constants.USERNAME_AND_PASSWORD_FILE, Context.MODE_PRIVATE);
             ObjectOutputStream o = new ObjectOutputStream( fos);
-            o.writeChars(username + "/" + password);
+            o.writeObject(username + "/" + password);
             o.close();
             fos.close();
         } catch (FileNotFoundException e) {
