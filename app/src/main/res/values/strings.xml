@@ -26,4 +26,10 @@
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
     <string name="yourName">ime</string>
+    <string name="username_and_password"><b>Enter username and password</b></string>
+    <string name="username">Username</string>
+    <string name="login">Login</string>
+    <string name="password">Password</string>
+    <string name="logout">Logout</string>
+    <string name="settings">Settings</string>
 </resources>

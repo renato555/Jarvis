@@ -1,20 +1,33 @@
 package com.example.jarvis;
 
+
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatDialogFragment;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.button.MaterialButton;
+
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -30,6 +43,13 @@ public class HomeFragment extends Fragment {
     private LinearLayout taskLayout;
     private TextView welcomeText;
     private MaterialButton dontPressMeButton;
+    private String savedName;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
 
     @Nullable
     @Override
@@ -38,7 +58,6 @@ public class HomeFragment extends Fragment {
         taskLayout = (LinearLayout) view.findViewById(R.id.tasks_layout);
         welcomeText = (TextView) view.findViewById(R.id.weclomeText);
         dontPressMeButton = (MaterialButton) view.findViewById(R.id.dontPressMe);
-
         dontPressMeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -46,17 +65,55 @@ public class HomeFragment extends Fragment {
                 startActivity(intent);
             }
         });
-
+//        if(savedName == null)
         setUpWelcomeText();
+//        else restoreWelcomeText();
         loadAllTasks();
         return view;
     }
 
-    public void loadAllTasks(){
+//    private void restoreWelcomeText() {
+//        welcomeText.setText("Welcome " + savedName);
+//    }
+
+
+    @SuppressLint("StaticFieldLeak")
+    private void setUpWelcomeText() {
+        new AsyncTask<Void, Void, Void>(){
+            String name;
+            @Override
+            protected Void doInBackground(Void... voids) {
+
+                try {
+                    Document doc = Jsoup.connect(Constants.NAME_LINK).get();
+                    Elements e = doc.getElementsByClass(Constants.NAME_CLASS);
+
+                    if(e.first() != null) {
+                        name = e.first().text();
+                        savedName = name.split(" ")[0];
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+                if(name != null)
+                    welcomeText.setText("Welcome, " + savedName);
+
+            }
+        }.execute();
+    }
+
+    public void loadAllTasks() {
         Map<String, List<String>> todoTasks;
-        try{
-            FileInputStream fis = getContext().openFileInput( Constants.TODO_DATABASE_FILE);
-            ObjectInputStream oi = new ObjectInputStream( fis);
+        try {
+            FileInputStream fis = getContext().openFileInput(Constants.TODO_DATABASE_FILE);
+            ObjectInputStream oi = new ObjectInputStream(fis);
+
             todoTasks = (Map<String, List<String>>) oi.readObject();
             fis.close();
             oi.close();
@@ -69,31 +126,46 @@ public class HomeFragment extends Fragment {
             e.printStackTrace();
         }
 
-        if(allTasks != null)
+        if (allTasks != null)
             printTasks();
+
     }
 
-    private void printTasks(){
-        taskLayout.removeAllViews();
-        List<String> currentTasks = allTasks;
-        for( String currentText : currentTasks){
-            TextView task = new TextView( getContext());
-            setTextViewParams(task, currentText);
-            taskLayout.addView( task);
+        private void printTasks(){
+            taskLayout.removeAllViews();
+            List<String> currentTasks = allTasks;
+            for (String currentText : currentTasks) {
+                TextView task = new TextView(getContext());
+                setTextViewParams(task, currentText);
+                taskLayout.addView(task);
+            }
         }
+
+        public void setTextViewParams (TextView task, String currentText){
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            params.setMargins(25, 7, 0, 7);
+            task.setLayoutParams(params);
+            task.setText(currentText);
+            task.setTextSize(TypedValue.COMPLEX_UNIT_PX, 50);
+            task.setTypeface(null, Typeface.BOLD);
+        }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        System.out.println("Destroy");
     }
 
-    public void setTextViewParams(TextView task , String currentText){
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams( LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        params.setMargins(25, 7, 0, 7);
-        task.setLayoutParams( params);
-        task.setText(currentText);
-        task.setTextSize(TypedValue.COMPLEX_UNIT_PX, 50);
-        task.setTypeface(null, Typeface.BOLD);
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.top_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
-    private void setUpWelcomeText(){
-        welcomeText.setText("Welcome, " + getResources().getString(R.string.yourName));
-
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        return super.onOptionsItemSelected(item);
     }
 }
+
+

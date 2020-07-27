@@ -7,7 +7,6 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
@@ -129,16 +128,12 @@ public class ToDoListFragment extends Fragment {
                 if( !task.isEmpty()){
                     for( String t : task.split( "\n"))
                         todoTasks.get( currentList).add( t);
-                    if( !currentList.equals( Constants.ALL_TASKS)){ //add tasks to "All tasks"
+                    if( !currentList.equals( Constants.ALL_TASKS)){
                         for( String t : task.split( "\n"))
                             todoTasks.get( Constants.ALL_TASKS).add( t);
                     }
-
-                    //update taskLayout with new tasks
-                    for( String t : task.split( "\n")){
-                        CheckBox check = makeCheckBox( t);
-                        taskLayout.addView( check);
-                    }
+                    //TODO mozda dodati da se samo updejta a da se ispisuje ispocetka lista
+                    printTasks();
                 }
             });
 
@@ -178,24 +173,24 @@ public class ToDoListFragment extends Fragment {
         taskLayout.removeAllViews();
         List<String> currentTasks = todoTasks.get( currentList);
         for( String task : currentTasks){
-            CheckBox check = makeCheckBox( task);
+            CheckBox check = new CheckBox( getContext());
+            setTaskButtonParams( check, task);
             taskLayout.addView( check);
         }
     }
 
-    private CheckBox makeCheckBox(String task) {
-        CheckBox check = new CheckBox( getContext());
+    private void setTaskButtonParams(CheckBox check, String task) {
         check.setText( task);
 
         //deletes task from task layout and deletes strings in database
         check.setOnClickListener((View v) -> {
-            check.setClickable( false);
+
             startFadeOutAnimation(v);
 
             String taskText = ((CheckBox) v).getText().toString();
             //if true find if another list has that tasks. If so, delete it
             //else remove task from All tasks and current list
-            if( currentList.equals( Constants.ALL_TASKS)){
+                if( currentList.equals( Constants.ALL_TASKS)){
                 todoTasks.get( Constants.ALL_TASKS).remove( taskText);
                 for( Map.Entry< String, List<String>> entry : todoTasks.entrySet() ){
                     String key = entry.getKey(); List<String> list = entry.getValue();
@@ -215,8 +210,6 @@ public class ToDoListFragment extends Fragment {
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams( LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         params.setMargins(0, 15, 0, 0);
         check.setLayoutParams( params);
-
-        return check;
     }
 
     private void startFadeOutAnimation(View v){
@@ -292,5 +285,11 @@ public class ToDoListFragment extends Fragment {
         }
 
         currentList = Constants.ALL_TASKS;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        System.out.println("Destroy");
     }
 }
