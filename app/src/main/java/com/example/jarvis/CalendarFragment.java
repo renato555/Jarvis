@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,10 +20,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
-import net.fortuna.ical4j.data.CalendarBuilder;
-import net.fortuna.ical4j.data.ParserException;
-import net.fortuna.ical4j.model.Calendar;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -43,9 +40,13 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -53,16 +54,13 @@ import javax.net.ssl.HttpsURLConnection;
 public class CalendarFragment extends Fragment {
     //TODO lovro premijesti mi ovo
     private static final String CALENDAR_DATA_FILE = "calendarData.ics";
-    private static final String USERNAME = "username";
-    private static final String PASSWORD = "password";
+    private static final String USERNAME = "rj52171";
+    private static final String PASSWORD = "92564161";
 
     private Button buttonToday;
     private TextView currentDateView;
     private CalendarView calendarView;
     private LinearLayout eventsLayout;
-    private TextView text; //privermeno
-
-    private Date currentDate;
 
     private List<String> cookies;
     private HttpsURLConnection conn;
@@ -79,17 +77,14 @@ public class CalendarFragment extends Fragment {
         currentDateView = (TextView) view.findViewById( R.id.currentDateView);
         calendarView = (CalendarView) view.findViewById( R.id.calendarView);
         eventsLayout = (LinearLayout) view.findViewById( R.id.eventsLayout);
-        text = (TextView) view.findViewById( R.id.tekstTest);   //privremeno
 
-        downloadDataFromWebsite();
-        //loadCalendarData();
+        //downloadDataFromWebsite();
+        calendarData = new HashMap<>();
+        loadCalendarData();
 
         addListeners();
 
-        setUpCurrentDate();
-        syncCalendarDate();
-
-        printCurrentDate();
+        printDate( new Date());
         return view;
     }
 
@@ -101,54 +96,94 @@ public class CalendarFragment extends Fragment {
         new DownloadCalendar().execute( "https://www.fer.unizg.hr/kalendar");
     }
 
+    private void loadCalendarData(){
+        try {
+            FileInputStream fin = new FileInputStream( getContext().getExternalFilesDir( null) + "/" + CALENDAR_DATA_FILE);
+
+            String lines = readStream( fin);
+            addEvents( lines);
+
+            fin.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    //ASSUMED FORMAT:
+    //BEGIN:VEVENT
+    //DTSTART;TZID=Europe/Zagreb:20200703T113000
+    //DTEND;TZID=Europe/Zagreb:20200703T140000
+    //SUMMARY:Menadžment u inženjerstvu - Završni pismeni (A202) [A-202]
+    //...
+    //END:VEVENT
+    private void addEvents(String lines) {
+        Scanner scanner = new Scanner( lines);
+        while( scanner.hasNext()){
+            String line = scanner.nextLine();
+            if( line.equals( "BEGIN:VEVENT")){
+                String startTime = scanner.nextLine();
+                String endTime = scanner.nextLine();
+                String summary = scanner.nextLine();
+                addEvent( startTime, endTime, summary);
+            }
+        }
+    }
+
+    private void addEvent(String startTime, String endTime, String summary){
+        String date = startTime.substring( startTime.length() - 15, startTime.length() - 7); //example: 25.12.2020. is encoded like 20201225
+        String timeFromTo = startTime.substring( startTime.length() - 6, startTime.length() - 4) + ":" + startTime.substring( startTime.length() - 4, startTime.length() - 2) +
+                "-" + endTime.substring( endTime.length() - 6, endTime.length() - 4) + ":" + endTime.substring( endTime.length() - 4, endTime.length() - 2); //example: turn 112000123000 to 11:20-12:30
+        String summ = summary.substring( 8);
+
+        calendarData.putIfAbsent( date, new ArrayList<>());
+        List<String> currDate = calendarData.get( date);
+        currDate.add( timeFromTo + ":" + summ);
+    }
 
     private void addListeners() {
         buttonToday.setOnClickListener( (View v) -> {
-            currentDate = new Date();
-            syncCalendarDate();
-            printCurrentDate();
+            Date currDate = new Date();
+            calendarView.setDate( currDate.getTime());
+            printDate( currDate);
         });
 
         calendarView.setOnDateChangeListener( (CalendarView view, int year, int month, int dayOfMonth) -> {
-            currentDate = new Date( year, month, dayOfMonth);
-            printCurrentDate();
+            printDate( new GregorianCalendar( year, month, dayOfMonth).getTime());
         });
     }
 
-    private void setUpCurrentDate() {
-        if( currentDate != null) return;
-
-        currentDate = new Date();
-    }
-
-    private void syncCalendarDate() {
-        calendarView.setDate( currentDate.getTime());
-    }
-
-    private void printCurrentDate() {
+    private void printDate( Date date) {
         //updates top bar text
         DateFormat dateFormat = new SimpleDateFormat( getString( R.string.dateFormat));
-        currentDateView.setText( dateFormat.format( currentDate));
+        currentDateView.setText( dateFormat.format( date));
 
         //updates todays events
+        SimpleDateFormat formatKey = new SimpleDateFormat("yyyyMMdd");
+        String dateKey = formatKey.format( date);
+        List<String> events = calendarData.get( dateKey);
+        eventsLayout.removeAllViews();
+        if( events != null){
+            for( String event : events){
+                TextView eventView = makeTextView( event);
+                eventsLayout.addView( eventView);
+            }
+        }
     }
 
-    private void loadCalendarData(){
-        //TODO wait for it to download and then load
-        FileInputStream fin = null;
-        do{
-            try {
-                fin = new FileInputStream( CALENDAR_DATA_FILE);
-                CalendarBuilder builder = new CalendarBuilder();
-                Calendar calendar = builder.build( fin);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (ParserException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }while( fin == null);
+    private TextView makeTextView( String event){
+        TextView textView = new TextView( getContext());
+        textView.setText( event);
+        textView.setBackgroundResource( R.drawable.bottom_edge);
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 22);
+        //set textView margin
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams( LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        params.setMargins(0, 15, 0, 0);
+        textView.setLayoutParams( params);
+
+        return textView;
     }
 
     class Login extends AsyncTask<String, Void, Void> {

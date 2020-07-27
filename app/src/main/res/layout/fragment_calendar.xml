@@ -55,12 +55,9 @@
                 android:layout_below="@id/calendarView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/balloon_margin"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/tekstTest"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
             </LinearLayout>
 
         </RelativeLayout>
