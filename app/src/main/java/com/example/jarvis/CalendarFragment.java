@@ -173,25 +173,6 @@ public class CalendarFragment extends Fragment {
         }
     }
 
-
-    private void loadCalendarData() {
-        //TODO wait for it to download and then load
-        FileInputStream fin = null;
-        do {
-            try {
-                fin = new FileInputStream(Constants.CALENDAR_DATA_FILE);
-                CalendarBuilder builder = new CalendarBuilder();
-                Calendar calendar = builder.build(fin);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (ParserException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } while (fin == null);
-    }
-
     private TextView makeTextView( String event){
         TextView textView = new TextView( getContext());
         textView.setText( event);
@@ -241,7 +222,7 @@ public class CalendarFragment extends Fragment {
                     "--" + BOUNDARY +"\n" +
                     "Content-Disposition: form-data; name=\"password\"\n" + //assume name = password
                     "\n" +
-                     password+"\n" +
+                    password+"\n" +
                     "--" + BOUNDARY + "--";
             return result;
         }
