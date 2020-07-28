@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -48,6 +49,7 @@ public class LoginActivity extends AppCompatActivity {
         loginButton = (MaterialButton) findViewById(R.id.loginBtn);
         
         loginButton.setOnClickListener(view -> {
+            closeKeyboard();
             username = usernameEditText.getText().toString();
             password = passwordEditText.getText().toString();
 
@@ -55,7 +57,7 @@ public class LoginActivity extends AppCompatActivity {
                 saveAccount();
                 startMain();
             }else
-                Toast.makeText(getApplicationContext(), "Incorrect username or password", Toast.LENGTH_SHORT);
+                Toast.makeText(getApplicationContext(), "Incorrect username or password", Toast.LENGTH_SHORT).show();
         });
     }
 
@@ -90,6 +92,14 @@ public class LoginActivity extends AppCompatActivity {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void closeKeyboard(){
+        View view = this.getCurrentFocus();
+        if( view != null){
+            InputMethodManager manager = ( InputMethodManager) getSystemService( Context.INPUT_METHOD_SERVICE);
+            manager.hideSoftInputFromWindow( view.getWindowToken(), 0);
         }
     }
 
