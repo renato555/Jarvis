@@ -30,15 +30,15 @@ public class LoginActivity extends AppCompatActivity {
     private EditText usernameEditText;
     private EditText passwordEditText;
     private MaterialButton loginButton;
-    private String username;
-    private String password;
+    private String username = "";
+    private String password = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         readAccount();
-        if( ConnectionWithWebsite.tryLogin( username, password)) {
+        if( !username.isEmpty() && !password.isEmpty() && ConnectionWithWebsite.tryLogin( username, password)) {
             updateFiles();
             startMain();
         }
@@ -56,7 +56,7 @@ public class LoginActivity extends AppCompatActivity {
             password = passwordEditText.getText().toString();
 
             if( ConnectionWithWebsite.tryLogin( username, password)){
-                saveAccount();
+                saveAccount( getApplicationContext(), username, password);
                 updateFiles();
                 startMain();
             }else
@@ -69,9 +69,11 @@ public class LoginActivity extends AppCompatActivity {
             FileInputStream fis = getApplicationContext().openFileInput( Constants.USERNAME_AND_PASSWORD_FILE);
             ObjectInputStream oi = new ObjectInputStream( fis);
             String temp =(String) oi.readObject();
-            String[] split = temp.split("/");
-            username = split[0];
-            password = split[1];
+            if( temp.length() > 1){
+                String[] split = temp.split("/");
+                username = split[0];
+                password = split[1];
+            }
             fis.close();
             oi.close();
         } catch (FileNotFoundException e) {
@@ -83,9 +85,9 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    public void saveAccount(){
+    public static void saveAccount( Context context, String username, String password){
         try{
-            FileOutputStream fos = getApplicationContext().openFileOutput(Constants.USERNAME_AND_PASSWORD_FILE, Context.MODE_PRIVATE);
+            FileOutputStream fos = context.openFileOutput(Constants.USERNAME_AND_PASSWORD_FILE, Context.MODE_PRIVATE);
             ObjectOutputStream o = new ObjectOutputStream( fos);
             o.writeObject(username + "/" + password);
             o.close();

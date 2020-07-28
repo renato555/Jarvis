@@ -17,6 +17,7 @@ import androidx.fragment.app.FragmentManager;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.os.Build;
@@ -250,15 +251,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void logout(){
-        //Delete username and password file
-        try {
-
-//            File file = new File(Environment.getExternalStorageDirectory().toString() + "/" + Constants.USERNAME_AND_PASSWORD_FILE);
-//            if(!file.exists()) {
-//                file.delete();
-//            }
-        }catch (Exception e){
-            System.out.println("Sranj2");
-        }
+        LoginActivity.saveAccount( getApplicationContext(), "", "");
+        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+        startActivity( intent);
+        finish();
     }
 }
