@@ -60,7 +60,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private void readAccount() {
         try{
-
             FileInputStream fis = getApplicationContext().openFileInput( Constants.USERNAME_AND_PASSWORD_FILE);
             ObjectInputStream oi = new ObjectInputStream( fis);
             String temp =(String) oi.readObject();
@@ -76,12 +75,11 @@ public class LoginActivity extends AppCompatActivity {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-
     }
 
     public void saveAccount(){
         try{
-            FileOutputStream fos = getApplicationContext().openFileOutput(Constants.USERNAME_AND_PASSWORD_FILE, Context.MODE_APPEND);
+            FileOutputStream fos = getApplicationContext().openFileOutput(Constants.USERNAME_AND_PASSWORD_FILE, Context.MODE_PRIVATE);
             ObjectOutputStream o = new ObjectOutputStream( fos);
             o.writeObject(username + "/" + password);
             o.close();

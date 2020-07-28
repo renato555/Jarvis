@@ -22,15 +22,11 @@ import android.content.res.Resources;
 import android.os.Build;
 
 import android.os.Bundle;
-import android.os.Environment;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
-
-
-
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -64,7 +60,6 @@ public class MainActivity extends AppCompatActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                weatherFragmentPressed();
                 calendarFragmentPressed();
                 homeFragmentPressed();
             }
@@ -307,11 +302,6 @@ public class MainActivity extends AppCompatActivity {
 //            if(!file.exists()) {
 //                file.delete();
 //            }
-            FileInputStream fis = getApplicationContext().openFileInput(Constants.USERNAME_AND_PASSWORD_FILE);
-            ObjectInputStream oi = new ObjectInputStream( fis);
-            String temp =(String) oi.readObject();
-            String[] split = temp.split("/");
-            System.out.println(split);
         }catch (Exception e){
             System.out.println("Sranj2");
         }
