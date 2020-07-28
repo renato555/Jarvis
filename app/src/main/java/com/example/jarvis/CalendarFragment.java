@@ -124,7 +124,7 @@ public class CalendarFragment extends Fragment {
 
         calendarData.putIfAbsent( date, new ArrayList<>());
         List<String> currDate = calendarData.get( date);
-        currDate.add( timeFromTo + ":" + summ);
+        currDate.add( timeFromTo + ": " + summ);
     }
 
     private void addListeners() {
