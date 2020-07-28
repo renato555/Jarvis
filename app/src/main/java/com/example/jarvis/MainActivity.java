@@ -16,6 +16,7 @@ import androidx.fragment.app.FragmentManager;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.os.Build;
@@ -28,12 +29,17 @@ import android.view.MenuItem;
 
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 
-import java.io.File;
+
+
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.io.ObjectOutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Objects;
 
 
@@ -53,6 +59,8 @@ public class MainActivity extends AppCompatActivity {
         resources = getResources();
         getSupportFragmentManager().beginTransaction().replace( R.id.container, new HomeFragment(), resources.getString(R.string.home)).commit();
 
+        updateFiles();
+
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -68,7 +76,50 @@ public class MainActivity extends AppCompatActivity {
         askPermissions();
 
     }
-    
+
+    private void updateFiles(){
+        //download calendar if it was not downloaded today
+        Date lastDate = readDate();
+        Date nowDate = new Date();
+        SimpleDateFormat formatDate = new SimpleDateFormat( "yyyyMMdd");
+        if( lastDate == null || !formatDate.format( lastDate).equals( formatDate.format( nowDate))){
+            ConnectionWithWebsite.downloadCalendar( this);
+            writeDate( nowDate);
+        }
+    }
+
+    private Date readDate(){
+        Date result = null;
+        try{
+            FileInputStream fis = getApplicationContext().openFileInput( Constants.CALENDAR_LAST_SAVED_DATE_FILE);
+            ObjectInputStream oi = new ObjectInputStream( fis);
+            result = (Date) oi.readObject();
+            fis.close();
+            oi.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    private void writeDate( Date date){
+        try{
+            FileOutputStream fos = getApplicationContext().openFileOutput( Constants.CALENDAR_LAST_SAVED_DATE_FILE, Context.MODE_PRIVATE);
+            ObjectOutputStream o = new ObjectOutputStream( fos);
+            o.writeObject( date);
+            o.close();
+            fos.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void setUpNavigationBar(){
         //set starting fragment to homeFragment
         chipNavigationBar.setItemSelected( R.id.home, true);

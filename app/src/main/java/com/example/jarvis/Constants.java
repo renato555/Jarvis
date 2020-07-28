@@ -38,4 +38,7 @@ public class Constants {
 
     //Login
     public static final String USERNAME_AND_PASSWORD_FILE = "accountData.txt"; // format: "username/password"
+
+    //Main
+    public static final String CALENDAR_LAST_SAVED_DATE_FILE = "calendarLastSaveDate.txt";
  }

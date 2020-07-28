@@ -5,14 +5,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Environment;
+
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.material.button.MaterialButton;
 
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -32,11 +33,8 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
         readAccount();
-
-        if(ConnectionWithWebsite.tryLogin( username, password)) { // TU metoda za provjeru usernamea i passworda
-            System.out.println("Nasao username i password");
+        if( ConnectionWithWebsite.tryLogin( username, password)) {
             startMain();
         }
 
@@ -48,6 +46,7 @@ public class LoginActivity extends AppCompatActivity {
         loginButton = (MaterialButton) findViewById(R.id.loginBtn);
         
         loginButton.setOnClickListener(view -> {
+            closeKeyboard();
             username = usernameEditText.getText().toString();
             password = passwordEditText.getText().toString();
 
@@ -55,13 +54,14 @@ public class LoginActivity extends AppCompatActivity {
                 saveAccount();
                 startMain();
             }else
-                Toast.makeText(getApplicationContext(), "Incorrect username or password", Toast.LENGTH_SHORT);
+                Toast.makeText(getApplicationContext(), "Incorrect username or password", Toast.LENGTH_SHORT).show();
         });
     }
 
     private void readAccount() {
         try{
-            FileInputStream fis = getApplicationContext().openFileInput(Constants.USERNAME_AND_PASSWORD_FILE);
+
+            FileInputStream fis = getApplicationContext().openFileInput( Constants.USERNAME_AND_PASSWORD_FILE);
             ObjectInputStream oi = new ObjectInputStream( fis);
             String temp =(String) oi.readObject();
             String[] split = temp.split("/");
@@ -93,9 +93,16 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    private void closeKeyboard(){
+        View view = this.getCurrentFocus();
+        if( view != null){
+            InputMethodManager manager = ( InputMethodManager) getSystemService( Context.INPUT_METHOD_SERVICE);
+            manager.hideSoftInputFromWindow( view.getWindowToken(), 0);
+        }
+    }
+
     private void startMain(){
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-        //TODO mozda umjesto ovoga dole promijenit Constants
         intent.putExtra("Username", username);
         intent.putExtra("Password", password);
         startActivity(intent);
