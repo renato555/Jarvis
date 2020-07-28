@@ -42,6 +42,7 @@ public class LoginActivity extends AppCompatActivity {
 
         readAccount();
         if( ConnectionWithWebsite.tryLogin( username, password)) {
+            updateFiles();
             startMain();
         }
         setContentView(R.layout.activity_login);
@@ -56,7 +57,7 @@ public class LoginActivity extends AppCompatActivity {
             username = usernameEditText.getText().toString();
             password = passwordEditText.getText().toString();
 
-            if( ConnectionWithWebsite.tryLogin( username, password)){ // Tu metoda za provjeru usenamea i passworda
+            if( ConnectionWithWebsite.tryLogin( username, password)){
                 saveAccount();
                 updateFiles();
                 startMain();
