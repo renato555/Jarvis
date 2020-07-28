@@ -26,18 +26,11 @@ import java.util.concurrent.ExecutionException;
 
 import javax.net.ssl.HttpsURLConnection;
 
-//new DownloadCalendar().execute( "https://www.fer.unizg.hr/kalendar");
-
 public class ConnectionWithWebsite {
     public static final String CALENDAR_DATA_FILE = "calendarData.ics";
 
-    private Context mainContext;
     private static List<String> cookies;
     private static HttpsURLConnection conn;
-
-    public ConnectionWithWebsite( Context context ){
-        mainContext = context;
-    }
 
     public static boolean tryLogin( String username, String password){
         try {
@@ -49,6 +42,10 @@ public class ConnectionWithWebsite {
         }
 
         return false;
+    }
+
+    public static void downloadCalendar( Context context){
+        new DownloadCalendar( context).execute( "https://www.fer.unizg.hr/kalendar");
     }
 
     static class Login extends AsyncTask<String, Void, Boolean> {
@@ -130,10 +127,14 @@ public class ConnectionWithWebsite {
         }
     }
 
-    class DownloadCalendar extends AsyncTask<String, Void, Void>{
+    static class DownloadCalendar extends AsyncTask<String, Void, Void>{
 
+        private Context mainContext;
         private final String USER_AGENT = "Mozilla/5.0";
 
+        public DownloadCalendar( Context context){
+            mainContext = context;
+        }
         @Override
         protected Void doInBackground(String... strings) {
             try {
@@ -143,7 +144,6 @@ public class ConnectionWithWebsite {
                 Element downloadLink = el.get( 40); // Preuzmi u iCal formatu je na indexu 40
 
                 String url = downloadLink.attr( "href");
-                //TODO trenutno se skida svaki put kada se pokrene taj fragment... napraviti da se azurira periodicno offiline
                 downloadFile( url);
 
 
