@@ -50,8 +50,6 @@ public class MainActivity extends AppCompatActivity {
         resources = getResources();
         getSupportFragmentManager().beginTransaction().replace( R.id.container, new HomeFragment(), resources.getString(R.string.home)).commit();
 
-        updateFiles();
-
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -66,49 +64,6 @@ public class MainActivity extends AppCompatActivity {
 
         askPermissions();
 
-    }
-
-    private void updateFiles(){
-        //download calendar if it was not downloaded today
-        Date lastDate = readDate();
-        Date nowDate = new Date();
-        SimpleDateFormat formatDate = new SimpleDateFormat( "yyyyMMdd");
-        if( lastDate == null || !formatDate.format( lastDate).equals( formatDate.format( nowDate))){
-            ConnectionWithWebsite.downloadCalendar( this);
-            writeDate( nowDate);
-        }
-    }
-
-    private Date readDate(){
-        Date result = null;
-        try{
-            FileInputStream fis = getApplicationContext().openFileInput( Constants.CALENDAR_LAST_SAVED_DATE_FILE);
-            ObjectInputStream oi = new ObjectInputStream( fis);
-            result = (Date) oi.readObject();
-            fis.close();
-            oi.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        return result;
-    }
-
-    private void writeDate( Date date){
-        try{
-            FileOutputStream fos = getApplicationContext().openFileOutput( Constants.CALENDAR_LAST_SAVED_DATE_FILE, Context.MODE_PRIVATE);
-            ObjectOutputStream o = new ObjectOutputStream( fos);
-            o.writeObject( date);
-            o.close();
-            fos.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     private void setUpNavigationBar(){

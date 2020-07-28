@@ -23,6 +23,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -56,6 +58,7 @@ public class LoginActivity extends AppCompatActivity {
 
             if( ConnectionWithWebsite.tryLogin( username, password)){ // Tu metoda za provjeru usenamea i passworda
                 saveAccount();
+                updateFiles();
                 startMain();
             }else
                 Toast.makeText(getApplicationContext(), "Incorrect username or password", Toast.LENGTH_SHORT).show();
@@ -87,6 +90,49 @@ public class LoginActivity extends AppCompatActivity {
             FileOutputStream fos = getApplicationContext().openFileOutput( Constants.USERNAME_AND_PASSWORD_FILE, Context.MODE_PRIVATE);
             ObjectOutputStream o = new ObjectOutputStream( fos);
             o.writeObject(username + "/" + password);
+            o.close();
+            fos.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void updateFiles(){
+        //download calendar if it was not downloaded today
+        Date lastDate = readDate();
+        Date nowDate = new Date();
+        SimpleDateFormat formatDate = new SimpleDateFormat( "yyyyMMdd");
+        if( lastDate == null || !formatDate.format( lastDate).equals( formatDate.format( nowDate))){
+            ConnectionWithWebsite.downloadCalendar( this);
+            writeDate( nowDate);
+        }
+    }
+
+    private Date readDate(){
+        Date result = null;
+        try{
+            FileInputStream fis = getApplicationContext().openFileInput( Constants.CALENDAR_LAST_SAVED_DATE_FILE);
+            ObjectInputStream oi = new ObjectInputStream( fis);
+            result = (Date) oi.readObject();
+            fis.close();
+            oi.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    private void writeDate( Date date){
+        try{
+            FileOutputStream fos = getApplicationContext().openFileOutput( Constants.CALENDAR_LAST_SAVED_DATE_FILE, Context.MODE_PRIVATE);
+            ObjectOutputStream o = new ObjectOutputStream( fos);
+            o.writeObject( date);
             o.close();
             fos.close();
         } catch (FileNotFoundException e) {
