@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
@@ -37,10 +38,10 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-//        readAccount();
-//        if(true) // TU metoda za provjeru usernamea i passworda
-//            startMain();
-
+        readAccount();
+        if( ConnectionWithWebsite.tryLogin( username, password)) {
+            startMain();
+        }
         setContentView(R.layout.activity_login);
 
 
@@ -63,7 +64,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void readAccount() {
         try{
-            FileInputStream fis = getApplicationContext().openFileInput( Constants.TODO_DATABASE_FILE);
+            FileInputStream fis = getApplicationContext().openFileInput( Constants.USERNAME_AND_PASSWORD_FILE);
             ObjectInputStream oi = new ObjectInputStream( fis);
             String temp = (String) oi.readObject();
             String[] split = temp.split("/");
@@ -105,7 +106,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private void startMain(){
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-        //TODO mozda umjesto ovoga dole promijenit Constants
         intent.putExtra("Username", username);
         intent.putExtra("Password", password);
         startActivity(intent);
