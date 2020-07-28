@@ -45,13 +45,7 @@ public class ConnectionWithWebsite {
     }
 
     public static void downloadCalendar( Context context){
-        try {
-            new DownloadCalendar( context).execute( "https://www.fer.unizg.hr/kalendar").get();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        new DownloadCalendar( context).execute( "https://www.fer.unizg.hr/kalendar");
     }
 
     static class Login extends AsyncTask<String, Void, Boolean> {
