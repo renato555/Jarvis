@@ -9,6 +9,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 package com.example.jarvis;
 
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
@@ -20,8 +21,19 @@ import android.content.res.Resources;
 import android.os.Build;
 
 import android.os.Bundle;
+import android.os.Environment;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.ObjectInputStream;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Objects;
 
 
@@ -213,6 +225,44 @@ public class MainActivity extends AppCompatActivity {
             if( ContextCompat.checkSelfPermission( this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
                 requestPermissions( new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, WRITE_PERMISSION);
             }
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        menu.clear();
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.top_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.settings:
+                return true;
+            case R.id.logout:
+                logout();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    public void logout(){
+        //Delete username and password file
+        try {
+
+//            File file = new File(Environment.getExternalStorageDirectory().toString() + "/" + Constants.USERNAME_AND_PASSWORD_FILE);
+//            if(!file.exists()) {
+//                file.delete();
+//            }
+            FileInputStream fis = getApplicationContext().openFileInput(Constants.USERNAME_AND_PASSWORD_FILE);
+            ObjectInputStream oi = new ObjectInputStream( fis);
+            String temp =(String) oi.readObject();
+            String[] split = temp.split("/");
+            System.out.println(split);
+        }catch (Exception e){
+            System.out.println("Sranj2");
         }
     }
 }

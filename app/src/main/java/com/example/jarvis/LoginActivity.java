@@ -5,14 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.View;
+import android.os.Environment;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.button.MaterialButton;
+
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -21,8 +19,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.List;
-import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -36,9 +32,13 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-//        readAccount();
-//        if(true) // TU metoda za provjeru usernamea i passworda
-//            startMain();
+
+        readAccount();
+
+        if(ConnectionWithWebsite.tryLogin( username, password)) { // TU metoda za provjeru usernamea i passworda
+            System.out.println("Nasao username i password");
+            startMain();
+        }
 
         setContentView(R.layout.activity_login);
 
@@ -61,13 +61,9 @@ public class LoginActivity extends AppCompatActivity {
 
     private void readAccount() {
         try{
-            FileInputStream fis = getApplicationContext().openFileInput( Constants.TODO_DATABASE_FILE);
+            FileInputStream fis = getApplicationContext().openFileInput(Constants.USERNAME_AND_PASSWORD_FILE);
             ObjectInputStream oi = new ObjectInputStream( fis);
-<<<<<<< HEAD
             String temp =(String) oi.readObject();
-=======
-            String temp = (String) oi.readObject();
->>>>>>> ccebb50c73b14086f89d6bad8272070bca1847fd
             String[] split = temp.split("/");
             username = split[0];
             password = split[1];
@@ -85,7 +81,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public void saveAccount(){
         try{
-            FileOutputStream fos = getApplicationContext().openFileOutput( Constants.USERNAME_AND_PASSWORD_FILE, Context.MODE_PRIVATE);
+            FileOutputStream fos = getApplicationContext().openFileOutput(Constants.USERNAME_AND_PASSWORD_FILE, Context.MODE_APPEND);
             ObjectOutputStream o = new ObjectOutputStream( fos);
             o.writeObject(username + "/" + password);
             o.close();
@@ -104,12 +100,5 @@ public class LoginActivity extends AppCompatActivity {
         intent.putExtra("Password", password);
         startActivity(intent);
         finish();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.top_menu, menu);
-        return true;
     }
 }

@@ -114,11 +114,11 @@ public class HomeFragment extends Fragment {
     public void loadAllTasks() {
         Map<String, List<String>> todoTasks;
         try {
-            FileInputStream fis = getContext().openFileInput(Constants.TODO_DATABASE_FILE);
-            ObjectInputStream oi = new ObjectInputStream(fis);
+            FileInputStream fos = getContext().openFileInput(Constants.TODO_DATABASE_FILE);
+            ObjectInputStream oi = new ObjectInputStream(fos);
 
             todoTasks = (Map<String, List<String>>) oi.readObject();
-            fis.close();
+            fos.close();
             oi.close();
             allTasks = todoTasks.get(Constants.ALL_TASKS);
         } catch (FileNotFoundException e) {
@@ -157,17 +157,6 @@ public class HomeFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         System.out.println("Destroy");
-    }
-
-    @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        inflater.inflate(R.menu.top_menu, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        return super.onOptionsItemSelected(item);
     }
 }
 
