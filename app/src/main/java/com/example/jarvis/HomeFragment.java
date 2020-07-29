@@ -40,6 +40,12 @@ public class HomeFragment extends Fragment {
     private Map<String, List<String>> calendarData;
     private LinearLayout todayCalendarLayout;
 
+    private OnSwipeTouchListener swipeListener;
+
+    public HomeFragment( OnSwipeTouchListener swipeListener){
+        this.swipeListener = swipeListener;
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

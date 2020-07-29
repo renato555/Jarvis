@@ -40,6 +40,12 @@ public class CalendarFragment extends Fragment {
 
     private Map<String, List<String>> calendarData;
 
+    private OnSwipeTouchListener swipeListener;
+
+    public CalendarFragment( OnSwipeTouchListener swipeListener){
+        this.swipeListener = swipeListener;
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -118,6 +124,8 @@ public class CalendarFragment extends Fragment {
         calendarView.setOnDateChangeListener( (CalendarView view, int year, int month, int dayOfMonth) -> {
             printDate( new GregorianCalendar( year, month, dayOfMonth).getTime());
         });
+
+        eventsLayout.setOnTouchListener( swipeListener);
     }
 
     private void printDate( Date date) {

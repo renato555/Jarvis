@@ -46,6 +46,12 @@ public class ToDoListFragment extends Fragment {
     private static Map<String, List<String>> todoTasks; //< listaName, tasks>
     private LinearLayout taskLayout;
 
+    private OnSwipeTouchListener swipeListener;
+
+    public ToDoListFragment( OnSwipeTouchListener swipeListener){
+        this.swipeListener = swipeListener;
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

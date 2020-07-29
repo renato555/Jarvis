@@ -44,6 +44,12 @@ public class ColleagueFragment extends Fragment {
     private LinearLayout colleaguesLayout;
     private Map<String, String> colleagues; // Map< ID, nickname>
 
+    private OnSwipeTouchListener swipeListener;
+
+    public ColleagueFragment( OnSwipeTouchListener swipeListener){
+        this.swipeListener = swipeListener;
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

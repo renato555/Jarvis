@@ -48,6 +48,12 @@ public class WeatherFragment extends Fragment {
 
     //private static Bundle savedState;
 
+    private OnSwipeTouchListener swipeListener;
+
+    public WeatherFragment( OnSwipeTouchListener swipeListener){
+        this.swipeListener = swipeListener;
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

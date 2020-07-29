@@ -64,7 +64,7 @@
         android:layout_marginHorizontal="@dimen/balloon_margin"
         android:layout_marginTop="@dimen/balloon_margin"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:id="@+id/tasks_layout"
