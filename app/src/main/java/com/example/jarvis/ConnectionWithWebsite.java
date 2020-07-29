@@ -27,7 +27,6 @@ import java.util.concurrent.ExecutionException;
 import javax.net.ssl.HttpsURLConnection;
 
 public class ConnectionWithWebsite {
-    public static final String CALENDAR_DATA_FILE = "calendarData.ics";
 
     private static List<String> cookies;
     private static HttpsURLConnection conn;
@@ -185,12 +184,12 @@ public class ConnectionWithWebsite {
                 if( manager != null){
                     DownloadManager.Request request = new DownloadManager.Request( downloadURI);
                     request.setAllowedNetworkTypes( DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE)
-                            .setTitle( CALENDAR_DATA_FILE)
-                            .setDescription( "Downloading " + CALENDAR_DATA_FILE)
+                            .setTitle( Constants.CALENDAR_DATA_FILE)
+                            .setDescription( "Downloading " + Constants.CALENDAR_DATA_FILE)
                             .setAllowedOverMetered( true)
                             .setAllowedOverRoaming( true)
                             .setNotificationVisibility( DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
-                            .setDestinationInExternalFilesDir( mainContext, null, CALENDAR_DATA_FILE)
+                            .setDestinationInExternalFilesDir( mainContext, null, Constants.CALENDAR_DATA_FILE)
                             .setMimeType( getMimeType( downloadURI));
                     manager.enqueue( request);
                 }else{

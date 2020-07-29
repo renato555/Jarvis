@@ -93,7 +93,7 @@
                 android:gravity="center"/>
         </LinearLayout>
 
-        <com.google.android.material.button.MaterialButton
+        <Button
             android:id="@+id/reloadButton"
             android:layout_width="wrap_content"
             style="@style/Widget.MaterialComponents.Button.TextButton"

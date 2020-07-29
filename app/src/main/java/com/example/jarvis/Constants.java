@@ -30,8 +30,7 @@ public class Constants {
     public static final String DONT_PRESS_ME_LINK = "https://www.zet.hr/autobusni-prijevoz/dnevne-linije-251/251";
 
     //Home
-    public static final String NAME_LINK = "https://www.fer.unizg.hr";
-    public static final String NAME_CLASS = "dropdown-toggle";
+    public static final String NAME = "Lovro";
 
     //Calendar
     public static final String CALENDAR_DATA_FILE = "calendarData.ics";

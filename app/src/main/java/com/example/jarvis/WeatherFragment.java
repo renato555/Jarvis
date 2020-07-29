@@ -2,6 +2,7 @@ package com.example.jarvis;
 
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -11,6 +12,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,7 +44,7 @@ public class WeatherFragment extends Fragment {
     private TextView dayAfterTomorrowDescription;
     private ImageView dayAfterTomorrowImage;
     private TextView dayAfterTomorrowText;
-    private MaterialButton reloadButton;
+    private Button reloadButton;
 
     //private static Bundle savedState;
 
@@ -50,7 +52,7 @@ public class WeatherFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_weather, container, false);
-        reloadButton = (MaterialButton) view.findViewById(R.id.reloadButton);
+        reloadButton = (Button) view.findViewById(R.id.reloadButton);
         reloadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

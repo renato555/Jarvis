@@ -7,7 +7,7 @@
 
 
 
-    <com.google.android.material.button.MaterialButton
+    <Button
         android:id="@+id/dontPressMe"
         android:layout_width="wrap_content"
         style="@style/Widget.MaterialComponents.Button.TextButton"
@@ -15,7 +15,6 @@
         android:text="@string/dont_press_me"
         android:layout_gravity="center"
         android:textSize="10sp"
-        android:layout_marginTop="20dp"
         android:layout_marginLeft="25dp"/>
 
     <LinearLayout
@@ -23,39 +22,40 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_centerInParent="true">
-    <TextView
-        android:id="@+id/weclomeText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="30sp"
-        android:layout_gravity="center" />
-
-    <TextView
-        android:id="@+id/todoLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:text="@string/all_tasks"
-        android:layout_marginHorizontal="@dimen/balloon_margin"
-        android:layout_marginBottom="5dp"
-        android:textStyle="bold" />
-
-    <ScrollView
-        android:id="@+id/tasks_scroll"
-        android:layout_marginHorizontal="@dimen/balloon_margin"
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:background="@drawable/obrub_balona">
-
-        <LinearLayout
-            android:id="@+id/tasks_layout"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/weclomeText"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginLeft="10dp">
-        </LinearLayout>
-    </ScrollView>
+            android:textSize="30sp"
+            android:layout_gravity="center" />
+
+        <TextView
+            android:id="@+id/todoLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:text="@string/all_tasks"
+            android:layout_marginHorizontal="@dimen/balloon_margin"
+            android:layout_marginBottom="5dp"
+            android:textStyle="bold" />
+
+        <ScrollView
+            android:id="@+id/tasks_scroll"
+            android:layout_marginHorizontal="@dimen/balloon_margin"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:background="@drawable/obrub_balona">
+
+            <LinearLayout
+                android:id="@+id/tasks_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginLeft="10dp">
+            </LinearLayout>
+        </ScrollView>
 
     </LinearLayout>
+
 
 </RelativeLayout>
