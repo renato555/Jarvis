@@ -34,6 +34,7 @@ public class Constants {
 
     //Calendar
     public static final String CALENDAR_DATA_FILE = "calendarData.ics";
+    public static final String CALENDAR_EVENTS_FILE = "calendarEvents.txt";
 
     //Login
     public static final String USERNAME_AND_PASSWORD_FILE = "accountData.txt"; // format: "username/password"
