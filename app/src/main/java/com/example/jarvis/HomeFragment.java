@@ -118,6 +118,7 @@ public class HomeFragment extends Fragment {
         params.setMargins(25, 7, 0, 7);
         task.setLayoutParams(params);
         task.setText(currentText);
+        task.setBackgroundResource( R.drawable.bottom_edge);
         task.setTextSize(TypedValue.COMPLEX_UNIT_PX, 50);
         task.setTypeface(null, Typeface.BOLD);
     }
@@ -165,7 +166,7 @@ public class HomeFragment extends Fragment {
     private TextView makeTextView( String event){
         TextView textView = new TextView( getContext());
         textView.setText( event);
-       // textView.setBackgroundResource( R.drawable.bottom_edge);
+        textView.setBackgroundResource( R.drawable.bottom_edge);
         textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 22);
         //set textView margin
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams( LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);

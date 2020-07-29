@@ -43,8 +43,7 @@
             android:id="@+id/tasks_scroll"
             android:layout_marginHorizontal="@dimen/balloon_margin"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:background="@drawable/obrub_balona">
+            android:layout_height="150dp">
 
             <LinearLayout
                 android:id="@+id/tasks_layout"
@@ -70,8 +69,7 @@
             android:id="@+id/todayCalendar_scroll"
             android:layout_marginHorizontal="@dimen/balloon_margin"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:background="@drawable/obrub_balona">
+            android:layout_height="150dp">
 
             <LinearLayout
                 android:id="@+id/todayCalendar_layout"
