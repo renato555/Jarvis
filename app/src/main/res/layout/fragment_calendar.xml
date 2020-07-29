@@ -37,7 +37,7 @@
         style="@android:style/Widget.DeviceDefault.Light.ScrollView"
         android:layout_below="@id/calendar_naslov"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <RelativeLayout
             android:layout_width="match_parent"

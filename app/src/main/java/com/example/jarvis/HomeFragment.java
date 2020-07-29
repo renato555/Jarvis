@@ -46,6 +46,12 @@ public class HomeFragment extends Fragment {
     private MaterialButton dontPressMeButton;
     private String savedName;
 
+    private OnSwipeTouchListener swipeListener;
+
+    public HomeFragment( OnSwipeTouchListener swipeListener){
+        this.swipeListener = swipeListener;
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

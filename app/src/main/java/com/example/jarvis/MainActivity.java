@@ -26,6 +26,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 
@@ -44,22 +45,22 @@ public class MainActivity extends AppCompatActivity {
     private static final int WRITE_PERMISSION = 1001;
 
     private ChipNavigationBar chipNavigationBar;
-
+    private OnSwipeTouchListener swipeListener;
 
     private FragmentManager fragmentManager = getSupportFragmentManager();
     private Resources resources;
+
+    private OnSwipeTouchListener swipeLIstener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         resources = getResources();
-        getSupportFragmentManager().beginTransaction().replace( R.id.container, new HomeFragment(), resources.getString(R.string.home)).commit();
 
         new Thread(new Runnable() {
             @Override
             public void run() {
-                calendarFragmentPressed();
                 homeFragmentPressed();
             }
         }).start();
@@ -69,6 +70,12 @@ public class MainActivity extends AppCompatActivity {
 
         askPermissions();
 
+        swipeListener = new OnSwipeTouchListener( this, chipNavigationBar);
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        return swipeListener.onTouch( null, event);
     }
 
     private void setUpNavigationBar(){
@@ -110,7 +117,6 @@ public class MainActivity extends AppCompatActivity {
         chipNavigationBar.showBadge( R.id.colleague, 1);
     }
 
-
     private void weatherFragmentPressed() {
         String tag = resources.getString(R.string.weather);
         if(fragmentManager.findFragmentByTag(tag) != null) {
@@ -118,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
             fragmentManager.beginTransaction().show(Objects.requireNonNull(fragmentManager.findFragmentByTag(tag))).commit();
         } else {
             //if the fragment does not exist, add it to fragment manager.
-            fragmentManager.beginTransaction().add(R.id.container, new WeatherFragment(), tag).commit();
+            fragmentManager.beginTransaction().add(R.id.container, new WeatherFragment( swipeListener), tag).commit();
         }
         checkHome();
         checkColleague();
@@ -133,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
             fragmentManager.beginTransaction().show(Objects.requireNonNull(fragmentManager.findFragmentByTag(tag))).commit();
         } else {
             //if the fragment does not exist, add it to fragment manager.
-            fragmentManager.beginTransaction().add(R.id.container, new ToDoListFragment(), tag).commit();
+            fragmentManager.beginTransaction().add(R.id.container, new ToDoListFragment( swipeListener), tag).commit();
         }
         checkHome();
         checkColleague();
@@ -148,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
             fragmentManager.beginTransaction().show(Objects.requireNonNull(fragmentManager.findFragmentByTag(tag))).commit();
         } else {
             //if the fragment does not exist, add it to fragment manager.
-            fragmentManager.beginTransaction().add(R.id.container, new ColleagueFragment(), tag).commit();
+            fragmentManager.beginTransaction().add(R.id.container, new ColleagueFragment( swipeListener), tag).commit();
         }
         checkHome();
         checkCalendar();
@@ -163,7 +169,7 @@ public class MainActivity extends AppCompatActivity {
             fragmentManager.beginTransaction().show(Objects.requireNonNull(fragmentManager.findFragmentByTag(tag))).commit();
         } else {
             //if the fragment does not exist, add it to fragment manager.
-            fragmentManager.beginTransaction().add(R.id.container, new HomeFragment(), tag).commit();
+            fragmentManager.beginTransaction().add(R.id.container, new HomeFragment( swipeListener), tag).commit();
         }
         checkCalendar();
         checkColleague();
@@ -178,7 +184,7 @@ public class MainActivity extends AppCompatActivity {
             fragmentManager.beginTransaction().show(Objects.requireNonNull(fragmentManager.findFragmentByTag(tag))).commit();
         } else {
             //if the fragment does not exist, add it to fragment manager.
-            fragmentManager.beginTransaction().add(R.id.container, new CalendarFragment(), tag).commit();
+            fragmentManager.beginTransaction().add(R.id.container, new CalendarFragment( swipeListener), tag).commit();
         }
         checkHome();
         checkColleague();
@@ -250,7 +256,7 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void logout(){
+    private void logout(){
         LoginActivity.saveAccount( getApplicationContext(), "", "");
         Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
         startActivity( intent);
