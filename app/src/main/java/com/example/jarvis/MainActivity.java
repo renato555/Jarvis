@@ -16,7 +16,6 @@ import androidx.fragment.app.FragmentManager;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
@@ -30,14 +29,6 @@ import android.view.MotionEvent;
 
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Objects;
 
 
@@ -49,8 +40,6 @@ public class MainActivity extends AppCompatActivity {
 
     private FragmentManager fragmentManager = getSupportFragmentManager();
     private Resources resources;
-
-    private OnSwipeTouchListener swipeLIstener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,10 +92,6 @@ public class MainActivity extends AppCompatActivity {
                         weatherFragmentPressed();
                         break;
                 }
-//                if( fragment != null){
-//                    fragment.setRetainInstance(true);
-//                    getSupportFragmentManager().beginTransaction().replace( R.id.container, fragment).commit();
-//                }
             }
         });
 
