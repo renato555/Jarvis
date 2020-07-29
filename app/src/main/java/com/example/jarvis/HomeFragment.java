@@ -63,6 +63,13 @@ public class HomeFragment extends Fragment {
         welcomeText = (TextView) view.findViewById(R.id.weclomeText);
 
         dontPressMeButton = (Button) view.findViewById(R.id.dontPressMe);
+        dontPressMeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), DontPressMeActivity.class);
+                startActivity(intent);
+            }
+        });
         enableButtons();
 
         setUpWelcomeText();
@@ -131,20 +138,11 @@ public class HomeFragment extends Fragment {
     }
 
     public void disableButtons(){
-        dontPressMeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {}
-        });
+        dontPressMeButton.setEnabled(false);
     }
 
     public void enableButtons(){
-        dontPressMeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getContext(), DontPressMeActivity.class);
-                startActivity(intent);
-            }
-        });
+        dontPressMeButton.setEnabled(true);
     }
 }
 
