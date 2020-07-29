@@ -70,7 +70,6 @@ public class HomeFragment extends Fragment {
                 startActivity(intent);
             }
         });
-        enableButtons();
 
         setUpWelcomeText();
         loadAllTasks();
