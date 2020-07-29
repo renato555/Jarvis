@@ -1,7 +1,9 @@
 package com.example.jarvis;
 
 
+import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +17,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -53,6 +57,8 @@ public class CalendarFragment extends Fragment {
         addListeners();
 
         printDate( new Date());
+
+        writeCalendarData();
         return view;
     }
 
@@ -62,7 +68,6 @@ public class CalendarFragment extends Fragment {
 
             String lines = ConnectionWithWebsite.readStream( fin);
             addEvents( lines);
-
             fin.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -144,5 +149,18 @@ public class CalendarFragment extends Fragment {
         textView.setLayoutParams( params);
 
         return textView;
+    }
+
+    private void writeCalendarData() {
+        try {
+            FileOutputStream fos = getContext().openFileOutput(Constants.CALENDAR_EVENTS_FILE, Context.MODE_PRIVATE);
+            ObjectOutputStream oi = new ObjectOutputStream(fos);
+
+            oi.writeObject(calendarData);
+            oi.close();
+            fos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -55,6 +55,33 @@
             </LinearLayout>
         </ScrollView>
 
+        <TextView
+            android:id="@+id/todayCalendar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:text="Today calendar"
+            android:layout_marginHorizontal="@dimen/balloon_margin"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"
+            android:textStyle="bold" />
+
+        <ScrollView
+            android:id="@+id/todayCalendar_scroll"
+            android:layout_marginHorizontal="@dimen/balloon_margin"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:background="@drawable/obrub_balona">
+
+            <LinearLayout
+                android:id="@+id/todayCalendar_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginLeft="10dp">
+            </LinearLayout>
+        </ScrollView>
+
     </LinearLayout>
 
 

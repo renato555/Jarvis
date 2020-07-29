@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         resources = getResources();
+        calendarFragmentPressed();
         weatherFragmentPressed();
         homeFragmentPressed();
 
@@ -154,6 +155,7 @@ public class MainActivity extends AppCompatActivity {
         HomeFragment homeFragment = new HomeFragment();
         if(fragmentManager.findFragmentByTag(tag) != null) {
             //if the fragment exists, show it.
+            ((HomeFragment) fragmentManager.findFragmentByTag(tag)).loadAllTasks();
             fragmentManager.beginTransaction().show(Objects.requireNonNull(fragmentManager.findFragmentByTag(tag))).commit();
             ((HomeFragment) fragmentManager.findFragmentByTag(tag)).enableButtons();
         } else {
@@ -193,6 +195,9 @@ public class MainActivity extends AppCompatActivity {
         if(fragmentManager.findFragmentByTag(resources.getString(R.string.to_do)) != null){
             //if the other fragment is visible, hide it.
             fragmentManager.beginTransaction().hide(Objects.requireNonNull(fragmentManager.findFragmentByTag(resources.getString(R.string.to_do)))).commit();
+            ((ToDoListFragment) fragmentManager.findFragmentByTag(resources.getString(R.string.to_do))).writeData();
+            ((HomeFragment) fragmentManager.findFragmentByTag(resources.getString(R.string.home))).loadAllTasks();
+
         }
     }
 

@@ -4,39 +4,29 @@ package com.example.jarvis;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Typeface;
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatDialogFragment;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-
-import com.google.android.material.button.MaterialButton;
-
-
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.select.Elements;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -46,7 +36,9 @@ public class HomeFragment extends Fragment {
     private List<String> allTasks;
     private LinearLayout taskLayout;
     private TextView welcomeText;
-    public Button dontPressMeButton;
+    private Button dontPressMeButton;
+    private Map<String, List<String>> calendarData;
+    private LinearLayout todayCalendarLayout;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -61,6 +53,7 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         taskLayout = (LinearLayout) view.findViewById(R.id.tasks_layout);
         welcomeText = (TextView) view.findViewById(R.id.weclomeText);
+        todayCalendarLayout = (LinearLayout) view.findViewById(R.id.todayCalendar_layout);
 
         dontPressMeButton = (Button) view.findViewById(R.id.dontPressMe);
         dontPressMeButton.setOnClickListener(new View.OnClickListener() {
@@ -73,10 +66,9 @@ public class HomeFragment extends Fragment {
 
         setUpWelcomeText();
         loadAllTasks();
+        loadTodayCalendar();
         return view;
     }
-
-
 
     private void setUpWelcomeText() {
         welcomeText.setText("Welcome, " + Constants.NAME);
@@ -85,11 +77,11 @@ public class HomeFragment extends Fragment {
     public void loadAllTasks() {
         Map<String, List<String>> todoTasks;
         try {
-            FileInputStream fos = getContext().openFileInput(Constants.TODO_DATABASE_FILE);
-            ObjectInputStream oi = new ObjectInputStream(fos);
+            FileInputStream fis = getContext().openFileInput(Constants.TODO_DATABASE_FILE);
+            ObjectInputStream oi = new ObjectInputStream(fis);
 
             todoTasks = (Map<String, List<String>>) oi.readObject();
-            fos.close();
+            fis.close();
             oi.close();
             allTasks = todoTasks.get(Constants.ALL_TASKS);
         } catch (FileNotFoundException e) {
@@ -122,6 +114,59 @@ public class HomeFragment extends Fragment {
         task.setText(currentText);
         task.setTextSize(TypedValue.COMPLEX_UNIT_PX, 50);
         task.setTypeface(null, Typeface.BOLD);
+    }
+
+
+    private void loadTodayCalendar() {
+        Date dateObj = Calendar.getInstance().getTime();
+
+        readCalendarEvents();
+        printDate(dateObj);
+    }
+
+    private void readCalendarEvents() {
+        try{
+            FileInputStream fis = getContext().openFileInput(Constants.CALENDAR_EVENTS_FILE);
+            ObjectInputStream oi = new ObjectInputStream(fis);
+
+            calendarData = (Map<String, List<String>>) oi.readObject();
+
+            oi.close();
+            fis.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void printDate( Date date) {
+        //updates todays events
+        SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");
+        String todayDate = df.format(date);
+        List<String> events = calendarData.get( todayDate);
+        todayCalendarLayout.removeAllViews();
+        if( events != null){
+            for( String event : events){
+                TextView eventView = makeTextView( event);
+                todayCalendarLayout.addView( eventView);
+            }
+        }
+    }
+
+    private TextView makeTextView( String event){
+        TextView textView = new TextView( getContext());
+        textView.setText( event);
+       // textView.setBackgroundResource( R.drawable.bottom_edge);
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 22);
+        //set textView margin
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams( LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        params.setMargins(25, 7, 25, 7);
+        textView.setLayoutParams( params);
+
+        return textView;
     }
 
     @Override

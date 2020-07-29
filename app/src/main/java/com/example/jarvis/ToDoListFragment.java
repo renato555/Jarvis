@@ -243,7 +243,7 @@ public class ToDoListFragment extends Fragment {
         writeData();
     }
 
-    private void writeData(){
+    public void writeData(){
         try{
             FileOutputStream fos = getContext().openFileOutput( Constants.TODO_DATABASE_FILE, Context.MODE_PRIVATE);
             ObjectOutputStream o = new ObjectOutputStream( fos);
