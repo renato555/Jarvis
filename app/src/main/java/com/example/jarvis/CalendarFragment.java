@@ -64,7 +64,7 @@ public class CalendarFragment extends Fragment {
 
     private void loadCalendarData(){
         try {
-            FileInputStream fin = new FileInputStream( getContext().getExternalFilesDir( null) + "/" + ConnectionWithWebsite.CALENDAR_DATA_FILE);
+            FileInputStream fin = new FileInputStream( getContext().getExternalFilesDir( null) + "/" + Constants.CALENDAR_DATA_FILE);
 
             String lines = ConnectionWithWebsite.readStream( fin);
             addEvents( lines);

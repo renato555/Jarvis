@@ -4,8 +4,10 @@ package com.example.jarvis;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -14,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -43,8 +46,7 @@ public class HomeFragment extends Fragment {
     private List<String> allTasks;
     private LinearLayout taskLayout;
     private TextView welcomeText;
-    private MaterialButton dontPressMeButton;
-    private String savedName;
+    public Button dontPressMeButton;
 
     private OnSwipeTouchListener swipeListener;
 
@@ -66,7 +68,7 @@ public class HomeFragment extends Fragment {
         taskLayout = (LinearLayout) view.findViewById(R.id.tasks_layout);
         welcomeText = (TextView) view.findViewById(R.id.weclomeText);
 
-        dontPressMeButton = (MaterialButton) view.findViewById(R.id.dontPressMe);
+        dontPressMeButton = (Button) view.findViewById(R.id.dontPressMe);
         dontPressMeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -74,47 +76,16 @@ public class HomeFragment extends Fragment {
                 startActivity(intent);
             }
         });
-//        if(savedName == null)
+
         setUpWelcomeText();
-//        else restoreWelcomeText();
         loadAllTasks();
         return view;
     }
 
-//    private void restoreWelcomeText() {
-//        welcomeText.setText("Welcome " + savedName);
-//    }
 
 
-    @SuppressLint("StaticFieldLeak")
     private void setUpWelcomeText() {
-        new AsyncTask<Void, Void, Void>(){
-            String name;
-            @Override
-            protected Void doInBackground(Void... voids) {
-
-                try {
-                    Document doc = Jsoup.connect(Constants.NAME_LINK).get();
-                    Elements e = doc.getElementsByClass(Constants.NAME_CLASS);
-
-                    if(e.first() != null) {
-                        name = e.first().text();
-                        savedName = name.split(" ")[0];
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Void aVoid) {
-                super.onPostExecute(aVoid);
-                if(name != null)
-                    welcomeText.setText("Welcome, " + savedName);
-
-            }
-        }.execute();
+        welcomeText.setText("Welcome, " + Constants.NAME);
     }
 
     public void loadAllTasks() {
@@ -140,29 +111,43 @@ public class HomeFragment extends Fragment {
 
     }
 
-        private void printTasks(){
-            taskLayout.removeAllViews();
-            List<String> currentTasks = allTasks;
-            for (String currentText : currentTasks) {
-                TextView task = new TextView(getContext());
-                setTextViewParams(task, currentText);
-                taskLayout.addView(task);
-            }
+    private void printTasks(){
+        taskLayout.removeAllViews();
+        List<String> currentTasks = allTasks;
+        for (String currentText : currentTasks) {
+            TextView task = new TextView(getContext());
+            setTextViewParams(task, currentText);
+            taskLayout.addView(task);
         }
+    }
 
-        public void setTextViewParams (TextView task, String currentText){
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            params.setMargins(25, 7, 0, 7);
-            task.setLayoutParams(params);
-            task.setText(currentText);
-            task.setTextSize(TypedValue.COMPLEX_UNIT_PX, 50);
-            task.setTypeface(null, Typeface.BOLD);
-        }
+    public void setTextViewParams (TextView task, String currentText){
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        params.setMargins(25, 7, 0, 7);
+        task.setLayoutParams(params);
+        task.setText(currentText);
+        task.setTextSize(TypedValue.COMPLEX_UNIT_PX, 50);
+        task.setTypeface(null, Typeface.BOLD);
+    }
+
+    @Override
+    public void onPause() {
+        Log.i("Test", "Pause");
+        super.onPause();
+    }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         System.out.println("Destroy");
+    }
+
+    public void disableButtons(){
+        dontPressMeButton.setEnabled(false);
+    }
+
+    public void enableButtons(){
+        dontPressMeButton.setEnabled(true);
     }
 }
 

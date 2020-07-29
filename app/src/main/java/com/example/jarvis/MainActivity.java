@@ -58,12 +58,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         resources = getResources();
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                homeFragmentPressed();
-            }
-        }).start();
+        weatherFragmentPressed();
+        homeFragmentPressed();
 
         chipNavigationBar = findViewById(R.id.chipNavigation);
         setUpNavigationBar();
@@ -164,9 +160,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void homeFragmentPressed(){
         String tag = resources.getString(R.string.home);
+        HomeFragment homeFragment = new HomeFragment( swipeListener);
         if(fragmentManager.findFragmentByTag(tag) != null) {
             //if the fragment exists, show it.
             fragmentManager.beginTransaction().show(Objects.requireNonNull(fragmentManager.findFragmentByTag(tag))).commit();
+            ((HomeFragment) fragmentManager.findFragmentByTag(tag)).enableButtons();
         } else {
             //if the fragment does not exist, add it to fragment manager.
             fragmentManager.beginTransaction().add(R.id.container, new HomeFragment( swipeListener), tag).commit();
@@ -180,7 +178,7 @@ public class MainActivity extends AppCompatActivity {
     public void calendarFragmentPressed(){
         String tag = resources.getString(R.string.calendar);
         if(fragmentManager.findFragmentByTag(tag) != null) {
-            //if the fragment exists, show it.
+            //if the fragment exists, show it
             fragmentManager.beginTransaction().show(Objects.requireNonNull(fragmentManager.findFragmentByTag(tag))).commit();
         } else {
             //if the fragment does not exist, add it to fragment manager.
@@ -196,6 +194,7 @@ public class MainActivity extends AppCompatActivity {
         if(fragmentManager.findFragmentByTag(resources.getString(R.string.home)) != null){
             //if the other fragment is visible, hide it.
             fragmentManager.beginTransaction().hide(Objects.requireNonNull(fragmentManager.findFragmentByTag(resources.getString(R.string.home)))).commit();
+            ((HomeFragment) fragmentManager.findFragmentByTag(resources.getString((R.string.home)))).disableButtons();
         }
     }
 
