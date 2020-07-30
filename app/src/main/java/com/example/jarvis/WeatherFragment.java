@@ -161,7 +161,7 @@ public class WeatherFragment extends Fragment {
         dayAfterTomorrowTimeViews[2] = (TextView) view.findViewById(R.id.dayAfterTomorrowTime_11);
         dayAfterTomorrowTimeViews[3] = (TextView) view.findViewById(R.id.dayAfterTomorrowTime_14);
         dayAfterTomorrowTimeViews[4] = (TextView) view.findViewById(R.id.dayAfterTomorrowTime_17);
-        dayAfterTomorrowTimeViews[5] = (TextView) view.findViewById(R.id.tomorrowTime_20);
+        dayAfterTomorrowTimeViews[5] = (TextView) view.findViewById(R.id.dayAfterTomorrowTime_20);
     }
 
     private void loadDayAfterTomorrowImageViews(View view){
