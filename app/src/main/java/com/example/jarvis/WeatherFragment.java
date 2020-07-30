@@ -5,15 +5,14 @@ import android.annotation.SuppressLint;
 
 import android.graphics.drawable.Drawable;
 
-import android.media.Image;
+
 import android.os.AsyncTask;
 import android.os.Bundle;
 
-import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -23,9 +22,8 @@ import androidx.fragment.app.Fragment;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.w3c.dom.Text;
+
 
 import java.io.IOException;
 import java.util.Map;
@@ -63,7 +61,6 @@ public class WeatherFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_weather, container, false);
 
-
         map = new WeatherMapLoader(getContext()).loadMap();
 
         todayDay = (TextView) view.findViewById(R.id.todayDay);
@@ -84,7 +81,6 @@ public class WeatherFragment extends Fragment {
         new MyAsyncTask(todayDay, todayTimeViews, todayImageViews, todayDescriptionViews, 0).execute();
         new MyAsyncTask(tomorrowDay, tomorrowTimeViews, tomorrowImageViews, tomorrowDescriptionViews, 1).execute();
         new MyAsyncTask(dayAfterTomorrowDay, dayAfterTomorrowTimeViews, dayAfterTomorrowImageViews, dayAfterTomorrowDescriptionViews, 2).execute();
-
 
         return view;
     }
