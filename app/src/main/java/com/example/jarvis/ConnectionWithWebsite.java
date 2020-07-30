@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.webkit.MimeTypeMap;
 
 import org.jsoup.Jsoup;
@@ -15,12 +16,19 @@ import org.jsoup.select.Elements;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -31,23 +39,35 @@ public class ConnectionWithWebsite {
     private static List<String> cookies;
     private static HttpsURLConnection conn;
 
-    public static boolean tryLogin( String username, String password){
+
+    public static boolean tryLogin( Context context, String username, String password){
+        loadCookies( context, username);
+        //first login, no saved data was found
+        if( cookies == null) return tryNewLogin( context, username, password);
+
+        //check if cookies are expired
+        String expireDateString = cookies.get(0).split( ";")[1].substring( " expiers=".length());
+        LocalDateTime expireDate = LocalDateTime.parse( expireDateString, DateTimeFormatter.ofPattern( "EEE, dd-MMM-yyyy HH:mm:ss zzz"));
+        if( expireDate.isBefore( LocalDateTime.now())) return tryNewLogin( context, username, password);
+
+        //cookies are not expired
+        return true;
+    }
+    
+    private static boolean tryNewLogin( Context context, String username, String password){
+        boolean result = false;
         try {
-            return new Login().execute( "https://www.fer.unizg.hr/login/?frompage=%2F&return=%2F", username, password).get();
+            result = new Login().execute( "https://www.fer.unizg.hr/login/?frompage=%2F&return=%2F", username, password).get();
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
-        return false;
+        if( result) writeCookies(context, username);
+        return result;
     }
 
-    public static void downloadCalendar( Context context){
-        new DownloadCalendar( context).execute( "https://www.fer.unizg.hr/kalendar");
-    }
-
-    static class Login extends AsyncTask<String, Void, Boolean> {
+    private static class Login extends AsyncTask<String, Void, Boolean> {
         private final String USER_AGENT = "Mozilla/5.0";
         private final String BOUNDARY = "----WebKitFormBoundary1ALBGLxu9B9GXZ93";
 
@@ -124,9 +144,63 @@ public class ConnectionWithWebsite {
         private void setCookies( List<String> keksi){
             cookies = keksi;
         }
+
+    }
+
+    private static void loadCookies( Context context, String username){
+        try{
+            FileInputStream fis = context.openFileInput( username + ".txt");
+            ObjectInputStream oi = new ObjectInputStream( fis);
+            cookies =(List<String>) oi.readObject();
+
+            fis.close();
+            oi.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void writeCookies( Context context, String username){
+        try{
+            FileOutputStream fos = context.openFileOutput(username + ".txt", Context.MODE_PRIVATE);
+            ObjectOutputStream o = new ObjectOutputStream( fos);
+            o.writeObject( cookies);
+
+            o.close();
+            fos.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void deleteCookies( Context context, String username){
+        try{
+            FileOutputStream fos = context.openFileOutput(username + ".txt", Context.MODE_PRIVATE);
+            ObjectOutputStream o = new ObjectOutputStream( fos);
+            o.writeObject( null);
+
+            o.close();
+            fos.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public static void downloadCalendar( Context context){
+        new DownloadCalendar( context).execute( "https://www.fer.unizg.hr/kalendar");
     }
 
     static class DownloadCalendar extends AsyncTask<String, Void, Void>{
+
 
         private Context mainContext;
         private final String USER_AGENT = "Mozilla/5.0";
@@ -134,6 +208,7 @@ public class ConnectionWithWebsite {
         public DownloadCalendar( Context context){
             mainContext = context;
         }
+
         @Override
         protected Void doInBackground(String... strings) {
             try {
@@ -148,8 +223,9 @@ public class ConnectionWithWebsite {
 
             } catch (IOException e) {
                 e.printStackTrace();
+            }catch( IndexOutOfBoundsException e){
+                e.printStackTrace();
             }
-
             return null;
         }
 
@@ -176,7 +252,6 @@ public class ConnectionWithWebsite {
         private void setCookies( List<String> keksi){
             cookies = keksi;
         }
-
         private void downloadFile(String url) {
             Uri downloadURI = Uri.parse( url);
             DownloadManager manager = ( DownloadManager) mainContext.getSystemService( Context.DOWNLOAD_SERVICE);
@@ -206,7 +281,9 @@ public class ConnectionWithWebsite {
             MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
             return mimeTypeMap.getExtensionFromMimeType( resolver.getType( uri));
         }
+
     }
+
 
     static String readStream(InputStream in) throws IOException {
         StringBuilder sb = new StringBuilder();

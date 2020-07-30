@@ -5,7 +5,7 @@
     <dimen name="title_size"> 35dp</dimen>
     <dimen name="title_elevation"> 30dp</dimen>
 
-    <dimen name="weather_picture_dim">60dp</dimen>
+    <dimen name="weather_image_size">85dp</dimen>
     <dimen name="weather_information_size">100dp</dimen>
 
     <dimen name="spinner_text_size"> 20dp</dimen>
