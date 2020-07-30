@@ -33,12 +33,13 @@
                 android:orientation="horizontal">
 
                 <LinearLayout
+                    android:id="@+id/todayLayout_5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:paddingRight="10dp">
+                    android:paddingEnd="10dp">
 
                     <TextView
                         android:id="@+id/todayTime_5"
@@ -64,10 +65,13 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/todayLayout_8"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:paddingRight="10dp">
+                    android:paddingEnd="10dp"
+                    android:layout_gravity="center"
+                    android:gravity="center">
 
                     <TextView
                         android:id="@+id/todayTime_8"
@@ -78,8 +82,8 @@
 
                     <ImageView
                         android:id="@+id/todayImage_8"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="@dimen/weather_image_size"
+                        android:layout_height="@dimen/weather_image_size"
                         android:layout_gravity="center"
                         android:gravity="center"/>
 
@@ -93,10 +97,11 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/todayLayout_11"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:paddingRight="10dp"
+                    android:paddingEnd="10dp"
                     android:layout_gravity="center"
                     android:gravity="center">
 
@@ -124,10 +129,11 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/todayLayout_14"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:paddingRight="10dp"
+                    android:paddingEnd="10dp"
                     android:layout_gravity="center"
                     android:gravity="center">
 
@@ -155,10 +161,11 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/todayLayout_17"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:paddingRight="10dp"
+                    android:paddingEnd="10dp"
                     android:layout_gravity="center"
                     android:gravity="center">
 
@@ -186,10 +193,11 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/todayLayout_20"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:paddingRight="10dp"
+                    android:paddingEnd="10dp"
                     android:layout_gravity="center"
                     android:gravity="center">
 
@@ -244,7 +252,7 @@
                     android:orientation="vertical"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:paddingRight="10dp">
+                    android:paddingEnd="10dp">
 
                     <TextView
                         android:id="@+id/tomorrowTime_5"
@@ -273,7 +281,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:paddingRight="10dp">
+                    android:paddingEnd="10dp"
+                    android:layout_gravity="center"
+                    android:gravity="center">
 
                     <TextView
                         android:id="@+id/tomorrowTime_8"
@@ -302,7 +312,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:paddingRight="10dp"
+                    android:paddingEnd="10dp"
                     android:layout_gravity="center"
                     android:gravity="center">
 
@@ -333,7 +343,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:paddingRight="10dp"
+                    android:paddingEnd="10dp"
                     android:layout_gravity="center"
                     android:gravity="center">
 
@@ -364,7 +374,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:paddingRight="10dp"
+                    android:paddingEnd="10dp"
                     android:layout_gravity="center"
                     android:gravity="center">
 
@@ -395,7 +405,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:paddingRight="10dp"
+                    android:paddingEnd="10dp"
                     android:layout_gravity="center"
                     android:gravity="center">
 
@@ -450,7 +460,7 @@
                     android:orientation="vertical"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:paddingRight="10dp">
+                    android:paddingEnd="10dp">
 
                     <TextView
                         android:id="@+id/dayAfterTomorrowTime_5"
@@ -479,7 +489,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:paddingRight="10dp">
+                    android:paddingEnd="10dp"
+                    android:layout_gravity="center"
+                    android:gravity="center">
 
                     <TextView
                         android:id="@+id/dayAfterTomorrowTime_8"
@@ -508,7 +520,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:paddingRight="10dp"
+                    android:paddingEnd="10dp"
                     android:layout_gravity="center"
                     android:gravity="center">
 
@@ -539,7 +551,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:paddingRight="10dp"
+                    android:paddingEnd="10dp"
                     android:layout_gravity="center"
                     android:gravity="center">
 
@@ -570,7 +582,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:paddingRight="10dp"
+                    android:paddingEnd="10dp"
                     android:layout_gravity="center"
                     android:gravity="center">
 
@@ -601,7 +613,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:paddingRight="10dp"
+                    android:paddingEnd="10dp"
                     android:layout_gravity="center"
                     android:gravity="center">
 
