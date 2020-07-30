@@ -21,8 +21,7 @@
             android:layout_marginLeft="@dimen/balloon_margin"
             android:textSize="@dimen/title_size"
             android:textColor="@color/white"
-            android:textStyle="bold"
-            android:text=""/>
+            android:textStyle="bold"/>
 
         <Button
             android:id="@+id/buttonToday"
