@@ -27,8 +27,10 @@ import java.io.ObjectOutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -53,7 +55,7 @@ public class ConnectionWithWebsite {
         //cookies are not expired
         return true;
     }
-    
+
     private static boolean tryNewLogin( Context context, String username, String password){
         boolean result = false;
         try {
@@ -195,6 +197,50 @@ public class ConnectionWithWebsite {
     }
 
 
+
+    public static void calendarPeriodicDownload( Context context){
+        //download calendar if it was not downloaded today
+        Date lastDate = readDate( context);
+        Date nowDate = new Date();
+        SimpleDateFormat formatDate = new SimpleDateFormat( "yyyyMMdd");
+        if( lastDate == null || !formatDate.format( lastDate).equals( formatDate.format( nowDate))){
+            downloadCalendar( context);
+            writeDate( context, nowDate);
+        }
+    }
+
+    private static Date readDate( Context context){
+        Date result = null;
+        try{
+            FileInputStream fis = context.openFileInput( Constants.CALENDAR_LAST_SAVED_DATE_FILE);
+            ObjectInputStream oi = new ObjectInputStream( fis);
+            result = (Date) oi.readObject();
+            fis.close();
+            oi.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    private static void writeDate( Context context, Date date){
+        try{
+            FileOutputStream fos = context.openFileOutput( Constants.CALENDAR_LAST_SAVED_DATE_FILE, Context.MODE_PRIVATE);
+            ObjectOutputStream o = new ObjectOutputStream( fos);
+            o.writeObject( date);
+            o.close();
+            fos.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void downloadCalendar( Context context){
         new DownloadCalendar( context).execute( "https://www.fer.unizg.hr/kalendar");
     }
@@ -283,6 +329,7 @@ public class ConnectionWithWebsite {
         }
 
     }
+
 
 
     static String readStream(InputStream in) throws IOException {
