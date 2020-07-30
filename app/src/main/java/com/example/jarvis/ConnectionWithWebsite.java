@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.webkit.MimeTypeMap;
 
 import org.jsoup.Jsoup;
@@ -197,7 +196,6 @@ public class ConnectionWithWebsite {
     }
 
 
-
     public static void calendarPeriodicDownload( Context context){
         //download calendar if it was not downloaded today
         Date lastDate = readDate( context);
@@ -265,8 +263,6 @@ public class ConnectionWithWebsite {
 
                 String url = downloadLink.attr( "href");
                 downloadFile( url);
-
-
             } catch (IOException e) {
                 e.printStackTrace();
             }catch( IndexOutOfBoundsException e){
@@ -298,6 +294,7 @@ public class ConnectionWithWebsite {
         private void setCookies( List<String> keksi){
             cookies = keksi;
         }
+
         private void downloadFile(String url) {
             Uri downloadURI = Uri.parse( url);
             DownloadManager manager = ( DownloadManager) mainContext.getSystemService( Context.DOWNLOAD_SERVICE);
@@ -329,7 +326,6 @@ public class ConnectionWithWebsite {
         }
 
     }
-
 
 
     static String readStream(InputStream in) throws IOException {
