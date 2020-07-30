@@ -4,102 +4,253 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:background="@color/white">
+
+<!--    <LinearLayout-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="vertical"-->
+<!--        android:layout_centerInParent="true">-->
+
+<!--        <LinearLayout-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+
+<!--            android:orientation="horizontal"-->
+<!--            android:padding="30dp">-->
+<!--            <TextView-->
+<!--                android:id="@+id/today"-->
+<!--                android:layout_width="@dimen/weather_information_size"-->
+<!--                android:layout_height="@dimen/weather_information_size"-->
+<!--                android:paddingRight="8dp"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:gravity="center"/>-->
+<!--            <ImageView-->
+<!--                android:id="@+id/todayImage"-->
+<!--                android:layout_width="@dimen/weather_picture_dim"-->
+<!--                android:layout_height="@dimen/weather_picture_dim"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:src="@drawable/ic_white_screen"/>-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/todayText"-->
+<!--                android:layout_width="@dimen/weather_information_size"-->
+<!--                android:layout_height="@dimen/weather_information_size"-->
+<!--                android:paddingLeft="16dp"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:gravity="center"/>-->
+<!--         </LinearLayout>-->
+
+<!--        <LinearLayout-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="horizontal"-->
+<!--            android:padding="30dp">-->
+<!--            <TextView-->
+<!--                android:id="@+id/tomorrow"-->
+<!--                android:layout_width="@dimen/weather_information_size"-->
+<!--                android:layout_height="@dimen/weather_information_size"-->
+<!--                android:paddingRight="8dp"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:gravity="center"/>-->
+<!--            <ImageView-->
+<!--                android:id="@+id/tomorrowImage"-->
+<!--                android:layout_width="@dimen/weather_picture_dim"-->
+<!--                android:layout_height="@dimen/weather_picture_dim"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:src="@drawable/ic_white_screen"/>-->
+<!--            <TextView-->
+<!--                android:id="@+id/tomorrowText"-->
+<!--                android:layout_width="@dimen/weather_information_size"-->
+<!--                android:layout_height="@dimen/weather_information_size"-->
+<!--                android:paddingLeft="16dp"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:gravity="center"/>-->
+<!--        </LinearLayout>-->
+
+<!--        <LinearLayout-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="horizontal"-->
+<!--            android:padding="30dp">-->
+<!--            <TextView-->
+<!--                android:id="@+id/dayAfterTomorrow"-->
+<!--                android:layout_width="@dimen/weather_information_size"-->
+<!--                android:layout_height="@dimen/weather_information_size"-->
+<!--                android:paddingRight="8dp"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:gravity="center"/>-->
+<!--            <ImageView-->
+<!--                android:id="@+id/dayAfterTomorrowImage"-->
+<!--                android:layout_width="@dimen/weather_picture_dim"-->
+<!--                android:layout_height="@dimen/weather_picture_dim"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:src="@drawable/ic_white_screen"/>-->
+<!--            <TextView-->
+<!--                android:id="@+id/dayAFterTomorrowText"-->
+<!--                android:layout_width="@dimen/weather_information_size"-->
+<!--                android:layout_height="@dimen/weather_information_size"-->
+<!--                android:paddingLeft="16dp"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:gravity="center"/>-->
+<!--        </LinearLayout>-->
+
+<!--        <Button-->
+<!--            android:id="@+id/reloadButton"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            style="@style/Widget.MaterialComponents.Button.TextButton"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="@string/reload"-->
+<!--            android:layout_gravity="center" />-->
+<!--    </LinearLayout>-->
+
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_centerInParent="true">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/todayDay"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="wrap_content"/>
 
-            android:orientation="horizontal"
-            android:padding="30dp">
-            <TextView
-                android:id="@+id/today"
-                android:layout_width="@dimen/weather_information_size"
-                android:layout_height="@dimen/weather_information_size"
-                android:paddingRight="8dp"
-                android:layout_gravity="center"
-                android:gravity="center"/>
-            <ImageView
-                android:id="@+id/todayImage"
-                android:layout_width="@dimen/weather_picture_dim"
-                android:layout_height="@dimen/weather_picture_dim"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_white_screen"/>
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/todayText"
-                android:layout_width="@dimen/weather_information_size"
-                android:layout_height="@dimen/weather_information_size"
-                android:paddingLeft="16dp"
-                android:layout_gravity="center"
-                android:gravity="center"/>
-         </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="30dp">
-            <TextView
-                android:id="@+id/tomorrow"
-                android:layout_width="@dimen/weather_information_size"
-                android:layout_height="@dimen/weather_information_size"
-                android:paddingRight="8dp"
-                android:layout_gravity="center"
-                android:gravity="center"/>
-            <ImageView
-                android:id="@+id/tomorrowImage"
-                android:layout_width="@dimen/weather_picture_dim"
-                android:layout_height="@dimen/weather_picture_dim"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_white_screen"/>
-            <TextView
-                android:id="@+id/tomorrowText"
-                android:layout_width="@dimen/weather_information_size"
-                android:layout_height="@dimen/weather_information_size"
-                android:paddingLeft="16dp"
-                android:layout_gravity="center"
-                android:gravity="center"/>
-        </LinearLayout>
+                <TextView
+                    android:id="@+id/todayTime_5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="30dp">
-            <TextView
-                android:id="@+id/dayAfterTomorrow"
-                android:layout_width="@dimen/weather_information_size"
-                android:layout_height="@dimen/weather_information_size"
-                android:paddingRight="8dp"
-                android:layout_gravity="center"
-                android:gravity="center"/>
-            <ImageView
-                android:id="@+id/dayAfterTomorrowImage"
-                android:layout_width="@dimen/weather_picture_dim"
-                android:layout_height="@dimen/weather_picture_dim"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_white_screen"/>
-            <TextView
-                android:id="@+id/dayAFterTomorrowText"
-                android:layout_width="@dimen/weather_information_size"
-                android:layout_height="@dimen/weather_information_size"
-                android:paddingLeft="16dp"
-                android:layout_gravity="center"
-                android:gravity="center"/>
-        </LinearLayout>
+                <ImageView
+                    android:id="@+id/todayImage_5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
 
-        <Button
-            android:id="@+id/reloadButton"
-            android:layout_width="wrap_content"
-            style="@style/Widget.MaterialComponents.Button.TextButton"
-            android:layout_height="wrap_content"
-            android:text="@string/reload"
-            android:layout_gravity="center" />
+                <TextView
+                    android:id="@+id/todayDescription_5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/todayTime_8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <ImageView
+                    android:id="@+id/todayImage_8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:id="@+id/todayDescription_8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/todayTime_11"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <ImageView
+                    android:id="@+id/todayImage_11"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:id="@+id/todayDescription_11"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/todayTime_14"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <ImageView
+                    android:id="@+id/todayImage_14"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:id="@+id/todayDescription_14"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/todayTime_17"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <ImageView
+                    android:id="@+id/todayImage_17"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:id="@+id/todayDescription_17"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/todayTime_20"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <ImageView
+                    android:id="@+id/todayImage_20"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:id="@+id/todayDescription_20"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+
+        </HorizontalScrollView>
+
     </LinearLayout>
 
 </RelativeLayout>

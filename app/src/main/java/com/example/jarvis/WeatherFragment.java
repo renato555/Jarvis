@@ -6,9 +6,11 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,24 +29,21 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.w3c.dom.Text;
 
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Map;
 
 
 public class WeatherFragment extends Fragment {
 
-    private TextView todayDescription;
-    private ImageView todayImage;
-    private TextView todayText;
-    private TextView tomorrowDescription;
-    private ImageView tomorrowImage;
-    private TextView tomorrowText;
-    private TextView dayAfterTomorrowDescription;
-    private ImageView dayAfterTomorrowImage;
-    private TextView dayAfterTomorrowText;
-    private Button reloadButton;
+    private static final String[] times = {"5:00", "8:00", "11:00", "14:00", "17:00", "20:00"};
+    private static Map<Drawable, String> map;
+
+    private TextView[] timeViews = new TextView[6];
+
 
     //private static Bundle savedState;
 
@@ -58,160 +57,62 @@ public class WeatherFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_weather, container, false);
-        reloadButton = (Button) view.findViewById(R.id.reloadButton);
-        reloadButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                loadWeather();
-            }
-        });
 
-        loadViews(view);
-//        if (savedState != null)
-//            restoreState();
-//        else
-        loadWeather();
+        map = new WeatherMapLoader(getContext()).loadMap();
 
+        loadTimeViews(view);
+
+        new MyAsyncTask().execute();
         return view;
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        System.out.println("Destroy");
-        //saveState();
+    private void loadTimeViews(View view) {
+        timeViews[0] = (TextView) view.findViewById(R.id.todayTime_5);
+        timeViews[1] = (TextView) view.findViewById(R.id.todayTime_8);
+        timeViews[2] = (TextView) view.findViewById(R.id.todayTime_11);
+        timeViews[3] = (TextView) view.findViewById(R.id.todayTime_14);
+        timeViews[4] = (TextView) view.findViewById(R.id.todayTime_17);
+        timeViews[5] = (TextView) view.findViewById(R.id.todayTime_20);
     }
 
-    public void loadViews(View view) {
-        todayText = (TextView) view.findViewById(R.id.today);
-        todayDescription = (TextView) view.findViewById(R.id.todayText);
-        todayImage = (ImageView) view.findViewById(R.id.todayImage);
-        tomorrowText = (TextView) view.findViewById(R.id.tomorrow);
-        tomorrowDescription = (TextView) view.findViewById(R.id.tomorrowText);
-        tomorrowImage = (ImageView) view.findViewById(R.id.tomorrowImage);
-        dayAfterTomorrowText = (TextView) view.findViewById(R.id.dayAfterTomorrow);
-        dayAfterTomorrowDescription = (TextView) view.findViewById(R.id.dayAFterTomorrowText);
-        dayAfterTomorrowImage = (ImageView) view.findViewById(R.id.dayAfterTomorrowImage);
-    }
-
-    public void loadWeather(){
-        //pleaseWait();
-        startLoading(getView());
-    }
-
-//    public void saveState() {
-//        savedState = new Bundle();
-//        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-//        Bitmap bitmap;
-//
-//        //Check if it didn't finish loading
-//        if(((BitmapDrawable) dayAfterTomorrowImage.getDrawable()).getBitmap().equals(((BitmapDrawable) getResources().getDrawable(R.drawable.ic_white_screen)).getBitmap())){
-//            savedState = null;
-//            return;
-//        }
-//
-//        //Save Today State
-//        savedState.putString(Constants.TODAY_KEY, todayText.getText().toString());
-//        bitmap = ((BitmapDrawable) todayImage.getDrawable()).getBitmap();
-//        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
-//        savedState.putByteArray(Constants.TODAY_IMAGE_KEY, baos.toByteArray());
-//        savedState.putString(Constants.TODAY_DESCRIPTION_KEY, todayDescription.getText().toString());
-//
-//        //Save Tomorrow State
-//        baos = new ByteArrayOutputStream();
-//        savedState.putString(Constants.TOMORROW_KEY, tomorrowText.getText().toString());
-//        bitmap = ((BitmapDrawable) tomorrowImage.getDrawable()).getBitmap();
-//        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
-//        savedState.putByteArray(Constants.TOMORROW_IMAGE_KEY, baos.toByteArray());
-//        savedState.putString(Constants.TOMORROW_DESCRIPTION_KEY, tomorrowDescription.getText().toString());
-//
-//        //Save Day After Tomorrow state
-//        baos = new ByteArrayOutputStream();
-//        savedState.putString(Constants.DAY_AFTER_TOMORROW_KEY, dayAfterTomorrowText.getText().toString());
-//        bitmap = ((BitmapDrawable) dayAfterTomorrowImage.getDrawable()).getBitmap();
-//        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
-//        savedState.putByteArray(Constants.DAY_AFTER_TOMORROW_IMAGE_KEY, baos.toByteArray());
-//        savedState.putString(Constants.DAY_AFTER_TOMORROW_DESCRIPTION_KEY, dayAfterTomorrowDescription.getText().toString());
-//    }
-
-//    public void restoreState() {
-//        Bitmap bitmap;
-//        byte[] byteArray;
-//
-//        //Restore Today State
-//        todayText.setText(savedState.get(Constants.TODAY_KEY).toString());
-//        byteArray = ((byte[]) savedState.get(Constants.TODAY_IMAGE_KEY));
-//        bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
-//        todayImage.setImageBitmap(Bitmap.createBitmap(bitmap));
-//        todayDescription.setText(savedState.get(Constants.TODAY_DESCRIPTION_KEY).toString());
-//
-//        // Restore Tomorrow state
-//        tomorrowText.setText(savedState.get(Constants.TOMORROW_KEY).toString());
-//        byteArray = ((byte[]) savedState.get(Constants.TOMORROW_IMAGE_KEY));
-//        bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
-//        tomorrowImage.setImageBitmap(Bitmap.createBitmap(bitmap));
-//        tomorrowDescription.setText(savedState.get(Constants.TOMORROW_DESCRIPTION_KEY).toString());
-//
-//        //Restore Day After Tomorrow state
-//        dayAfterTomorrowText.setText(savedState.get(Constants.DAY_AFTER_TOMORROW_KEY).toString());
-//        byteArray = ((byte[]) savedState.get(Constants.DAY_AFTER_TOMORROW_IMAGE_KEY));
-//        bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
-//        dayAfterTomorrowImage.setImageBitmap(Bitmap.createBitmap(bitmap));
-//        dayAfterTomorrowDescription.setText(savedState.get(Constants.DAY_AFTER_TOMORROW_DESCRIPTION_KEY).toString());
-//    }
-
-//    public void pleaseWait(){
-//        int waitForLenght = 2;
-//        for(int i = 0; i < waitForLenght; i++)
-//            Toast.makeText(getContext(), "Please wait...", Toast.LENGTH_LONG).show();
-//    }
 
     public void startLoading(View view) {
-        new MyAsyncTask(todayText, todayDescription, todayImage, Constants.TODAY_IMAGE_CLASS_STRING, 0).execute();
-        new MyAsyncTask(tomorrowText, tomorrowDescription, tomorrowImage, Constants.OTHER_DAY_IMAGE_CLASS_STRING, 1).execute();
-        new MyAsyncTask(dayAfterTomorrowText, dayAfterTomorrowDescription, dayAfterTomorrowImage, Constants.OTHER_DAY_IMAGE_CLASS_STRING, 2).execute();
     }
 
     @SuppressLint("StaticFieldLeak")
     private static class MyAsyncTask extends AsyncTask<Void, Void, Void> {
 
-        private ImageView imageView;
-        private TextView textView;
-        private TextView dayText;
-        private String description;
-        private String imageLink;
-        private int dayNumber;
-        private String imageClass;
         private String day;
-
-        public MyAsyncTask(TextView dayText, TextView textView, ImageView imageView, String imageClass, int dayNumber) {
-            super();
-            this.dayText = dayText;
-            this.textView = textView;
-            this.imageClass = imageClass;
-            this.dayNumber = dayNumber;
-            this.imageView = imageView;
-        }
+        private String[] descriptions = new String[6];
+        private Drawable[] images = new Drawable[6];
 
         @Override
         protected Void doInBackground(Void... voids) {
 
             try {
                 Document doc = Jsoup.connect(Constants.WEATHER_LINK).get();
-                Element imageElement;
-                Elements elementsByImageClass = doc.getElementsByClass(imageClass);
 
-                if (imageClass.equals(Constants.TODAY_IMAGE_CLASS_STRING))
-                    imageElement = elementsByImageClass.first();
-                else
-                    imageElement = elementsByImageClass.get(dayNumber);
+                Elements table = doc.getElementsByClass("fd-c-table table-weather-7day");
+                Elements tableElements = table.select("tr");
 
-                day = doc.getElementsByClass(Constants.DAY_CLASS_STRING).not(Constants.EXCLUDED_DAY_CLASS).get(dayNumber * 2).attr("aria-label");
-                imageLink = imageElement.select("img").first().absUrl("src");
+                day = tableElements.get(1).text().split(" ")[0];
 
-                Element descriptionElement1 = doc.getElementsByClass(Constants.TEMPERATURE_CLASS_STRING).not(Constants.EXCLUDED_TEMPERATURE_CLASS).get(dayNumber + 1).select("span").first();
-                Element descriptionElement2 = imageElement.select("img").first();
-                description = descriptionElement1.text() + "°C\n" + descriptionElement2.attr("alt");
+                Log.i("Test", tableElements.get(1).select("td").text());
+                for(int i = 0; i < 6; i++){
+                    descriptions[i] = tableElements.get(1).select("td").get(i + 2).select("span").attr("title");
+                    Log.i("Test", descriptions[i]);
+                }
+
+                for(int i = 0; i < 6; i++) {
+                    for (Map.Entry<Drawable, String> entry : map.entrySet()) {
+                        if(descriptions[i].equals(entry.getValue())) {
+                            images[i] = entry.getKey();
+                            break;
+                        }
+                    }
+                }
+
+
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
@@ -221,11 +122,6 @@ public class WeatherFragment extends Fragment {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            new DownloadImageTask(imageView).execute(imageLink);
-            textView.setText(description);
-            dayText.setText((day));
         }
     }
-
-
 }

@@ -59,7 +59,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="20sp"
-            android:text="Today calendar"
+            android:text="@string/today_calendar"
             android:layout_marginHorizontal="@dimen/balloon_margin"
             android:layout_marginBottom="5dp"
             android:layout_marginTop="5dp"
