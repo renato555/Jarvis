@@ -22,7 +22,7 @@
             android:textSize="@dimen/title_size"
             android:textColor="@color/white"
             android:textStyle="bold"
-            android:text="Wed, Jul 22"/>
+            android:text=""/>
 
         <Button
             android:id="@+id/buttonToday"
