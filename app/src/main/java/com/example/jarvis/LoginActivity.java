@@ -38,7 +38,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         readAccount();
-        if( !username.isEmpty() && !password.isEmpty() && ConnectionWithWebsite.tryLogin( username, password)) {
+        if( !username.isEmpty() && !password.isEmpty() && ConnectionWithWebsite.tryLogin( this, username, password)) {
             updateFiles();
             startMain();
         }
@@ -55,7 +55,7 @@ public class LoginActivity extends AppCompatActivity {
             username = usernameEditText.getText().toString();
             password = passwordEditText.getText().toString();
 
-            if( ConnectionWithWebsite.tryLogin( username, password)){
+            if( ConnectionWithWebsite.tryLogin( this, username, password)){
                 saveAccount( getApplicationContext(), username, password);
                 updateFiles();
                 startMain();
