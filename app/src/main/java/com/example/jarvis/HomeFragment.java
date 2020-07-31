@@ -4,6 +4,8 @@ package com.example.jarvis;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
@@ -17,6 +19,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -76,6 +82,7 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
+    @SuppressLint("StaticFieldLeak")
     private void setUpWelcomeText() {
         welcomeText.setText("Welcome, " + Constants.NAME);
     }
