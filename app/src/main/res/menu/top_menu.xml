@@ -3,6 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/zet"
+        android:title="@string/zet"
+        app:cnb_backgroundColor="@color/colorPrimary"
+        app:showAsAction="collapseActionView" />
+
+    <item
         android:id="@+id/settings"
         android:title="@string/settings"
         app:cnb_backgroundColor="@color/colorPrimary"

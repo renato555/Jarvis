@@ -40,7 +40,6 @@ public class HomeFragment extends Fragment {
     private List<String> allTasks;
     private LinearLayout taskLayout;
     private TextView welcomeText;
-    private Button dontPressMeButton;
     private Map<String, List<String>> calendarData;
     private LinearLayout todayCalendarLayout;
 
@@ -64,15 +63,6 @@ public class HomeFragment extends Fragment {
         taskLayout = (LinearLayout) view.findViewById(R.id.tasks_layout);
         welcomeText = (TextView) view.findViewById(R.id.welcomeText);
         todayCalendarLayout = (LinearLayout) view.findViewById(R.id.todayCalendar_layout);
-
-        dontPressMeButton = (Button) view.findViewById(R.id.dontPressMe);
-        dontPressMeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getContext(), DontPressMeActivity.class);
-                startActivity(intent);
-            }
-        });
 
         setUpWelcomeText( ConnectionWithWebsite.getUserFullName().split( "\\s+")[0]); //only firstname gets displayed
         loadAllTasks();
@@ -128,7 +118,6 @@ public class HomeFragment extends Fragment {
         task.setTypeface(null, Typeface.BOLD);
     }
 
-
     private void loadTodayCalendar() {
         Date dateObj = Calendar.getInstance().getTime();
 
@@ -179,26 +168,6 @@ public class HomeFragment extends Fragment {
         textView.setLayoutParams( params);
 
         return textView;
-    }
-
-    @Override
-    public void onPause() {
-        Log.i("Test", "Pause");
-        super.onPause();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        System.out.println("Destroy");
-    }
-
-    public void disableButtons(){
-        dontPressMeButton.setEnabled(false);
-    }
-
-    public void enableButtons(){
-        dontPressMeButton.setEnabled(true);
     }
 }
 

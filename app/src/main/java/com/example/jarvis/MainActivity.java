@@ -14,6 +14,7 @@ import androidx.fragment.app.FragmentManager;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.os.Build;
@@ -148,7 +149,6 @@ public class MainActivity extends AppCompatActivity {
             //if the fragment exists, show it.
             ((HomeFragment) fragmentManager.findFragmentByTag(tag)).loadAllTasks();
             fragmentManager.beginTransaction().show(Objects.requireNonNull(fragmentManager.findFragmentByTag(tag))).commit();
-            ((HomeFragment) fragmentManager.findFragmentByTag(tag)).enableButtons();
         } else {
             //if the fragment does not exist, add it to fragment manager.
             fragmentManager.beginTransaction().add(R.id.container, new HomeFragment( swipeListener), tag).commit();
@@ -178,7 +178,6 @@ public class MainActivity extends AppCompatActivity {
         if(fragmentManager.findFragmentByTag(resources.getString(R.string.home)) != null){
             //if the other fragment is visible, hide it.
             fragmentManager.beginTransaction().hide(Objects.requireNonNull(fragmentManager.findFragmentByTag(resources.getString(R.string.home)))).commit();
-            ((HomeFragment) fragmentManager.findFragmentByTag(resources.getString((R.string.home)))).disableButtons();
         }
     }
 
@@ -233,6 +232,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
+            case R.id.zet:
+                Intent intent = new Intent(getApplicationContext(), DontPressMeActivity.class);
+                startActivity(intent);
+                return true;
             case R.id.settings:
                 return true;
             case R.id.logout:
