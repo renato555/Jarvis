@@ -34,18 +34,18 @@ public class Constants {
     public static final String IMAGE_28 = "oblačno uz znatnu količinu kiše";
     public static final String IMAGE_29 = "oblačno uz moguću grmljavinu";
     public static final String IMAGE_30 = "oblačno uz malu količinu kiše te moguću grmljavinu";
-    public static final String IMAGE_31 = "oblačno uz umjerenu količinu kiše te moguću grmljavinu\n";
-    public static final String IMAGE_32 = "oblačno uz znatnu količinu kiše te moguću grmljavinu\n";
-    public static final String IMAGE_33 = "oblačno uz malu količinu kiše i snijega\n";
-    public static final String IMAGE_34 = "oblačno uz umjerenu količinu kiše i snijega\n";
-    public static final String IMAGE_35 = "oblačno uz znatnu količinu kiše i snijega\n";
-    public static final String IMAGE_36 = "oblačno uz malu količinu snijega\n";
-    public static final String IMAGE_37 = "oblačno uz umjerenu količinu snijega\n";
-    public static final String IMAGE_38 = "oblačno uz znatnu količinu snijega\n";
-    public static final String IMAGE_39 = "magla, promjenjivo oblačno, uz kišu\t";
-    public static final String IMAGE_40 = "magla, promjenjivo oblačno, uz snijeg\t";
-    public static final String IMAGE_41 = "oblačno i maglovito uz mogući snijeg\n";
-    public static final String IMAGE_42 = "oblačno i maglovito uz moguću kišu\n";
+    public static final String IMAGE_31 = "oblačno uz umjerenu količinu kiše te moguću grmljavinu";
+    public static final String IMAGE_32 = "oblačno uz znatnu količinu kiše te moguću grmljavinu";
+    public static final String IMAGE_33 = "oblačno uz malu količinu kiše i snijega";
+    public static final String IMAGE_34 = "oblačno uz umjerenu količinu kiše i snijega";
+    public static final String IMAGE_35 = "oblačno uz znatnu količinu kiše i snijega";
+    public static final String IMAGE_36 = "oblačno uz malu količinu snijega";
+    public static final String IMAGE_37 = "oblačno uz umjerenu količinu snijega";
+    public static final String IMAGE_38 = "oblačno uz znatnu količinu snijega";
+    public static final String IMAGE_39 = "magla, promjenjivo oblačno, uz kišu";
+    public static final String IMAGE_40 = "magla, promjenjivo oblačno, uz snijeg";
+    public static final String IMAGE_41 = "oblačno i maglovito uz mogući snijeg";
+    public static final String IMAGE_42 = "oblačno i maglovito uz moguću kišu";
 
     //TodoList
     public static final String TODO_DATABASE_FILE = "todoFragmentDataBase.txt";

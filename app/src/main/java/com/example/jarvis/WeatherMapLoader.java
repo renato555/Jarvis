@@ -52,8 +52,8 @@ public class WeatherMapLoader {
         map.put(resources.getDrawable(R.drawable.ic_30), Constants.IMAGE_30);
         map.put(resources.getDrawable(R.drawable.ic_31), Constants.IMAGE_31);
         map.put(resources.getDrawable(R.drawable.ic_32), Constants.IMAGE_32);
-        map.put(resources.getDrawable(R.drawable.ic_36), Constants.IMAGE_36);
-        map.put(resources.getDrawable(R.drawable.ic_36), Constants.IMAGE_36);
+        map.put(resources.getDrawable(R.drawable.ic_33), Constants.IMAGE_33);
+        map.put(resources.getDrawable(R.drawable.ic_34), Constants.IMAGE_34);
         map.put(resources.getDrawable(R.drawable.ic_35), Constants.IMAGE_35);
         map.put(resources.getDrawable(R.drawable.ic_36), Constants.IMAGE_36);
         map.put(resources.getDrawable(R.drawable.ic_37), Constants.IMAGE_37);
