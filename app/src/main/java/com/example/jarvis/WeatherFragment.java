@@ -10,10 +10,12 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -33,6 +35,9 @@ public class WeatherFragment extends Fragment {
 
     private static final String[] times = {"5:00", "8:00", "11:00", "14:00", "17:00", "20:00"};
     private static Map<Drawable, String> map;
+    private View view;
+
+    private LinearLayout[] todayLayouts = new LinearLayout[6];
 
     private TextView todayDay;
     private TextView[] todayTimeViews = new TextView[6];
@@ -59,9 +64,11 @@ public class WeatherFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_weather, container, false);
+        view = inflater.inflate(R.layout.fragment_weather, container, false);
 
         map = new WeatherMapLoader(getContext()).loadMap();
+
+        loadTodayLayouts(view);
 
         todayDay = (TextView) view.findViewById(R.id.todayDay);
         loadTodayTimeViews(view);
@@ -84,6 +91,16 @@ public class WeatherFragment extends Fragment {
 
         return view;
     }
+
+    private void loadTodayLayouts(View view) {
+        todayLayouts[0] = (LinearLayout) view.findViewById(R.id.todayLayout_5);
+        todayLayouts[1] = (LinearLayout) view.findViewById(R.id.todayLayout_8);
+        todayLayouts[2] = (LinearLayout) view.findViewById(R.id.todayLayout_11);
+        todayLayouts[3] = (LinearLayout) view.findViewById(R.id.todayLayout_14);
+        todayLayouts[4] = (LinearLayout) view.findViewById(R.id.todayLayout_17);
+        todayLayouts[5] = (LinearLayout) view.findViewById(R.id.todayLayout_20);
+    }
+
     private void loadTodayTimeViews(View view) {
         todayTimeViews[0] = (TextView) view.findViewById(R.id.todayTime_5);
         todayTimeViews[1] = (TextView) view.findViewById(R.id.todayTime_8);
@@ -144,7 +161,7 @@ public class WeatherFragment extends Fragment {
         dayAfterTomorrowTimeViews[2] = (TextView) view.findViewById(R.id.dayAfterTomorrowTime_11);
         dayAfterTomorrowTimeViews[3] = (TextView) view.findViewById(R.id.dayAfterTomorrowTime_14);
         dayAfterTomorrowTimeViews[4] = (TextView) view.findViewById(R.id.dayAfterTomorrowTime_17);
-        dayAfterTomorrowTimeViews[5] = (TextView) view.findViewById(R.id.tomorrowTime_20);
+        dayAfterTomorrowTimeViews[5] = (TextView) view.findViewById(R.id.dayAfterTomorrowTime_20);
     }
 
     private void loadDayAfterTomorrowImageViews(View view){
@@ -167,7 +184,7 @@ public class WeatherFragment extends Fragment {
 
 
     @SuppressLint("StaticFieldLeak")
-    private static class MyAsyncTask extends AsyncTask<Void, Void, Void> {
+    private class MyAsyncTask extends AsyncTask<Void, Void, Void> {
 
         private int start;
         private String tempDay;
@@ -198,7 +215,9 @@ public class WeatherFragment extends Fragment {
 
                 tempDay = tableElements.get(start*3 + 1).text().split(" ")[0];
 
+
                 for(int i = 0; i < 6; i++){
+
                     descriptions[i] = tableElements.get(start*3 + 1).select("td").get(i + 1).select("span").attr("title");
 
                     for (Map.Entry<Drawable, String> entry : map.entrySet()) {
@@ -208,10 +227,8 @@ public class WeatherFragment extends Fragment {
                         }
                     }
 
-                    temperatures[i] = tableElements.get(start*3 + 2).select("td").get(i + 1).text().split(" ")[0] + " °C";
+                    temperatures[i] = tableElements.get(start*3 + 2).select("td").get(i + 1).text();
                 }
-
-
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
@@ -221,12 +238,15 @@ public class WeatherFragment extends Fragment {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-
             day.setText(tempDay);
             for(int i = 0; i < 6; i++){
-                timeViews[i].setText(times[i]);
-                imageViews[i].setImageDrawable(images[i]);
-                descriptionViews[i].setText(temperatures[i]);
+                if(temperatures[i].equals("")) {
+                    todayLayouts[i].removeAllViews();
+                }else {
+                    timeViews[i].setText(times[i]);
+                    imageViews[i].setImageDrawable(images[i]);
+                    descriptionViews[i].setText(temperatures[i]);
+                }
             }
         }
     }
