@@ -22,8 +22,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -58,7 +56,7 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         taskLayout = (LinearLayout) view.findViewById(R.id.tasks_layout);
-        welcomeText = (TextView) view.findViewById(R.id.weclomeText);
+        welcomeText = (TextView) view.findViewById(R.id.welcomeText);
         todayCalendarLayout = (LinearLayout) view.findViewById(R.id.todayCalendar_layout);
 
         dontPressMeButton = (Button) view.findViewById(R.id.dontPressMe);
@@ -70,14 +68,14 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        setUpWelcomeText();
+        setUpWelcomeText( ConnectionWithWebsite.getUserFullName().split( "\\s+")[0]); //only firstname gets displayed
         loadAllTasks();
         loadTodayCalendar();
         return view;
     }
 
-    private void setUpWelcomeText() {
-        welcomeText.setText("Welcome, " + Constants.NAME);
+    private void setUpWelcomeText( String name) {
+        welcomeText.setText("Welcome, " + name);
     }
 
     public void loadAllTasks() {

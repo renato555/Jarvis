@@ -40,7 +40,7 @@ public class ConnectionWithWebsite {
     private static List<String> cookies;
     private static HttpsURLConnection conn;
 
-
+    //______________________________________________________________________________________
     public static boolean tryLogin( Context context, String username, String password){
         loadCookies( context, username);
         //first login, no saved data was found
@@ -194,8 +194,9 @@ public class ConnectionWithWebsite {
             e.printStackTrace();
         }
     }
+    //______________________________________________________________________________________
 
-
+    //______________________________________________________________________________________
     public static void calendarPeriodicDownload( Context context){
         //download calendar if it was not downloaded today
         Date lastDate = readDate( context);
@@ -287,12 +288,7 @@ public class ConnectionWithWebsite {
             }
             int responseCode = conn.getResponseCode();
             String response = readStream( conn.getInputStream());
-            setCookies( conn.getHeaderFields().get( "Set-Cookie"));
             return response;
-        }
-
-        private void setCookies( List<String> keksi){
-            cookies = keksi;
         }
 
         private void downloadFile(String url) {
@@ -326,8 +322,60 @@ public class ConnectionWithWebsite {
         }
 
     }
+    //______________________________________________________________________________________
 
+    //______________________________________________________________________________________
+    public static String getUserFullName(){
+        try {
+            return new GetUserFullname().execute( "https://www.fer.unizg.hr/cip/podrska/korisnicki_racuni").get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return "Error";
+    }
 
+    private static class GetUserFullname extends AsyncTask<String, Void, String>{
+        private final String USER_AGENT = "Mozilla/5.0";
+
+        @Override
+        protected String doInBackground(String... strings) {
+            try {
+                String pageHtml = getPageContent( strings[0]);
+                Document doc = Jsoup.parse( pageHtml);
+                Elements elements = doc.getElementsByTag( "b");
+
+                return elements.get( 0).text();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch( IndexOutOfBoundsException e){
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        private String getPageContent(String urlCurr) throws IOException {
+            URL url = new URL( urlCurr);
+            conn = (HttpsURLConnection) url.openConnection();
+            //act like a browser
+            conn.setRequestMethod( "GET");
+            conn.setUseCaches( false);
+            conn.setRequestProperty( "UserAgent", USER_AGENT);
+            conn.setRequestProperty( "Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9");
+            conn.setRequestProperty( "Accept-Language", "en-US,en;q=0.9");
+            if (cookies != null) {
+                for (String cookie : cookies) {
+                    conn.addRequestProperty("Cookie", cookie.split(";", 1)[0]);
+                }
+            }
+            int responseCode = conn.getResponseCode();
+            String response = readStream( conn.getInputStream());
+            return response;
+        }
+    }
+    //______________________________________________________________________________________
     static String readStream(InputStream in) throws IOException {
         StringBuilder sb = new StringBuilder();
         BufferedReader reader = null;
