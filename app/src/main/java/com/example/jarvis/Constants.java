@@ -57,9 +57,6 @@ public class Constants {
     //DontPressMe
     public static final String DONT_PRESS_ME_LINK = "https://www.zet.hr/autobusni-prijevoz/dnevne-linije-251/251";
 
-    //Home
-    public static final String NAME = "Lovro";
-
     //Calendar
     public static final String CALENDAR_DATA_FILE = "calendarData.ics";
     public static final String CALENDAR_EVENTS_FILE = "calendarEvents.txt";
