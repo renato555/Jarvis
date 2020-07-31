@@ -9,16 +9,19 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:layout_gravity="center"
-        android:layout_marginTop="20dp">
+        android:layout_gravity="center">
 
         <TextView
             android:id="@+id/todayDay"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+
+            android:background="@drawable/fragment_top_bar"
             android:textStyle="bold"
-            android:textSize="@dimen/spinner_text_size"
-            android:layout_marginStart="20dp"
+            android:textColor="@color/white"
+            android:gravity="center_horizontal"
+            android:textSize="@dimen/title_size"
+
             android:layout_marginBottom="10dp"/>
 
         <HorizontalScrollView
@@ -220,11 +223,15 @@
 
         <TextView
             android:id="@+id/tomorrowDay"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+
+            android:background="@drawable/fragment_top_bar"
             android:textStyle="bold"
-            android:textSize="@dimen/spinner_text_size"
-            android:layout_marginStart="20dp"
+            android:textColor="@color/white"
+            android:gravity="center_horizontal"
+            android:textSize="@dimen/title_size"
+
             android:layout_marginBottom="10dp"/>
 
         <HorizontalScrollView
@@ -426,11 +433,15 @@
 
         <TextView
             android:id="@+id/dayAfterTomorrowDay"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+
+            android:background="@drawable/fragment_top_bar"
             android:textStyle="bold"
-            android:textSize="@dimen/spinner_text_size"
-            android:layout_marginStart="20dp"
+            android:textColor="@color/white"
+            android:gravity="center_horizontal"
+            android:textSize="@dimen/title_size"
+
             android:layout_marginBottom="10dp"/>
 
         <HorizontalScrollView
