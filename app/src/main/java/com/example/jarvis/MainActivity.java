@@ -14,7 +14,6 @@ import androidx.fragment.app.FragmentManager;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.os.Build;
@@ -236,16 +235,9 @@ public class MainActivity extends AppCompatActivity {
             case R.id.settings:
                 return true;
             case R.id.logout:
-                logout();
+                LoginActivity.logout( getApplicationContext(), this);
                 return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    private void logout(){
-        LoginActivity.saveAccount( getApplicationContext(), "", "");
-        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-        startActivity( intent);
-        finish();
     }
 }

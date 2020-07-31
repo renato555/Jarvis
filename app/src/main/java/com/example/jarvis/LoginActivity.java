@@ -2,6 +2,7 @@ package com.example.jarvis;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -117,5 +118,12 @@ public class LoginActivity extends AppCompatActivity {
         intent.putExtra("Password", password);
         startActivity(intent);
         finish();
+    }
+
+    public static void logout(Context context, Activity currentActivity){
+        LoginActivity.saveAccount( context, "", "");
+        Intent intent = new Intent(context, LoginActivity.class);
+        currentActivity.startActivity( intent);
+        currentActivity.finish();
     }
 }
