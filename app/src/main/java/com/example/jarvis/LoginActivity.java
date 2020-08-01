@@ -3,8 +3,11 @@ package com.example.jarvis;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.app.DownloadManager;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 
 import android.view.View;
@@ -21,9 +24,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -38,15 +38,20 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        BroadcastReceiver onComplete = (new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if( intent.getAction() == DownloadManager.ACTION_DOWNLOAD_COMPLETE) startMain();
+            }
+        });
+        registerReceiver( onComplete, new IntentFilter( DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+
         readAccount();
         if( !username.isEmpty() && !password.isEmpty() && ConnectionWithWebsite.tryLogin( this, username, password)) {
-            updateFiles();
-            startMain();
+            login();
         }
 
         setContentView(R.layout.activity_login);
-
-
         usernameEditText = (EditText) findViewById(R.id.username);
         passwordEditText = (EditText) findViewById(R.id.password);
         loginButton = (MaterialButton) findViewById(R.id.loginBtn);
@@ -58,8 +63,7 @@ public class LoginActivity extends AppCompatActivity {
 
             if( ConnectionWithWebsite.tryLogin( this, username, password)){
                 saveAccount( getApplicationContext(), username, password);
-                updateFiles();
-                startMain();
+                login();
             }else
                 Toast.makeText(getApplicationContext(), "Incorrect username or password", Toast.LENGTH_SHORT).show();
         });
@@ -99,9 +103,10 @@ public class LoginActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-
-    private void updateFiles(){
-        ConnectionWithWebsite.calendarPeriodicDownload( getApplicationContext());
+    
+    //returns true if downloading has started and false otherwise
+    private boolean updateFilesIfNeeded(){
+        return ConnectionWithWebsite.calendarPeriodicDownload( getApplicationContext());
     }
 
     private void closeKeyboard(){
@@ -110,6 +115,15 @@ public class LoginActivity extends AppCompatActivity {
             InputMethodManager manager = ( InputMethodManager) getSystemService( Context.INPUT_METHOD_SERVICE);
             manager.hideSoftInputFromWindow( view.getWindowToken(), 0);
         }
+    }
+
+    private void login(){
+        //TODO displaying waiting animation
+        if( loginButton != null) loginButton.setEnabled( false);
+        if( !updateFilesIfNeeded()){
+            startMain();
+        }
+        //broadcast receiver will startMain when downloading has been completed
     }
 
     private void startMain(){
