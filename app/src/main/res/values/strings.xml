@@ -39,4 +39,5 @@
     <string name="jarvis">Jarvis</string>
     <string name="today_calendar"><u>Today calendar</u></string>
     <string name="zet">ZET</string>
+    <string name="nothingTodayOnCalendar">Ummmm.... Neam niš</string>
 </resources>
