@@ -116,6 +116,7 @@ public class HomeFragment extends Fragment {
         task.setBackgroundResource( R.drawable.bottom_edge);
         task.setTextSize(TypedValue.COMPLEX_UNIT_PX, 50);
         task.setTypeface(null, Typeface.BOLD);
+        //task.setTextColor(getResources().getColor(R.color.black));
     }
 
     private void loadTodayCalendar() {
@@ -161,6 +162,7 @@ public class HomeFragment extends Fragment {
             nothingTodayView.setLayoutParams(params);
             nothingTodayView.setText(getResources().getString(R.string.nothingTodayOnCalendar));
             nothingTodayView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 22);
+            //nothingTodayView.setTextColor(getResources().getColor(R.color.black));
             todayCalendarLayout.setGravity(17);
             todayCalendarLayout.addView(nothingTodayView);
         }
@@ -171,12 +173,17 @@ public class HomeFragment extends Fragment {
         textView.setText( event);
         textView.setBackgroundResource( R.drawable.bottom_edge);
         textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 22);
+        //textView.setTextColor(getResources().getColor(R.color.black));
         //set textView margin
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams( LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         params.setMargins(25, 7, 25, 7);
         textView.setLayoutParams( params);
 
         return textView;
+    }
+
+    private void changeTheme(){
+        ViewGroup viewGroup = (ViewGroup) getView();
     }
 }
 
