@@ -154,6 +154,15 @@ public class HomeFragment extends Fragment {
                 TextView eventView = makeTextView( event);
                 todayCalendarLayout.addView( eventView);
             }
+        }else{
+            TextView nothingTodayView = new TextView(getContext());
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            params.setMargins(25, 7, 25, 7);
+            nothingTodayView.setLayoutParams(params);
+            nothingTodayView.setText(getResources().getString(R.string.nothingTodayOnCalendar));
+            nothingTodayView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 22);
+            todayCalendarLayout.setGravity(17);
+            todayCalendarLayout.addView(nothingTodayView);
         }
     }
 
