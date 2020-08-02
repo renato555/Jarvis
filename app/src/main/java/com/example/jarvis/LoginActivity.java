@@ -10,9 +10,11 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 
+import android.os.Handler;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.material.button.MaterialButton;
@@ -31,12 +33,19 @@ public class LoginActivity extends AppCompatActivity {
     private EditText usernameEditText;
     private EditText passwordEditText;
     private MaterialButton loginButton;
+    private ProgressBar progressBar;
     private String username = "";
     private String password = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_login);
+        usernameEditText = (EditText) findViewById(R.id.username);
+        passwordEditText = (EditText) findViewById(R.id.password);
+        loginButton = (MaterialButton) findViewById(R.id.loginBtn);
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        progressBar.setVisibility( View.GONE);
 
         BroadcastReceiver onComplete = (new BroadcastReceiver() {
             @Override
@@ -51,21 +60,32 @@ public class LoginActivity extends AppCompatActivity {
             login();
         }
 
-        setContentView(R.layout.activity_login);
-        usernameEditText = (EditText) findViewById(R.id.username);
-        passwordEditText = (EditText) findViewById(R.id.password);
-        loginButton = (MaterialButton) findViewById(R.id.loginBtn);
-        
+
         loginButton.setOnClickListener(view -> {
+            progressBar.setVisibility( View.VISIBLE);
+            loginButton.setEnabled( false);
             closeKeyboard();
             username = usernameEditText.getText().toString();
             password = passwordEditText.getText().toString();
 
-            if( ConnectionWithWebsite.tryLogin( this, username, password)){
-                saveAccount( getApplicationContext(), username, password);
-                login();
-            }else
-                Toast.makeText(getApplicationContext(), "Incorrect username or password", Toast.LENGTH_SHORT).show();
+            new Thread(){
+                private Handler mainHandler = new Handler( LoginActivity.this.getMainLooper());
+                @Override
+                public void run() {
+                    if( ConnectionWithWebsite.tryLogin( LoginActivity.this, username, password)){
+                        mainHandler.post( () ->{
+                            saveAccount( getApplicationContext(), username, password);
+                            login();
+                        });
+                    }else{
+                        mainHandler.post( () -> {
+                            progressBar.setVisibility( View.GONE);
+                            loginButton.setEnabled( true);
+                            Toast.makeText(getApplicationContext(), "Incorrect username or password", Toast.LENGTH_SHORT).show();
+                        });
+                    }
+                }
+            }.start();
         });
     }
 
@@ -118,8 +138,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void login(){
-        //TODO displaying waiting animation
-        if( loginButton != null) loginButton.setEnabled( false);
         if( !updateFilesIfNeeded()){
             startMain();
         }
