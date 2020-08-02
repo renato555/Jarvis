@@ -46,7 +46,7 @@
                 android:id="@+id/calendarView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bottom_edge_primary_color"
+                android:background="@drawable/bottom_edge_accent"
                 android:elevation="6dp"/>
 
             <LinearLayout
