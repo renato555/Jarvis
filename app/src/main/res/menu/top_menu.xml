@@ -9,12 +9,6 @@
         app:showAsAction="collapseActionView" />
 
     <item
-        android:id="@+id/changeTheme"
-        android:title="@string/darkTheme"
-        app:cnb_backgroundColor="@color/colorPrimary"
-        app:showAsAction="collapseActionView" />
-
-    <item
         android:id="@+id/settings"
         android:title="@string/settings"
         app:cnb_backgroundColor="@color/colorPrimary"
