@@ -42,7 +42,7 @@ public class ConnectionWithWebsite {
 
     //______________________________________________________________________________________
     public static boolean tryLogin( Context context, String username, String password){
-        loadCookies( context, username);
+        loadCookies( context, username, password);
         //first login, no saved data was found
         if( cookies == null) return tryNewLogin( context, username, password);
 
@@ -64,7 +64,7 @@ public class ConnectionWithWebsite {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        if( result) writeCookies(context, username);
+        if( result) writeCookies(context, username, password);
         return result;
     }
 
@@ -148,9 +148,9 @@ public class ConnectionWithWebsite {
 
     }
 
-    private static void loadCookies( Context context, String username){
+    private static void loadCookies( Context context, String username, String password){
         try{
-            FileInputStream fis = context.openFileInput( username + ".txt");
+            FileInputStream fis = context.openFileInput( username + password + ".txt");
             ObjectInputStream oi = new ObjectInputStream( fis);
             cookies =(List<String>) oi.readObject();
 
@@ -158,21 +158,24 @@ public class ConnectionWithWebsite {
             oi.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+            cookies = null;
         } catch (IOException e) {
             e.printStackTrace();
+            cookies = null;
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
+            cookies = null;
         }
     }
 
-    private static void writeCookies( Context context, String username){
+    private static void writeCookies( Context context, String username, String password){
         try{
-            FileOutputStream fos = context.openFileOutput(username + ".txt", Context.MODE_PRIVATE);
+            FileOutputStream fos = context.openFileOutput(username + password + ".txt", Context.MODE_PRIVATE);
             ObjectOutputStream o = new ObjectOutputStream( fos);
             o.writeObject( cookies);
 
-            o.close();
             fos.close();
+            o.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -197,7 +200,8 @@ public class ConnectionWithWebsite {
     //______________________________________________________________________________________
 
     //______________________________________________________________________________________
-    public static void calendarPeriodicDownload( Context context){
+    //returns true if downloading has started and false otherwise
+    public static boolean calendarPeriodicDownload(Context context){
         //download calendar if it was not downloaded today
         Date lastDate = readDate( context);
         Date nowDate = new Date();
@@ -205,7 +209,9 @@ public class ConnectionWithWebsite {
         if( lastDate == null || !formatDate.format( lastDate).equals( formatDate.format( nowDate))){
             downloadCalendar( context);
             writeDate( context, nowDate);
+            return true;
         }
+        return false;
     }
 
     private static Date readDate( Context context){
@@ -346,10 +352,14 @@ public class ConnectionWithWebsite {
                 Document doc = Jsoup.parse( pageHtml);
                 Elements elements = doc.getElementsByTag( "b");
 
-                return elements.get( 0).text();
+                String fullname = elements.get( 0).text();
+                if( fullname == null) throw new NotLoggedInException( "nije ucitano ime");
+                return fullname;
             } catch (IOException e) {
                 e.printStackTrace();
             } catch( IndexOutOfBoundsException e){
+                e.printStackTrace();
+            } catch( NotLoggedInException e){
                 e.printStackTrace();
             }
 

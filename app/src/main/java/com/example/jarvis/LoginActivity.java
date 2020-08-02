@@ -3,13 +3,18 @@ package com.example.jarvis;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.app.DownloadManager;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 
+import android.os.Handler;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.material.button.MaterialButton;
@@ -21,9 +26,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -31,37 +33,59 @@ public class LoginActivity extends AppCompatActivity {
     private EditText usernameEditText;
     private EditText passwordEditText;
     private MaterialButton loginButton;
+    private ProgressBar progressBar;
     private String username = "";
     private String password = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        readAccount();
-        if( !username.isEmpty() && !password.isEmpty() && ConnectionWithWebsite.tryLogin( this, username, password)) {
-            updateFiles();
-            startMain();
-        }
-
         setContentView(R.layout.activity_login);
-
-
         usernameEditText = (EditText) findViewById(R.id.username);
         passwordEditText = (EditText) findViewById(R.id.password);
         loginButton = (MaterialButton) findViewById(R.id.loginBtn);
-        
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        progressBar.setVisibility( View.GONE);
+
+        BroadcastReceiver onComplete = (new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if( intent.getAction() == DownloadManager.ACTION_DOWNLOAD_COMPLETE) startMain();
+            }
+        });
+        registerReceiver( onComplete, new IntentFilter( DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+
+        readAccount();
+        if( !username.isEmpty() && !password.isEmpty() && ConnectionWithWebsite.tryLogin( this, username, password)) {
+            login();
+        }
+
+
         loginButton.setOnClickListener(view -> {
+            progressBar.setVisibility( View.VISIBLE);
+            loginButton.setEnabled( false);
             closeKeyboard();
             username = usernameEditText.getText().toString();
             password = passwordEditText.getText().toString();
 
-            if( ConnectionWithWebsite.tryLogin( this, username, password)){
-                saveAccount( getApplicationContext(), username, password);
-                updateFiles();
-                startMain();
-            }else
-                Toast.makeText(getApplicationContext(), "Incorrect username or password", Toast.LENGTH_SHORT).show();
+            new Thread(){
+                private Handler mainHandler = new Handler( LoginActivity.this.getMainLooper());
+                @Override
+                public void run() {
+                    if( ConnectionWithWebsite.tryLogin( LoginActivity.this, username, password)){
+                        mainHandler.post( () ->{
+                            saveAccount( getApplicationContext(), username, password);
+                            login();
+                        });
+                    }else{
+                        mainHandler.post( () -> {
+                            progressBar.setVisibility( View.GONE);
+                            loginButton.setEnabled( true);
+                            Toast.makeText(getApplicationContext(), "Incorrect username or password", Toast.LENGTH_SHORT).show();
+                        });
+                    }
+                }
+            }.start();
         });
     }
 
@@ -99,9 +123,10 @@ public class LoginActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-
-    private void updateFiles(){
-        ConnectionWithWebsite.calendarPeriodicDownload( getApplicationContext());
+    
+    //returns true if downloading has started and false otherwise
+    private boolean updateFilesIfNeeded(){
+        return ConnectionWithWebsite.calendarPeriodicDownload( getApplicationContext());
     }
 
     private void closeKeyboard(){
@@ -110,6 +135,13 @@ public class LoginActivity extends AppCompatActivity {
             InputMethodManager manager = ( InputMethodManager) getSystemService( Context.INPUT_METHOD_SERVICE);
             manager.hideSoftInputFromWindow( view.getWindowToken(), 0);
         }
+    }
+
+    private void login(){
+        if( !updateFilesIfNeeded()){
+            startMain();
+        }
+        //broadcast receiver will startMain when downloading has been completed
     }
 
     private void startMain(){
