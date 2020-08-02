@@ -3,20 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/calendar"
-        android:icon="@drawable/ic_calendar"
-        app:cnb_backgroundColor="@color/colorPrimary"
-        app:cnb_iconColor="@color/white"
-        app:cnb_textColor="@color/white"
-        android:title="@string/calendar"/>
-
-    <item
         android:id="@+id/colleague"
         android:icon="@drawable/ic_colleague"
         app:cnb_backgroundColor="@color/colorPrimary"
         app:cnb_iconColor="@color/white"
         app:cnb_textColor="@color/white"
         android:title="@string/colleague"/>
+
+    <item
+        android:id="@+id/weather"
+        android:icon="@drawable/ic_weather"
+        app:cnb_backgroundColor="@color/colorPrimary"
+        app:cnb_iconColor="@color/white"
+        app:cnb_textColor="@color/white"
+        android:title="@string/weather"/>
 
     <item
         android:id="@+id/home"
@@ -35,10 +35,11 @@
         android:title="@string/to_do"/>
 
     <item
-        android:id="@+id/weather"
-        android:icon="@drawable/ic_weather"
+        android:id="@+id/calendar"
+        android:icon="@drawable/ic_calendar"
         app:cnb_backgroundColor="@color/colorPrimary"
         app:cnb_iconColor="@color/white"
         app:cnb_textColor="@color/white"
-        android:title="@string/weather"/>
+        android:title="@string/calendar"/>
+
 </menu>

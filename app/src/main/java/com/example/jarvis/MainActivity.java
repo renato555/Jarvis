@@ -93,8 +93,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-
-        chipNavigationBar.showBadge( R.id.colleague, 1);
     }
 
     private void weatherFragmentPressed() {
