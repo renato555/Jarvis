@@ -12,7 +12,7 @@ public class OnSwipeTouchListener implements View.OnTouchListener {
     private final GestureDetector gestureDetector;
     private final ChipNavigationBar navigationBar;
 
-    private int[] idDictionary = { R.id.calendar, R.id.colleague, R.id.home, R.id.toDo, R.id.weather};
+    private int[] idDictionary = { R.id.colleague, R.id.weather, R.id.home, R.id.toDo, R.id.calendar};
 
     public OnSwipeTouchListener(Context ctx, ChipNavigationBar navigationBar) {
         gestureDetector = new GestureDetector( ctx, new GestureListener());
@@ -84,11 +84,11 @@ public class OnSwipeTouchListener implements View.OnTouchListener {
     }
 
     private int extractIndex( int id){
-        if( id == R.id.calendar) return 0;
-        if( id == R.id.colleague) return 1;
+        if( id == R.id.calendar) return 4;
+        if( id == R.id.colleague) return 0;
         if( id == R.id.home) return 2;
         if( id == R.id.toDo) return 3;
-        if( id == R.id.weather) return 4;
+        if( id == R.id.weather) return 1;
 
         return 3;
     }
