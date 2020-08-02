@@ -47,6 +47,9 @@ public class Constants {
     public static final String IMAGE_41 = "oblačno i maglovito uz mogući snijeg";
     public static final String IMAGE_42 = "oblačno i maglovito uz moguću kišu";
 
+    public static final String ZAGREB = "https://meteo.hr/prognoze.php?Code=Zagreb&id=prognoza&section=prognoze_model&param=3d";
+    public static final String BISTRA = "https://meteo.hr/prognoze.php?Code=Bistra&id=prognoza&section=prognoze_model&param=3d";
+
     //TodoList
     public static final String TODO_DATABASE_FILE = "todoFragmentDataBase.txt";
     public static final String ALL_TASKS = "All tasks";

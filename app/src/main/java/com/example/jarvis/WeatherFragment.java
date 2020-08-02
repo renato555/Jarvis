@@ -10,12 +10,14 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -28,14 +30,19 @@ import org.jsoup.select.Elements;
 
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
 public class WeatherFragment extends Fragment {
 
     private static final String[] times = {"5:00", "8:00", "11:00", "14:00", "17:00", "20:00"};
-    private static Map<Drawable, String> map;
+    private static Map<Drawable, String> imagesMap;
+    private static Map<String, String> placesMap;
     private View view;
+    private Spinner dropdownSpinner;
 
     private LinearLayout[] todayLayouts = new LinearLayout[6];
 
@@ -66,7 +73,9 @@ public class WeatherFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_weather, container, false);
 
-        map = new WeatherMapLoader(getContext()).loadMap();
+        imagesMap = new WeatherMapLoader(getContext()).loadMap();
+
+        placesMap = new PlacesLoader().loadPlaces(getContext());
 
         loadTodayLayouts(view);
 
@@ -85,11 +94,28 @@ public class WeatherFragment extends Fragment {
         loadDayAfterTomorrowImageViews(view);
         loadDayAfterTomorrowDescriptionViews(view);
 
-        new MyAsyncTask(todayDay, todayTimeViews, todayImageViews, todayDescriptionViews, 0).execute();
-        new MyAsyncTask(tomorrowDay, tomorrowTimeViews, tomorrowImageViews, tomorrowDescriptionViews, 1).execute();
-        new MyAsyncTask(dayAfterTomorrowDay, dayAfterTomorrowTimeViews, dayAfterTomorrowImageViews, dayAfterTomorrowDescriptionViews, 2).execute();
+        dropdownSpinner = (Spinner) view.findViewById(R.id.weatherSpinner);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, new ArrayList<>(placesMap.keySet()));
+        adapter.setDropDownViewResource( android.R.layout.simple_spinner_dropdown_item);
+        dropdownSpinner.setAdapter(adapter);
+        dropdownSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                loadWeather(adapter.getItem(i));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+            }
+        });
 
         return view;
+    }
+
+    private void loadWeather(String item) {
+        new MyAsyncTask(item, todayDay, todayTimeViews, todayImageViews, todayDescriptionViews, 0).execute();
+        new MyAsyncTask(item, tomorrowDay, tomorrowTimeViews, tomorrowImageViews, tomorrowDescriptionViews, 1).execute();
+        new MyAsyncTask(item, dayAfterTomorrowDay, dayAfterTomorrowTimeViews, dayAfterTomorrowImageViews, dayAfterTomorrowDescriptionViews, 2).execute();
     }
 
     private void loadTodayLayouts(View view) {
@@ -188,6 +214,7 @@ public class WeatherFragment extends Fragment {
 
         private int start;
         private String tempDay;
+        private String link;
         private String[] descriptions = new String[6];
         private Drawable[] images = new Drawable[6];
         private TextView day;
@@ -196,7 +223,8 @@ public class WeatherFragment extends Fragment {
         private TextView[] descriptionViews;
         private String[] temperatures = new String[6];
 
-        public MyAsyncTask(TextView day, TextView[] timeViews, ImageView[] imageViews, TextView[] descriptionViews, int start){
+        public MyAsyncTask(String placeSelected, TextView day, TextView[] timeViews, ImageView[] imageViews, TextView[] descriptionViews, int start){
+            link = placesMap.get(placeSelected);
             this.day = day;
             this.timeViews = timeViews;
             this.imageViews = imageViews;
@@ -208,7 +236,7 @@ public class WeatherFragment extends Fragment {
         protected Void doInBackground(Void... voids) {
 
             try {
-                Document doc = Jsoup.connect(Constants.WEATHER_LINK).get();
+                Document doc = Jsoup.connect(link).get();
 
                 Elements table = doc.getElementsByClass("fd-c-table table-weather-7day");
                 Elements tableElements = table.select("tr");
@@ -220,7 +248,7 @@ public class WeatherFragment extends Fragment {
 
                     descriptions[i] = tableElements.get(start*3 + 1).select("td").get(i + 1).select("span").attr("title");
 
-                    for (Map.Entry<Drawable, String> entry : map.entrySet()) {
+                    for (Map.Entry<Drawable, String> entry : imagesMap.entrySet()) {
                         if(descriptions[i].equals(entry.getValue())) {
                             images[i] = entry.getKey();
                             break;

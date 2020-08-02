@@ -2,10 +2,10 @@
 <resources>
     <dimen name="balloon_margin"> 20dp</dimen>
     <dimen name="stroke_width"> 3dp</dimen>
-    <dimen name="title_size"> 35dp</dimen>
+    <dimen name="title_size"> 30dp</dimen>
     <dimen name="title_elevation"> 30dp</dimen>
 
-    <dimen name="weather_image_size">90dp</dimen>
+    <dimen name="weather_image_size">85dp</dimen>
     <dimen name="weather_information_size">100dp</dimen>
 
     <dimen name="spinner_text_size"> 20dp</dimen>

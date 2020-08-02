@@ -2,27 +2,18 @@ package com.example.jarvis;
 
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.graphics.Typeface;
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.select.Elements;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -103,12 +94,12 @@ public class HomeFragment extends Fragment {
         List<String> currentTasks = allTasks;
         for (String currentText : currentTasks) {
             TextView task = new TextView(getContext());
-            setTextViewParams(task, currentText);
+            setTasksTextViewParams(task, currentText);
             taskLayout.addView(task);
         }
     }
 
-    public void setTextViewParams (TextView task, String currentText){
+    public void setTasksTextViewParams(TextView task, String currentText){
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         params.setMargins(25, 7, 0, 7);
         task.setLayoutParams(params);
@@ -116,6 +107,7 @@ public class HomeFragment extends Fragment {
         task.setBackgroundResource( R.drawable.bottom_edge);
         task.setTextSize(TypedValue.COMPLEX_UNIT_PX, 50);
         task.setTypeface(null, Typeface.BOLD);
+        task.setTextColor(getResources().getColor(R.color.textColorLight));
     }
 
     private void loadTodayCalendar() {
@@ -151,7 +143,7 @@ public class HomeFragment extends Fragment {
         todayCalendarLayout.removeAllViews();
         if( events != null){
             for( String event : events){
-                TextView eventView = makeTextView( event);
+                TextView eventView = makeCalendarTextView( event);
                 todayCalendarLayout.addView( eventView);
             }
         }else{
@@ -161,22 +153,27 @@ public class HomeFragment extends Fragment {
             nothingTodayView.setLayoutParams(params);
             nothingTodayView.setText(getResources().getString(R.string.nothingTodayOnCalendar));
             nothingTodayView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 22);
+            //nothingTodayView.setTextColor(getResources().getColor(R.color.black));
             todayCalendarLayout.setGravity(17);
             todayCalendarLayout.addView(nothingTodayView);
         }
     }
 
-    private TextView makeTextView( String event){
+    private TextView makeCalendarTextView(String event){
         TextView textView = new TextView( getContext());
         textView.setText( event);
         textView.setBackgroundResource( R.drawable.bottom_edge);
         textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 22);
-        //set textView margin
+        textView.setTextColor(getResources().getColor(R.color.textColorLight));
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams( LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         params.setMargins(25, 7, 25, 7);
         textView.setLayoutParams( params);
 
         return textView;
+    }
+
+    private void changeTheme(){
+        ViewGroup viewGroup = (ViewGroup) getView();
     }
 }
 
