@@ -56,9 +56,22 @@ public class LoginActivity extends AppCompatActivity {
         registerReceiver( onComplete, new IntentFilter( DownloadManager.ACTION_DOWNLOAD_COMPLETE));
 
         readAccount();
-        if( !username.isEmpty() && !password.isEmpty() && ConnectionWithWebsite.tryLogin( this, username, password)) {
-            login();
-        }
+        progressBar.setVisibility( View.VISIBLE);
+        loginButton.setEnabled( false);
+        new Thread(){
+            private Handler mainHandler = new Handler( LoginActivity.this.getMainLooper());
+            @Override
+            public void run() {
+                if( !username.isEmpty() && !password.isEmpty() && ConnectionWithWebsite.tryLogin( LoginActivity.this, username, password)) {
+                    login();
+                }else{
+                    mainHandler.post( () -> {
+                        progressBar.setVisibility( View.GONE);
+                        loginButton.setEnabled( true);
+                    });
+                }
+            }
+        }.start();
 
 
         loginButton.setOnClickListener(view -> {
