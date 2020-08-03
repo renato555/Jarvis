@@ -19,4 +19,5 @@
         android:title="@string/logout"
         app:cnb_backgroundColor="@color/colorPrimary"
         app:showAsAction="collapseActionView"/>
+
 </menu>

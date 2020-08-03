@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 
 import java.io.FileInputStream;
@@ -54,7 +55,7 @@ public class HomeFragment extends Fragment {
         taskLayout = (LinearLayout) view.findViewById(R.id.tasks_layout);
         welcomeText = (TextView) view.findViewById(R.id.welcomeText);
         todayCalendarLayout = (LinearLayout) view.findViewById(R.id.todayCalendar_layout);
-
+        
         setUpWelcomeText( ConnectionWithWebsite.getUserFullName().split( "\\s+")[0]); //only firstname gets displayed
         loadAllTasks();
         loadTodayCalendar();
