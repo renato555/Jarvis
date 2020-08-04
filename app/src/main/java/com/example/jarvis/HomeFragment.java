@@ -32,18 +32,24 @@ import java.util.Map;
 
 public class HomeFragment extends Fragment {
 
+    private ToDoListFragment toDoListFragment;
+    private CalendarFragment calendarFragment;
+
     private List<String> allTasks;
+    private List<String> todayEvents;
     private LinearLayout taskLayout;
     private TextView welcomeText;
-    private Map<String, List<String>> calendarData;
     private LinearLayout todayCalendarLayout;
 
     private OnSwipeTouchListener swipeListener;
-    private double downX, upX;
 
-    public HomeFragment( OnSwipeTouchListener swipeListener){
+
+    public HomeFragment(OnSwipeTouchListener swipeListener, ToDoListFragment toDoListFragment, CalendarFragment calendarFragment) {
         this.swipeListener = swipeListener;
+        this.toDoListFragment = toDoListFragment;
+        this.calendarFragment = calendarFragment;
     }
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -61,7 +67,7 @@ public class HomeFragment extends Fragment {
         todayCalendarLayout = (LinearLayout) view.findViewById(R.id.todayCalendar_layout);
         
         setUpWelcomeText( ConnectionWithWebsite.getUserFullName().split( "\\s+")[0]); //only firstname gets displayed
-        loadAllTasks();
+        printTasks();
         loadTodayCalendar();
 
         setUpScrollViewListners( view);
@@ -73,33 +79,10 @@ public class HomeFragment extends Fragment {
         welcomeText.setText("Welcome, " + name);
     }
 
-    public void loadAllTasks() {
-        Map<String, List<String>> todoTasks;
-        try {
-            FileInputStream fis = getContext().openFileInput(Constants.TODO_DATABASE_FILE);
-            ObjectInputStream oi = new ObjectInputStream(fis);
-
-            todoTasks = (Map<String, List<String>>) oi.readObject();
-            fis.close();
-            oi.close();
-            allTasks = todoTasks.get(Constants.ALL_TASKS);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        if (allTasks != null)
-            printTasks();
-
-    }
-
-    private void printTasks(){
+    public void printTasks(){
+        allTasks = toDoListFragment.getAllTasks();
         taskLayout.removeAllViews();
-        List<String> currentTasks = allTasks;
-        for (String currentText : currentTasks) {
+        for (String currentText : allTasks) {
             TextView task = new TextView(getContext());
             setTasksTextViewParams(task, currentText);
             taskLayout.addView(task);
@@ -119,37 +102,17 @@ public class HomeFragment extends Fragment {
 
     private void loadTodayCalendar() {
         Date dateObj = Calendar.getInstance().getTime();
-
-        readCalendarEvents();
         printDate(dateObj);
-    }
-
-    private void readCalendarEvents() {
-        try{
-            FileInputStream fis = getContext().openFileInput(Constants.CALENDAR_EVENTS_FILE);
-            ObjectInputStream oi = new ObjectInputStream(fis);
-
-            calendarData = (Map<String, List<String>>) oi.readObject();
-
-            oi.close();
-            fis.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
     }
 
     private void printDate( Date date) {
         //updates todays events
         SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");
         String todayDate = df.format(date);
-        List<String> events = calendarData.get( todayDate);
+        todayEvents = calendarFragment.getTodayEvents();
         todayCalendarLayout.removeAllViews();
-        if( events != null){
-            for( String event : events){
+        if( todayEvents != null){
+            for( String event : todayEvents){
                 TextView eventView = makeCalendarTextView( event);
                 todayCalendarLayout.addView( eventView);
             }
@@ -177,10 +140,6 @@ public class HomeFragment extends Fragment {
         textView.setLayoutParams( params);
 
         return textView;
-    }
-
-    private void changeTheme(){
-        ViewGroup viewGroup = (ViewGroup) getView();
     }
 
     private void setUpScrollViewListners( View view){

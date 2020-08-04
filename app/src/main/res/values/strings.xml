@@ -43,9 +43,6 @@
     <string name="darkTheme">Dark Theme</string>
     <string name="Zagreb">Zagreb</string>
     <string name="Bistra">Bistra</string>
-<<<<<<< HEAD
-    <string name="Tisno">Tisno</string>
-=======
+    <string name="Tisno">Tisno</string>a
     <string name="host">Host</string>
->>>>>>> ae7dc79d56bc90d57ae09922b3ef4e9e93a6acac
 </resources>
