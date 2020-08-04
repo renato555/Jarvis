@@ -24,7 +24,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
-import android.widget.TextView;
 
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 
@@ -45,16 +44,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         resources = getResources();
-        calendarFragmentPressed();
-        weatherFragmentPressed();
-        homeFragmentPressed();
 
         chipNavigationBar = findViewById(R.id.chipNavigation);
         setUpNavigationBar();
+        swipeListener = new OnSwipeTouchListener( this, chipNavigationBar);
 
         askPermissions();
-
-        swipeListener = new OnSwipeTouchListener( this, chipNavigationBar);
+        calendarFragmentPressed();
+        weatherFragmentPressed();
+        homeFragmentPressed();
     }
 
     @Override
