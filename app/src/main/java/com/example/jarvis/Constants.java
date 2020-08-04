@@ -2,7 +2,7 @@ package com.example.jarvis;
 
 public class Constants {
     //Weather
-    public static final String WEATHER_LINK = "https://meteo.hr/prognoze.php?section=prognoze_model&param=3d";
+    public static final String WEATHER_PLACE_FILE = "defaultPlace.txt";
 
     public static final String IMAGE_1 = "vedro, danju sunčano";
     public static final String IMAGE_2 = "malo oblačno, danju sunčano";
@@ -49,6 +49,7 @@ public class Constants {
 
     public static final String ZAGREB = "https://meteo.hr/prognoze.php?Code=Zagreb&id=prognoza&section=prognoze_model&param=3d";
     public static final String BISTRA = "https://meteo.hr/prognoze.php?Code=Bistra&id=prognoza&section=prognoze_model&param=3d";
+    public static final String TISNO = "https://meteo.hr/prognoze.php?Code=Tisno&id=prognoza&section=prognoze_model&param=3d";
 
     //TodoList
     public static final String TODO_DATABASE_FILE = "todoFragmentDataBase.txt";

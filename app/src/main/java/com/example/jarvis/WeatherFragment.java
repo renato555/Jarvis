@@ -3,6 +3,7 @@ package com.example.jarvis;
 
 import android.annotation.SuppressLint;
 
+import android.content.Context;
 import android.graphics.drawable.Drawable;
 
 
@@ -29,7 +30,11 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -95,19 +100,7 @@ public class WeatherFragment extends Fragment {
         loadDayAfterTomorrowDescriptionViews(view);
 
         dropdownSpinner = (Spinner) view.findViewById(R.id.weatherSpinner);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, new ArrayList<>(placesMap.keySet()));
-        adapter.setDropDownViewResource( android.R.layout.simple_spinner_dropdown_item);
-        dropdownSpinner.setAdapter(adapter);
-        dropdownSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                loadWeather(adapter.getItem(i));
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-            }
-        });
+        setUpDropdownWeatherSpinner();
 
         return view;
     }
@@ -116,6 +109,53 @@ public class WeatherFragment extends Fragment {
         new MyAsyncTask(item, todayDay, todayTimeViews, todayImageViews, todayDescriptionViews, 0).execute();
         new MyAsyncTask(item, tomorrowDay, tomorrowTimeViews, tomorrowImageViews, tomorrowDescriptionViews, 1).execute();
         new MyAsyncTask(item, dayAfterTomorrowDay, dayAfterTomorrowTimeViews, dayAfterTomorrowImageViews, dayAfterTomorrowDescriptionViews, 2).execute();
+    }
+
+    private void setUpDropdownWeatherSpinner(){
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, new ArrayList<>(placesMap.keySet()));
+        adapter.setDropDownViewResource( android.R.layout.simple_spinner_dropdown_item);
+        dropdownSpinner.setAdapter(adapter);
+
+        int i;
+        if((i = getSavedDropdownWeatherSpinnerChoice()) != -1)
+            dropdownSpinner.setSelection(i);
+
+        dropdownSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                loadWeather(adapter.getItem(i));
+                saveDropdownWeatherSpinnerChoice(i);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) { }
+        });
+    }
+
+    private void saveDropdownWeatherSpinnerChoice(int i) {
+        try{
+            FileOutputStream fos = getContext().openFileOutput(Constants.WEATHER_PLACE_FILE, Context.MODE_PRIVATE);
+            ObjectOutputStream os = new ObjectOutputStream(fos);
+
+            os.writeObject(i);
+            os.close();
+            fos.close();
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    private int getSavedDropdownWeatherSpinnerChoice(){
+        int returnPosition = -1;
+        try(FileInputStream fis = getContext().openFileInput(Constants.WEATHER_PLACE_FILE);
+            ObjectInputStream oi = new ObjectInputStream(fis);){
+
+            returnPosition = (int) oi.readObject();
+        }catch(IOException | ClassNotFoundException e){
+            e.printStackTrace();
+        }
+
+        return returnPosition;
     }
 
     private void loadTodayLayouts(View view) {

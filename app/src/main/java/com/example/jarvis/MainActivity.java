@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
         resources = getResources();
         calendarFragmentPressed();
         weatherFragmentPressed();
+        toDoFragmentPressed();
         homeFragmentPressed();
 
         chipNavigationBar = findViewById(R.id.chipNavigation);

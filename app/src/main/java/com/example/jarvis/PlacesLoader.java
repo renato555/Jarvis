@@ -12,6 +12,7 @@ public class PlacesLoader {
 
         returnMap.put(context.getResources().getString(R.string.Zagreb), Constants.ZAGREB);
         returnMap.put(context.getResources().getString(R.string.Bistra), Constants.BISTRA);
+        returnMap.put(context.getResources().getString(R.string.Tisno), Constants.TISNO);
 
         return returnMap;
     }
