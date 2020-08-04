@@ -3,12 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/colleague"
-        android:icon="@drawable/ic_colleague"
+        android:id="@+id/pong"
+        android:icon="@drawable/ic_pong"
         app:cnb_backgroundColor="@color/colorPrimary"
         app:cnb_iconColor="@color/white"
         app:cnb_textColor="@color/white"
-        android:title="@string/colleague"/>
+        android:title="@string/pong"/>
 
     <item
         android:id="@+id/weather"

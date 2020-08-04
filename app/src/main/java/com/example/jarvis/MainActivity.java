@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
                         calendarFragmentPressed();
                         break;
 
-                    case R.id.colleague:
+                    case R.id.pong:
                         colleagueFragmentPressed();
                         break;
 
@@ -124,13 +124,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void colleagueFragmentPressed() {
-        String tag = resources.getString(R.string.colleague);
+        String tag = resources.getString(R.string.pong);
         if(fragmentManager.findFragmentByTag(tag) != null) {
             //if the fragment exists, show it.
             fragmentManager.beginTransaction().show(Objects.requireNonNull(fragmentManager.findFragmentByTag(tag))).commit();
         } else {
             //if the fragment does not exist, add it to fragment manager.
-            fragmentManager.beginTransaction().add(R.id.container, new ColleagueFragment( swipeListener), tag).commit();
+            fragmentManager.beginTransaction().add(R.id.container, new PongFragment( swipeListener), tag).commit();
         }
         checkHome();
         checkCalendar();
@@ -195,9 +195,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void checkColleague(){
-        if(fragmentManager.findFragmentByTag(resources.getString(R.string.colleague)) != null){
+        if(fragmentManager.findFragmentByTag(resources.getString(R.string.pong)) != null){
             //if the other fragment is visible, hide it.
-            fragmentManager.beginTransaction().hide(Objects.requireNonNull(fragmentManager.findFragmentByTag(resources.getString(R.string.colleague)))).commit();
+            fragmentManager.beginTransaction().hide(Objects.requireNonNull(fragmentManager.findFragmentByTag(resources.getString(R.string.pong)))).commit();
         }
     }
 
