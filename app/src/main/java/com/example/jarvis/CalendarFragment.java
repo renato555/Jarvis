@@ -38,7 +38,7 @@ public class CalendarFragment extends Fragment {
     private CalendarView calendarView;
     private LinearLayout eventsLayout;
 
-    private Map<String, List<String>> calendarData;
+    private Map<String, List<String>> calendarData; //<date, events>
 
     private OnSwipeTouchListener swipeListener;
 
@@ -63,8 +63,6 @@ public class CalendarFragment extends Fragment {
         addListeners();
 
         printDate( new Date());
-
-        writeCalendarData();
         return view;
     }
 
@@ -159,16 +157,11 @@ public class CalendarFragment extends Fragment {
         return textView;
     }
 
-    private void writeCalendarData() {
-        try {
-            FileOutputStream fos = getContext().openFileOutput(Constants.CALENDAR_EVENTS_FILE, Context.MODE_PRIVATE);
-            ObjectOutputStream oi = new ObjectOutputStream(fos);
-
-            oi.writeObject(calendarData);
-            oi.close();
-            fos.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+    public List<String> getTodayEvents(){
+        if( calendarData != null){
+            SimpleDateFormat formatKey = new SimpleDateFormat("yyyyMMdd");
+            return calendarData.get( formatKey.format( new Date()));
         }
+        return null;
     }
 }

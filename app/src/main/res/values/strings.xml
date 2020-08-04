@@ -3,7 +3,7 @@
     <string name="home">Home</string>
     <string name="calendar">Calendar</string>
     <string name="to_do">To-Do</string>
-    <string name="colleague">Colleague</string>
+    <string name="pong">Pong</string>
     <string name="weather">Weather</string>
     <string name="reload">Reload</string>
     <string name="all_tasks"><u>All tasks...</u></string>
@@ -43,5 +43,9 @@
     <string name="darkTheme">Dark Theme</string>
     <string name="Zagreb">Zagreb</string>
     <string name="Bistra">Bistra</string>
+<<<<<<< HEAD
     <string name="Tisno">Tisno</string>
+=======
+    <string name="host">Host</string>
+>>>>>>> ae7dc79d56bc90d57ae09922b3ef4e9e93a6acac
 </resources>

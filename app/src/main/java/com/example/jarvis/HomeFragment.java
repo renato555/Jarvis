@@ -4,11 +4,14 @@ package com.example.jarvis;
 import android.annotation.SuppressLint;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -36,6 +39,7 @@ public class HomeFragment extends Fragment {
     private LinearLayout todayCalendarLayout;
 
     private OnSwipeTouchListener swipeListener;
+    private double downX, upX;
 
     public HomeFragment( OnSwipeTouchListener swipeListener){
         this.swipeListener = swipeListener;
@@ -59,9 +63,11 @@ public class HomeFragment extends Fragment {
         setUpWelcomeText( ConnectionWithWebsite.getUserFullName().split( "\\s+")[0]); //only firstname gets displayed
         loadAllTasks();
         loadTodayCalendar();
+
+        setUpScrollViewListners( view);
+
         return view;
     }
-
 
     private void setUpWelcomeText( String name) {
         welcomeText.setText("Welcome, " + name);
@@ -175,6 +181,14 @@ public class HomeFragment extends Fragment {
 
     private void changeTheme(){
         ViewGroup viewGroup = (ViewGroup) getView();
+    }
+
+    private void setUpScrollViewListners( View view){
+        ScrollView scroll1 = (ScrollView) view.findViewById( R.id.tasks_scroll);
+        scroll1.setOnTouchListener( swipeListener);
+
+        ScrollView scroll2 = (ScrollView) view.findViewById( R.id.todayCalendar_scroll);
+        scroll2.setOnTouchListener( swipeListener);
     }
 }
 
