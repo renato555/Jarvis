@@ -292,9 +292,10 @@ public class ToDoListFragment extends Fragment {
         currentList = Constants.ALL_TASKS;
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        System.out.println("Destroy");
+    public List<String> getAllTasks(){
+        if( todoTasks != null){
+            return todoTasks.get(Constants.ALL_TASKS);
+        }
+        return null;
     }
 }

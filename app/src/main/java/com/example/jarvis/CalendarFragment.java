@@ -156,4 +156,12 @@ public class CalendarFragment extends Fragment {
 
         return textView;
     }
+
+    public List<String> getTodayEvents(){
+        if( calendarData != null){
+            SimpleDateFormat formatKey = new SimpleDateFormat("yyyyMMdd");
+            return calendarData.get( formatKey.format( new Date()));
+        }
+        return null;
+    }
 }
