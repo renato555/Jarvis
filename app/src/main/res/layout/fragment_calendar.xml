@@ -33,6 +33,7 @@
     </LinearLayout>
 
     <ScrollView
+        android:id="@+id/calendar_scroll"
         style="@android:style/Widget.DeviceDefault.Light.ScrollView"
         android:layout_below="@id/calendar_naslov"
         android:layout_width="match_parent"
