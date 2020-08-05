@@ -43,6 +43,8 @@
     <string name="darkTheme">Dark Theme</string>
     <string name="Zagreb">Zagreb</string>
     <string name="Bistra">Bistra</string>
-    <string name="Tisno">Tisno</string>a
+    <string name="Tisno">Tisno</string>
     <string name="host">Host</string>
+    <string name="player_name">Player name</string>
+    <string name="create_room">Create room</string>
 </resources>
