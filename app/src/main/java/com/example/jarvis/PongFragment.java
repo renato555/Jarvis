@@ -1,21 +1,14 @@
 package com.example.jarvis;
 
 import android.content.Intent;
-<<<<<<< HEAD
 import android.content.SharedPreferences;
-=======
->>>>>>> ae8830ebb00e724674be868333135e8257ec863e
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-<<<<<<< HEAD
 import android.widget.EditText;
 import android.widget.Toast;
-=======
->>>>>>> ae8830ebb00e724674be868333135e8257ec863e
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -53,7 +46,6 @@ public class PongFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_pong, container, false);
 
-<<<<<<< HEAD
         playerNameEditText = (EditText) view.findViewById(R.id.playerName);
         loginButton = (Button) view.findViewById(R.id.playerLoginButton);
 
@@ -83,7 +75,8 @@ public class PongFragment extends Fragment {
                 }
             }
         });
-
+        loadViews( view);
+        setUpListers();
 
         return view;
     }
@@ -111,14 +104,7 @@ public class PongFragment extends Fragment {
             }
         });
     }
-=======
-        //load views
-        loadViews( view);
 
-        //setUp button listeners
-        setUpListers();
-        return view;
-    }
 
     private void loadViews( View view){
         host = ( Button) view.findViewById( R.id.buttonHost);
@@ -141,6 +127,4 @@ public class PongFragment extends Fragment {
             startActivity( intent);
         });
     }
-
->>>>>>> ae8830ebb00e724674be868333135e8257ec863e
 }

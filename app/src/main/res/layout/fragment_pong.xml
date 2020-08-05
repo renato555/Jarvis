@@ -33,8 +33,6 @@
             android:textColor="@color/colorPrimary"
             android:textStyle="bold"
             android:text="@string/pong" />
-
-<<<<<<< HEAD
         <EditText
             android:id="@+id/playerName"
             android:layout_width="200dp"
@@ -46,7 +44,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/login" />
-=======
         <Button
             android:id="@+id/buttonHost"
             android:layout_width="match_parent"
@@ -64,6 +61,5 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/_2_players" />
->>>>>>> ae8830ebb00e724674be868333135e8257ec863e
     </LinearLayout>
 </RelativeLayout>
