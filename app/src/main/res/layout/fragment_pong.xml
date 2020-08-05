@@ -35,15 +35,21 @@
             android:text="@string/pong" />
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/buttonHost"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/host" />
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/buttonJoin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Button" />
+            android:text="@string/join" />
+
+        <Button
+            android:id="@+id/button2Players"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/_2_players" />
     </LinearLayout>
 </RelativeLayout>
