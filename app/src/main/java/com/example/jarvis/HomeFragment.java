@@ -67,8 +67,9 @@ public class HomeFragment extends Fragment {
         todayCalendarLayout = (LinearLayout) view.findViewById(R.id.todayCalendar_layout);
         
         setUpWelcomeText( ConnectionWithWebsite.getUserFullName().split( "\\s+")[0]); //only firstname gets displayed
+        getData();
         printTasks();
-        loadTodayCalendar();
+        printDate();
 
         setUpScrollViewListners( view);
 
@@ -79,17 +80,23 @@ public class HomeFragment extends Fragment {
         welcomeText.setText("Welcome, " + name);
     }
 
-    public void printTasks(){
+    private void getData(){
         allTasks = toDoListFragment.getAllTasks();
+        todayEvents = calendarFragment.getTodayEvents();
+    }
+
+    public void printTasks(){
         taskLayout.removeAllViews();
-        for (String currentText : allTasks) {
-            TextView task = new TextView(getContext());
-            setTasksTextViewParams(task, currentText);
-            taskLayout.addView(task);
+        if( allTasks != null){
+            for (String currentText : allTasks) {
+                TextView task = makeTasksTextView( currentText);
+                taskLayout.addView(task);
+            }
         }
     }
 
-    public void setTasksTextViewParams(TextView task, String currentText){
+    public TextView makeTasksTextView( String currentText){
+        TextView task = new TextView( getContext());
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         params.setMargins(25, 7, 0, 7);
         task.setLayoutParams(params);
@@ -98,19 +105,11 @@ public class HomeFragment extends Fragment {
         task.setTextSize(TypedValue.COMPLEX_UNIT_PX, 50);
         task.setTypeface(null, Typeface.BOLD);
         task.setTextColor(getResources().getColor(R.color.textColorLight));
+        return task;
     }
 
-    private void loadTodayCalendar() {
-        Date dateObj = Calendar.getInstance().getTime();
-        printDate(dateObj);
-    }
-
-    private void printDate( Date date) {
+    private void printDate( ) {
         //updates todays events
-        SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");
-        String todayDate = df.format(date);
-        todayEvents = calendarFragment.getTodayEvents();
-        todayCalendarLayout.removeAllViews();
         if( todayEvents != null){
             for( String event : todayEvents){
                 TextView eventView = makeCalendarTextView( event);
