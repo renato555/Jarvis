@@ -4,7 +4,7 @@ import android.graphics.Canvas;
 import android.view.SurfaceHolder;
 
 public class MainThread extends Thread{
-    private SurfaceHolder surfaceHolder;
+    private final SurfaceHolder surfaceHolder;
     private GameView gameView;
 
     private boolean isRunning;
@@ -22,10 +22,10 @@ public class MainThread extends Thread{
     public void run() {
         while( isRunning){
             canvas = null;
-
             try{
                 canvas = surfaceHolder.lockCanvas();
                 synchronized ( surfaceHolder){
+                    //game heartbeat
                     gameView.update();
                     gameView.draw( canvas);
                 }
