@@ -3,7 +3,6 @@ package com.example.jarvis;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,7 +70,6 @@ public class PongFragment extends Fragment {
         //check if the player exists and reference
 //        SharedPreferences preferences = getContext().getSharedPreferences("PREFS", 0);
 //        playerName = preferences.getString("playerName", "");
-        System.out.println(playerName);
         if(!playerName.equals("") && !playerName.equals("Error")){
             playerRef = database.getReference("players/" + playerName);
             addEventListener();
