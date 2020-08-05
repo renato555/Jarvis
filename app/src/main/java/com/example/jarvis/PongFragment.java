@@ -1,21 +1,15 @@
 package com.example.jarvis;
 
 import android.content.Intent;
-<<<<<<< HEAD
 import android.content.SharedPreferences;
-=======
->>>>>>> ae8830ebb00e724674be868333135e8257ec863e
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-<<<<<<< HEAD
 import android.widget.EditText;
 import android.widget.Toast;
-=======
->>>>>>> ae8830ebb00e724674be868333135e8257ec863e
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,13 +26,12 @@ public class PongFragment extends Fragment {
 
     private OnSwipeTouchListener swipeListener;
 
-    private EditText playerNameEditText;
-    private Button loginButton;
-
     private String playerName = "";
+    private String roomName = "";
 
     private FirebaseDatabase database;
     private DatabaseReference playerRef;
+    private DatabaseReference roomRef;
 
     public PongFragment(OnSwipeTouchListener swipeListener){
         this.swipeListener = swipeListener;
@@ -53,39 +46,37 @@ public class PongFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_pong, container, false);
 
-<<<<<<< HEAD
-        playerNameEditText = (EditText) view.findViewById(R.id.playerName);
-        loginButton = (Button) view.findViewById(R.id.playerLoginButton);
-
         database = FirebaseDatabase.getInstance();
 
-        //check if the player exists and reference
-        SharedPreferences preferences = getContext().getSharedPreferences("PREFS", 0);
-        playerName = preferences.getString("playerName", "");
-        if(!playerName.equals("")){
+        loginAsPlayer();
+
+        //load views
+        loadViews( view);
+
+        //setUp button listeners
+        setUpListers();
+        return view;
+    }
+
+    private void loginAsPlayer() {
+
+        playerName = ConnectionWithWebsite.getUserFullName().split(" ")[0];
+        System.out.println(playerName);
+        if(!playerName.equals("") && !playerName.equals("Error")){
             playerRef = database.getReference("players/" + playerName);
             addEventListener();
             playerRef.setValue("");
         }
 
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //Logging the player in
-                playerName = playerNameEditText.getText().toString();
-                playerNameEditText.setText("");
-                if(!playerName.equals("")){
-                    loginButton.setTag("Logging in");
-                    loginButton.setEnabled(false);
-                    playerRef = database.getReference("players/" + playerName);
-                    addEventListener();
-                    playerRef.setValue("");
-                }
-            }
-        });
-
-
-        return view;
+        //check if the player exists and reference
+//        SharedPreferences preferences = getContext().getSharedPreferences("PREFS", 0);
+//        playerName = preferences.getString("playerName", "");
+        System.out.println(playerName);
+        if(!playerName.equals("") && !playerName.equals("Error")){
+            playerRef = database.getReference("players/" + playerName);
+            addEventListener();
+            playerRef.setValue("");
+        }
     }
 
     private void addEventListener() {
@@ -93,31 +84,19 @@ public class PongFragment extends Fragment {
         playerRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(!playerName.equals("")){
+                if(!playerName.equals("") && !playerName.equals("Error")){
                     SharedPreferences preferences = getContext().getSharedPreferences("PREFS", 0);
                     SharedPreferences.Editor editor = preferences.edit();
                     editor.putString("playerName", playerName);
                     editor.apply();
-
-                    startActivity(new Intent(getContext(), PongRoomActivity.class));
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                loginButton.setText(getResources().getString(R.string.login));
-                loginButton.setEnabled(true);
                 Toast.makeText(getContext(), "Error!", Toast.LENGTH_SHORT).show();
             }
         });
-    }
-=======
-        //load views
-        loadViews( view);
-
-        //setUp button listeners
-        setUpListers();
-        return view;
     }
 
     private void loadViews( View view){
@@ -128,11 +107,27 @@ public class PongFragment extends Fragment {
 
     private void setUpListers(){
         host.setOnClickListener( (View v) -> {
+            roomName = playerName;
+            roomRef = database.getReference("rooms/" + roomName + "/player1");
+            roomRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    //join the room
+                    Intent intent = new Intent(getContext(), PongGameActivity.class);
+                    intent.putExtra("RoomName", roomName);
+                    startActivity(intent);
+                }
 
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Toast.makeText(getContext(), "Error!", Toast.LENGTH_SHORT).show();
+                }
+            });
+            roomRef.setValue(playerName);
         });
 
         join.setOnClickListener( (View v) -> {
-
+            startActivity(new Intent(getContext(), PongRoomActivity.class));
         });
 
         players2.setOnClickListener( (View v) -> {
@@ -141,6 +136,4 @@ public class PongFragment extends Fragment {
             startActivity( intent);
         });
     }
-
->>>>>>> ae8830ebb00e724674be868333135e8257ec863e
 }

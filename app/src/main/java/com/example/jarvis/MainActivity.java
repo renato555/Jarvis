@@ -58,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
         calendarFragmentPressed();
         weatherFragmentPressed();
         toDoFragmentPressed();
+        pongFragmentPressed();
         homeFragmentPressed();
     }
 
@@ -84,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
                         break;
 
                     case R.id.pong:
-                        PongFragmentPressed();
+                        pongFragmentPressed();
                         break;
 
                     case R.id.toDo:
@@ -110,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
             fragmentManager.beginTransaction().add(R.id.container, new WeatherFragment( swipeListener), tag).commit();
         }
         checkHome();
-        checkColleague();
+        checkPong();
         checkTodo();
         checkCalendar();
     }
@@ -126,12 +127,12 @@ public class MainActivity extends AppCompatActivity {
             fragmentManager.beginTransaction().add(R.id.container,toDoListFragment = new ToDoListFragment( swipeListener), tag).commit();
         }
         checkHome();
-        checkColleague();
+        checkPong();
         checkCalendar();
         checkWeather();
     }
 
-    private void PongFragmentPressed() {
+    private void pongFragmentPressed() {
         String tag = resources.getString(R.string.pong);
         if(fragmentManager.findFragmentByTag(tag) != null) {
             //if the fragment exists, show it.
@@ -160,7 +161,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         checkCalendar();
-        checkColleague();
+        checkPong();
         checkTodo();
         checkWeather();
     }
@@ -176,7 +177,7 @@ public class MainActivity extends AppCompatActivity {
             fragmentManager.beginTransaction().add(R.id.container, calendarFragment = new CalendarFragment( swipeListener), tag).commit();
         }
         checkHome();
-        checkColleague();
+        checkPong();
         checkTodo();
         checkWeather();
     }
@@ -203,7 +204,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void checkColleague(){
+    public void checkPong(){
         if(fragmentManager.findFragmentByTag(resources.getString(R.string.pong)) != null){
             //if the other fragment is visible, hide it.
             fragmentManager.beginTransaction().hide(Objects.requireNonNull(fragmentManager.findFragmentByTag(resources.getString(R.string.pong)))).commit();

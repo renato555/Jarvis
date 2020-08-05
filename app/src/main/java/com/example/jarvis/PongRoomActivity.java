@@ -25,7 +25,6 @@ import java.util.List;
 public class PongRoomActivity extends AppCompatActivity {
 
     private ListView roomsListView;
-    private Button createRoomButton;
 
     private List<String> roomsList;
 
@@ -49,22 +48,9 @@ public class PongRoomActivity extends AppCompatActivity {
         roomName = playerName;
 
         roomsListView = (ListView) findViewById(R.id.roomsListView);
-        createRoomButton = (Button) findViewById(R.id.createRoomButton);
 
         //all existing available rooms
         roomsList = new ArrayList<>();
-
-        createRoomButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                createRoomButton.setText("Creating room");
-                createRoomButton.setEnabled(false);
-                roomName = playerName;
-                roomRef = database.getReference("rooms/" + roomName + "/player1");
-                addRoomEventListener();
-                roomRef.setValue(playerName);
-            }
-        });
 
         roomsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -108,8 +94,6 @@ public class PongRoomActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 //join the room
-                createRoomButton.setText(getResources().getString(R.string.create_room));
-                createRoomButton.setEnabled(true);
                 Intent intent = new Intent(getApplicationContext(), PongGameActivity.class);
                 intent.putExtra("RoomName", roomName);
                 startActivity(intent);
@@ -117,8 +101,6 @@ public class PongRoomActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                createRoomButton.setText(getResources().getString(R.string.create_room));
-                createRoomButton.setEnabled(true);
                 Toast.makeText(getApplicationContext(), "Error!", Toast.LENGTH_SHORT).show();
             }
         });

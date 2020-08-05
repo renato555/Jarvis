@@ -45,10 +45,8 @@
     <string name="Bistra">Bistra</string>
     <string name="Tisno">Tisno</string>
     <string name="host">Host</string>
-<<<<<<< HEAD
     <string name="player_name">Player name</string>
     <string name="create_room">Create room</string>
-=======
     <string name="join">Join</string>
     <string name="_2_players">2 Players</string>
     <string name="title_activity_pong">PongActivity</string>
@@ -60,5 +58,4 @@
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
->>>>>>> ae8830ebb00e724674be868333135e8257ec863e
 </resources>
