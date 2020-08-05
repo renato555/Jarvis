@@ -10,16 +10,6 @@
         android:id="@+id/roomsListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/createRoomButton"
         android:layout_alignParentTop="true"/>
-
-    <Button
-        android:id="@+id/createRoomButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:text="@string/create_room"/>
-
 
 </RelativeLayout>
