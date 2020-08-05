@@ -105,7 +105,6 @@ public class MainActivity extends AppCompatActivity {
             fragmentManager.beginTransaction().show(Objects.requireNonNull(fragmentManager.findFragmentByTag(tag))).commit();
         } else {
             //if the fragment does not exist, add it to fragment manager.
-            Log.i("Test", "Making weather");
             fragmentManager.beginTransaction().add(R.id.container, new WeatherFragment( swipeListener), tag).commit();
         }
         checkHome();
@@ -121,7 +120,6 @@ public class MainActivity extends AppCompatActivity {
             fragmentManager.beginTransaction().show(Objects.requireNonNull(fragmentManager.findFragmentByTag(tag))).commit();
         } else {
             //if the fragment does not exist, add it to fragment manager.
-            Log.i("Test", "Making Todo");
             fragmentManager.beginTransaction().add(R.id.container,toDoListFragment = new ToDoListFragment( swipeListener), tag).commit();
         }
         checkHome();
@@ -137,7 +135,6 @@ public class MainActivity extends AppCompatActivity {
             fragmentManager.beginTransaction().show(Objects.requireNonNull(fragmentManager.findFragmentByTag(tag))).commit();
         } else {
             //if the fragment does not exist, add it to fragment manager.
-            Log.i("Test", "Making pong");
             fragmentManager.beginTransaction().add(R.id.container, new PongFragment( swipeListener), tag).commit();
         }
         checkHome();
@@ -171,7 +168,6 @@ public class MainActivity extends AppCompatActivity {
             fragmentManager.beginTransaction().show(Objects.requireNonNull(fragmentManager.findFragmentByTag(tag))).commit();
         } else {
             //if the fragment does not exist, add it to fragment manager.
-            Log.i("Test", "Making calendar");
             fragmentManager.beginTransaction().add(R.id.container, calendarFragment = new CalendarFragment( swipeListener), tag).commit();
         }
         checkHome();
