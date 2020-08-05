@@ -17,6 +17,7 @@ public class MainThread extends Thread{
         this.gameView = gameView;
     }
 
+    // TODO: 05/08/2020 OPTIMIZE
     @Override
     public void run() {
         while( isRunning){
