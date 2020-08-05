@@ -16,6 +16,8 @@ public class Ball {
         //center the ball in the screen
         positionX = GameView.screenWidth / 2;
         positionY = GameView.screenHeight / 2;
+
+        pickVelocity();
     }
 
     public void update( Player player1, Player player2, Score score){
@@ -28,6 +30,11 @@ public class Ball {
     public void draw(Canvas canvas, Paint paint){
         //draw a circle at x, y
         canvas.drawCircle( positionX, positionY, radius, paint);
+    }
+
+    private void pickVelocity(){
+        velocityX = (float) (Math.random() * 10);
+        velocityY = (float) (Math.random() * 10);
     }
     
 }
