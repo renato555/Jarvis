@@ -32,6 +32,7 @@ import java.util.Objects;
 
 
 public class MainActivity extends AppCompatActivity {
+
     private static final int WRITE_PERMISSION = 1001;
 
     private ChipNavigationBar chipNavigationBar;
