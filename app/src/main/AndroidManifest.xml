@@ -12,7 +12,9 @@
         android:usesCleartextTraffic="true">
         <activity android:name=".PongGameActivity"></activity>
         <activity android:name=".PongRoomActivity" />
-        <activity android:name=".PongActivity"></activity>
+        <activity
+            android:name=".PongActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".MainActivity" />
         <activity android:name=".DontPressMeActivity" />
         <activity

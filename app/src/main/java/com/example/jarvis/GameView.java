@@ -29,8 +29,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
 
         //initialize variables
         thread = new MainThread( getHolder(), this);
-        player1 = new Player( screenWidth / 2, screenHeight - 300);
-        player2 = new Player( screenWidth / 2, 160);
+        player1 = new Player( screenWidth / 2, screenHeight - Player.playerOffSet);
+        player2 = new Player( screenWidth / 2, Player.playerOffSet - Player.height);
         ball = new Ball();
         score = new Score( 0, 0, 10);
 
@@ -44,6 +44,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
         score.update();
     }
 
+    //handle multi touch events
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         for( int i = 0; i < event.getPointerCount(); ++i){
@@ -67,6 +68,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
             player2.draw( canvas, paint);
             ball.draw( canvas, paint);
             score.draw( canvas, paint);
+            canvas.drawLine( 0, screenHeight / 2, screenWidth, screenHeight /2, paint);
         }
     }
 
