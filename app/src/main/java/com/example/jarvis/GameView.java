@@ -30,13 +30,13 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
         getHolder().addCallback( this);
 
         //initialize variables
-        player1 = new Player( screenWidth / 2, screenHeight - 300, true, roomName);
-        player2 = new Player( screenWidth / 2, 160, false, roomName);
+
+        thread = new MainThread( getHolder(), this);
+        player1 = new Player( screenWidth / 2, screenHeight - Player.playerOffSet,true, roomName);
+        player2 = new Player( screenWidth / 2, Player.playerOffSet - Player.height, false, roomName);
         ball = new Ball();
         score = new Score( 0, 0, 10);
         database = new PongGameDatabase(roomName);
-
-        thread = new MainThread( getHolder(), this);
 
         setFocusable( true);
     }
@@ -54,6 +54,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
         }.start();
     }
 
+    //handle multi touch events
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         for( int i = 0; i < event.getPointerCount(); ++i){
@@ -77,6 +78,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
             player2.draw( canvas, paint);
             ball.draw( canvas, paint);
             score.draw( canvas, paint);
+            canvas.drawLine( 0, screenHeight / 2, screenWidth, screenHeight /2, paint);
         }
     }
 

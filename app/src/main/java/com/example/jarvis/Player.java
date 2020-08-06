@@ -23,8 +23,10 @@ public class Player {
     private boolean isPlayer1; // if true -> player 1; if false -> player 2
     private String roomName = "";
 
-    public static final float width = 400.f;
-    public static final float height = 70.f;
+    public static final float width = 300.f;
+    public static final float height = 40.f;
+    public static final float imaginaryHeight = 80;
+    public static final float playerOffSet = 600;
 
     public Player( float startingX, float startingY, boolean isPlayer1, String roomName){
         positionX = startingX;
@@ -41,12 +43,13 @@ public class Player {
     public void update(){
         // TODO: 05/08/2020 for now the player will just follow the finger
         positionX += 0.06*( wantX - positionX);
-        // update database value
+        //player will just follow the finger
+        positionX += 0.1*( wantX - positionX);
     }
     
     public void draw( Canvas canvas, Paint paint){
         //draw a rectange at x, y ( x is in the midle)
-        canvas.drawRect( positionX - (width /2), positionY, positionX + (width / 2), positionY - height, paint);
+        canvas.drawRect( positionX - (width /2), positionY, positionX + (width / 2), positionY + height, paint);
     }
 
     public void wantedPosition( float wantX){
@@ -54,18 +57,6 @@ public class Player {
         this.wantX = wantX;
     }
 
-    public void setupDatabase(){
-
-        database = FirebaseDatabase.getInstance();
-
-        if(isPlayer1){
-            playerRef = database.getReference("rooms/" + roomName + "/player1");
-        } else {
-            playerRef = database.getReference("rooms/" + roomName + "/player2");
-        }
-
-        playerRef.setValue(positionX);
-    }
 
     public void updateDatabase(){
         playerRef.addValueEventListener(new ValueEventListener() {
@@ -81,7 +72,6 @@ public class Player {
         });
     }
 
-    public double getPositionX(){
-        return this.positionX;
-    }
+    public float getPositionX(){ return positionX;}
+    public float getPositionY(){ return positionY;}
 }
