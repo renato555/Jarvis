@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -32,13 +31,13 @@ public class PongFragment extends Fragment {
     private DatabaseReference playerRef;
     private DatabaseReference roomRef;
 
-    public PongFragment(OnSwipeTouchListener swipeListener){
-        this.swipeListener = swipeListener;
-    }
-
     private Button host;
     private Button join;
     private Button players2;
+
+    public PongFragment(OnSwipeTouchListener swipeListener){
+        this.swipeListener = swipeListener;
+    }
 
     @Nullable
     @Override
@@ -53,7 +52,7 @@ public class PongFragment extends Fragment {
         loadViews( view);
 
         //setUp button listeners
-        setUpListers();
+        setUpListeners();
         return view;
     }
 
@@ -103,7 +102,7 @@ public class PongFragment extends Fragment {
         players2 = ( Button) view.findViewById( R.id.button2Players);
     }
 
-    private void setUpListers(){
+    private void setUpListeners(){
         host.setOnClickListener( (View v) -> {
             roomName = playerName;
             roomRef = database.getReference("rooms/" + roomName + "/player1");
@@ -111,7 +110,7 @@ public class PongFragment extends Fragment {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     //join the room
-                    Intent intent = new Intent(getContext(), PongGameActivity.class);
+                    Intent intent = new Intent(getContext(), PongActivity.class);
                     intent.putExtra("RoomName", roomName);
                     startActivity(intent);
                 }
@@ -121,7 +120,6 @@ public class PongFragment extends Fragment {
                     Toast.makeText(getContext(), "Error!", Toast.LENGTH_SHORT).show();
                 }
             });
-            roomRef.setValue(playerName);
         });
 
         join.setOnClickListener( (View v) -> {

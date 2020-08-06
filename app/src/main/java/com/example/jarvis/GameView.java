@@ -23,16 +23,20 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
     private Ball ball;
     private Score score;
 
-    public GameView(Context context) {
+    private PongGameDatabase database;
+
+    public GameView(Context context, String roomName) {
         super(context);
         getHolder().addCallback( this);
 
         //initialize variables
-        thread = new MainThread( getHolder(), this);
-        player1 = new Player( screenWidth / 2, screenHeight - 300);
-        player2 = new Player( screenWidth / 2, 160);
+        player1 = new Player( screenWidth / 2, screenHeight - 300, true, roomName);
+        player2 = new Player( screenWidth / 2, 160, false, roomName);
         ball = new Ball();
         score = new Score( 0, 0, 10);
+        database = new PongGameDatabase(roomName);
+
+        thread = new MainThread( getHolder(), this);
 
         setFocusable( true);
     }
@@ -42,6 +46,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
         player2.update();
         ball.update( player1, player2, score);
         score.update();
+        new Thread(){
+            @Override
+            public void run() {
+                database.update(player1.getPositionX(), player2.getPositionX(), ball.getPositionX(), ball.getPositionY());
+            }
+        }.start();
     }
 
     @Override

@@ -43,8 +43,8 @@ public class PongRoomActivity extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
 
         //get the player name and assign his room name to the player name
-        SharedPreferences preferences = getSharedPreferences("PREFS", 0);
-        playerName = preferences.getString("playerName", "");
+//        SharedPreferences preferences = getSharedPreferences("PREFS", 0);
+//        playerName = preferences.getString("playerName", "");
         roomName = playerName;
 
         roomsListView = (ListView) findViewById(R.id.roomsListView);
@@ -58,7 +58,6 @@ public class PongRoomActivity extends AppCompatActivity {
                 roomName = roomsList.get(position);
                 roomRef = database.getReference("rooms/" + roomName + "/player2");
                 addRoomEventListener();
-                roomRef.setValue(playerName);
             }
         });
 
@@ -94,7 +93,7 @@ public class PongRoomActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 //join the room
-                Intent intent = new Intent(getApplicationContext(), PongGameActivity.class);
+                Intent intent = new Intent(getApplicationContext(), PongActivity.class);
                 intent.putExtra("RoomName", roomName);
                 startActivity(intent);
             }

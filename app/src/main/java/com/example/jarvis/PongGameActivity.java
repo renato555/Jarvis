@@ -37,8 +37,8 @@ public class PongGameActivity extends AppCompatActivity {
 
         database = FirebaseDatabase.getInstance();
 
-        SharedPreferences preferences = getSharedPreferences("PREFS", 0);
-        playerName = preferences.getString("playerName", "");
+//        SharedPreferences preferences = getSharedPreferences("PREFS", 0);
+//        playerName = preferences.getString("playerName", "");
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {

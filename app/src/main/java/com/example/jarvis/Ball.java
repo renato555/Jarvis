@@ -33,8 +33,18 @@ public class Ball {
     }
 
     private void pickVelocity(){
-        velocityX = (float) (Math.random() * 10);
-        velocityY = (float) (Math.random() * 10);
+//        velocityX = (float) (Math.random() * 10);
+//        velocityY = (float) (Math.random() * 10);
+
+        velocityX = 0;
+        velocityY = 0;
     }
-    
+
+    public double getPositionX(){
+        return this.positionX;
+    }
+
+    public double getPositionY(){
+        return this.positionY;
+    }
 }
