@@ -2,10 +2,10 @@ package com.example.jarvis;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.util.Log;
-import android.view.MotionEvent;
 
 public class Player {
+    private String playerName;
+
     private float positionX;
     private float positionY;
 
@@ -16,11 +16,13 @@ public class Player {
     public static final float imaginaryHeight = 80;
     public static final float playerOffSet = 600;
 
-    public Player( float startingX, float startingY){
+    public Player( float startingX, float startingY, String playerName){
         positionX = startingX;
         positionY = startingY;
+        this.playerName = playerName;
 
         wantX = startingX;
+
     }
 
     public void update(){
@@ -40,4 +42,5 @@ public class Player {
 
     public float getPositionX(){ return positionX;}
     public float getPositionY(){ return positionY;}
+    public String getPlayerName(){ return playerName;}
 }
