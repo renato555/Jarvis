@@ -17,32 +17,19 @@ public class Player {
 
     private double wantX;
 
-    private FirebaseDatabase database;
-    private DatabaseReference playerRef;
-
-    private boolean isPlayer1; // if true -> player 1; if false -> player 2
-    private String roomName = "";
-
     public static final float width = 300.f;
     public static final float height = 40.f;
     public static final float imaginaryHeight = 80;
-    public static final float playerOffSet = 600;
+    public static final float playerOffSet = 100;
 
-    public Player( float startingX, float startingY, boolean isPlayer1, String roomName){
+    public Player( float startingX, float startingY){
         positionX = startingX;
         positionY = startingY;
 
         wantX = startingX;
-
-        this.isPlayer1 = isPlayer1;
-        this.roomName = roomName;
-
-        //setupDatabase();
     }
 
     public void update(){
-        // TODO: 05/08/2020 for now the player will just follow the finger
-        positionX += 0.06*( wantX - positionX);
         //player will just follow the finger
         positionX += 0.1*( wantX - positionX);
     }
@@ -57,21 +44,10 @@ public class Player {
         this.wantX = wantX;
     }
 
-
-    public void updateDatabase(){
-        playerRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                playerRef.setValue(positionX);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                //do nothing
-            }
-        });
-    }
-
     public float getPositionX(){ return positionX;}
     public float getPositionY(){ return positionY;}
+
+    public void updatePositionFromDatabase(float newPositionX){
+        this.positionX =(float) newPositionX;
+    }
 }

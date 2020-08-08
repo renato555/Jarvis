@@ -3,6 +3,7 @@ package com.example.jarvis;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.Log;
+import android.util.Pair;
 
 public class Ball {
     private float positionX;
@@ -66,20 +67,27 @@ public class Ball {
         velocityY = 0;
     }
 
-    public double getPositionX() {
+    public float getPositionX() {
         return this.positionX;
     }
 
-    public double getPositionY() {
+    public float getPositionY() {
         return this.positionY;
     }
 
-        private void resetBall () {
-            positionX = GameView.screenWidth / 2;
-            positionY = GameView.screenHeight / 2;
+    public void updateBallXPositionFromDatabase(float newPositionX){
+        this.positionX = newPositionX;
+    }
+    public void updateBallYPositionFromDatabase(float newPositionY){
+        this.positionY = newPositionY;
+    }
 
-            // TODO: 06/08/2020 figure this out
-            velocityX = (float) (Math.random() * 60) - 30;
-            velocityY = (float) (Math.random() * 40) - 20;
-        }
+    private void resetBall () {
+        positionX = GameView.screenWidth / 2;
+        positionY = GameView.screenHeight / 2;
+
+        // TODO: 06/08/2020 figure this out
+        velocityX = (float) (Math.random() * 60) - 30;
+        velocityY = (float) (Math.random() * 40) - 20;
+    }
 }

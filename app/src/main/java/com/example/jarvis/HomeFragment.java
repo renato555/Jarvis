@@ -45,10 +45,13 @@ public class HomeFragment extends Fragment {
 
 
     public HomeFragment(OnSwipeTouchListener swipeListener, ToDoListFragment toDoListFragment, CalendarFragment calendarFragment) {
+        super();
         this.swipeListener = swipeListener;
         this.toDoListFragment = toDoListFragment;
         this.calendarFragment = calendarFragment;
     }
+
+    public HomeFragment(){super();}
 
 
     @Override

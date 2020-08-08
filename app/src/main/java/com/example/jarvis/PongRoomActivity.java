@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -57,7 +58,11 @@ public class PongRoomActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 roomName = roomsList.get(position);
                 roomRef = database.getReference("rooms/" + roomName + "/player2");
-                addRoomEventListener();
+
+                //Start game
+                Intent intent = new Intent(getApplicationContext(), PongActivity.class);
+                intent.putExtra("RoomName", roomName);
+                startActivity(intent);
             }
         });
 
@@ -84,23 +89,6 @@ public class PongRoomActivity extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 //error - nothing
-            }
-        });
-    }
-
-    private void addRoomEventListener(){
-        roomRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                //join the room
-                Intent intent = new Intent(getApplicationContext(), PongActivity.class);
-                intent.putExtra("RoomName", roomName);
-                startActivity(intent);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(getApplicationContext(), "Error!", Toast.LENGTH_SHORT).show();
             }
         });
     }

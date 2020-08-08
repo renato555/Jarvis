@@ -5,6 +5,7 @@ import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.os.AsyncTask;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -25,33 +26,30 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
 
     private PongGameDatabase database;
 
-    public GameView(Context context, String roomName) {
+    private boolean isHost;
+
+    public GameView(Context context, String roomName, boolean isHost) {
         super(context);
         getHolder().addCallback( this);
 
         //initialize variables
 
         thread = new MainThread( getHolder(), this);
-        player1 = new Player( screenWidth / 2, screenHeight - Player.playerOffSet,true, roomName);
-        player2 = new Player( screenWidth / 2, Player.playerOffSet - Player.height, false, roomName);
+        player1 = new Player( screenWidth / 2, screenHeight - Player.playerOffSet);
+        player2 = new Player( screenWidth / 2, Player.playerOffSet - Player.height);
         ball = new Ball();
         score = new Score( 0, 0, 10);
-        database = new PongGameDatabase(roomName);
 
+        database = new PongGameDatabase(isHost, roomName);
         setFocusable( true);
     }
 
-    public void update(){
+    public void update() {
+        database.update(player1, player2 ,ball);
         player1.update();
         player2.update();
-        ball.update( player1, player2, score);
+        ball.update(player1, player2, score);
         score.update();
-        new Thread(){
-            @Override
-            public void run() {
-                database.update(player1.getPositionX(), player2.getPositionX(), ball.getPositionX(), ball.getPositionY());
-            }
-        }.start();
     }
 
     //handle multi touch events

@@ -3,6 +3,7 @@ package com.example.jarvis;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,6 +40,10 @@ public class PongFragment extends Fragment {
         this.swipeListener = swipeListener;
     }
 
+    public PongFragment(){
+
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -59,7 +64,6 @@ public class PongFragment extends Fragment {
     private void loginAsPlayer() {
 
         playerName = ConnectionWithWebsite.getUserFullName().split(" ")[0];
-        System.out.println(playerName);
         if(!playerName.equals("") && !playerName.equals("Error")){
             playerRef = database.getReference("players/" + playerName);
             addEventListener();
@@ -105,21 +109,9 @@ public class PongFragment extends Fragment {
     private void setUpListeners(){
         host.setOnClickListener( (View v) -> {
             roomName = playerName;
-            roomRef = database.getReference("rooms/" + roomName + "/player1");
-            roomRef.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    //join the room
-                    Intent intent = new Intent(getContext(), PongActivity.class);
-                    intent.putExtra("RoomName", roomName);
-                    startActivity(intent);
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                    Toast.makeText(getContext(), "Error!", Toast.LENGTH_SHORT).show();
-                }
-            });
+            Intent intent = new Intent(getContext(), PongActivity.class);
+            intent.putExtra("RoomName", roomName);
+            startActivity(intent);
         });
 
         join.setOnClickListener( (View v) -> {

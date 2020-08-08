@@ -10,11 +10,14 @@ public class MainThread extends Thread{
     private boolean isRunning;
     public static Canvas canvas;
 
+    private boolean isLocked;
+
     public MainThread(SurfaceHolder surfaceHolder, GameView gameView){
         super();
 
         this.surfaceHolder = surfaceHolder;
         this.gameView = gameView;
+        this.isLocked = false;
     }
 
     // TODO: 05/08/2020 OPTIMIZE
@@ -23,7 +26,10 @@ public class MainThread extends Thread{
         while( isRunning){
             canvas = null;
             try{
-                canvas = surfaceHolder.lockCanvas();
+                if(!isLocked) {
+                    canvas = surfaceHolder.lockCanvas();
+                    isLocked = true;
+                }
                 synchronized ( surfaceHolder){
                     //game heartbeat
                     gameView.update();
@@ -32,10 +38,10 @@ public class MainThread extends Thread{
             }catch( Exception e){
                 e.printStackTrace();
             }finally{
-                surfaceHolder.unlockCanvasAndPost(canvas);
                 if( canvas != null){
                     try{
                         surfaceHolder.unlockCanvasAndPost( canvas);
+                        isLocked = false;
                     }catch ( Exception e){
                         e.printStackTrace();
                     }
