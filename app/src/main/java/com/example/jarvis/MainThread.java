@@ -8,6 +8,7 @@ public class MainThread extends Thread{
     private GameView gameView;
 
     private boolean isRunning;
+    private boolean pause;
     public static Canvas canvas;
 
     private boolean isLocked;
@@ -20,30 +21,30 @@ public class MainThread extends Thread{
         this.isLocked = false;
     }
 
-    // TODO: 05/08/2020 OPTIMIZE
     @Override
     public void run() {
         while( isRunning){
-            canvas = null;
-            try{
-                if(!isLocked) {
-                    canvas = surfaceHolder.lockCanvas();
-                    isLocked = true;
-                }
-                synchronized ( surfaceHolder){
-                    //game heartbeat
-                    gameView.update();
-                    gameView.draw( canvas);
-                }
-            }catch( Exception e){
-                e.printStackTrace();
-            }finally{
-                if( canvas != null){
-                    try{
-                        surfaceHolder.unlockCanvasAndPost( canvas);
-                        isLocked = false;
-                    }catch ( Exception e){
-                        e.printStackTrace();
+            while( !pause){
+                canvas = null;
+                try{
+                    if(!isLocked) {
+                        canvas = surfaceHolder.lockCanvas();
+                        isLocked = true;
+                    }                    synchronized ( surfaceHolder){
+                        //game heartbeat
+                        gameView.update();
+                        gameView.draw( canvas);
+                    }
+                }catch( Exception e){
+                    e.printStackTrace();
+                }finally{
+                    if( canvas != null){
+                        try{
+                            surfaceHolder.unlockCanvasAndPost( canvas);
+                            isLocked = false;
+                        }catch ( Exception e){
+                            e.printStackTrace();
+                        }
                     }
                 }
             }
@@ -51,4 +52,6 @@ public class MainThread extends Thread{
     }
 
     public void setIsRunning( boolean isRunning) { this.isRunning = isRunning;}
+
+    public void setPause( boolean pause){ this.pause = pause;}
 }

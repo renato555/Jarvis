@@ -1,5 +1,6 @@
 package com.example.jarvis;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Canvas;
@@ -18,6 +19,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
     public static final int screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
 
     private MainThread thread;
+    private Activity parentActivity;
 
     private Player player1;
     private Player player2;
@@ -28,17 +30,18 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
 
     private boolean isHost;
 
-    public GameView(Context context, String roomName, boolean isHost) {
-        super(context);
+    public GameView(Activity parentActivity, String roomName, boolean isHost) {
+        super( parentActivity.getApplicationContext());
         getHolder().addCallback( this);
 
         //initialize variables
 
         thread = new MainThread( getHolder(), this);
-        player1 = new Player( screenWidth / 2, screenHeight - Player.playerOffSet);
-        player2 = new Player( screenWidth / 2, Player.playerOffSet - Player.height);
+        player1 = new Player( screenWidth / 2, screenHeight - Player.playerOffSet, "Renato");
+        player2 = new Player( screenWidth / 2, Player.playerOffSet - Player.height, "Lovro");
         ball = new Ball();
-        score = new Score( 0, 0, 10);
+        score = new Score( 7, parentActivity, thread);
+        this.parentActivity = parentActivity;
 
         database = new PongGameDatabase(isHost, roomName);
         setFocusable( true);
@@ -48,8 +51,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
         database.update(player1, player2 ,ball);
         player1.update();
         player2.update();
-        ball.update(player1, player2, score);
-        score.update();
+
+        ball.update( player1, player2, score);
+        score.update( player1, player2);
     }
 
     //handle multi touch events
@@ -68,10 +72,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
 
     @Override
     public void draw( Canvas canvas){
-        super.draw( canvas);
         if( canvas != null){
+            super.draw( canvas);
             Paint paint = new Paint();
             paint.setColor( Color.rgb( 255, 255, 255));
+
             player1.draw( canvas, paint);
             player2.draw( canvas, paint);
             ball.draw( canvas, paint);
@@ -98,6 +103,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
         while( retry){
             try{
                 thread.setIsRunning( false);
+                thread.setPause( true);
                 thread.join();
             }catch ( InterruptedException e){
                 e.printStackTrace();

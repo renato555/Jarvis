@@ -3,15 +3,9 @@ package com.example.jarvis;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
-import androidx.annotation.NonNull;
-
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
 public class Player {
+    private String playerName;
+
     private float positionX;
     private float positionY;
 
@@ -22,11 +16,13 @@ public class Player {
     public static final float imaginaryHeight = 80;
     public static final float playerOffSet = 100;
 
-    public Player( float startingX, float startingY){
+    public Player( float startingX, float startingY, String playerName){
         positionX = startingX;
         positionY = startingY;
+        this.playerName = playerName;
 
         wantX = startingX;
+
     }
 
     public void update(){
@@ -50,4 +46,5 @@ public class Player {
     public void updatePositionFromDatabase(float newPositionX){
         this.positionX =(float) newPositionX;
     }
+    public String getPlayerName(){ return playerName;}
 }
