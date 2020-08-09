@@ -110,6 +110,7 @@ public class PongFragment extends Fragment {
         host.setOnClickListener( (View v) -> {
             roomName = playerName;
             Intent intent = new Intent(getContext(), PongActivity.class);
+            intent.putExtra("mode", 1);
             intent.putExtra("RoomName", roomName);
             startActivity(intent);
         });
@@ -120,7 +121,8 @@ public class PongFragment extends Fragment {
 
         players2.setOnClickListener( (View v) -> {
             Intent intent = new Intent( getContext(), PongActivity.class);
-            intent.putExtra( "mode", 3);
+            intent.putExtra( "mode", 2);
+            intent.putExtra("RoomName", roomName);
             startActivity( intent);
         });
     }

@@ -21,10 +21,13 @@ public class Score {
     private Activity activity;
     private MainThread thread;
 
-    public Score( int playingToScore, Activity parentActivity, MainThread thread){
+    private GameView gameView;
+
+    public Score( int playingToScore, Activity parentActivity, MainThread thread, GameView gameView){
         this.playingToScore = playingToScore;
         this.activity = parentActivity;
         this.thread = thread;
+        this.gameView = gameView;
     }
 
     public void update(Player player1, Player player2){
@@ -79,14 +82,4 @@ public class Score {
         this.scorePlayer2 = 0;
     }
 
-    public int getScorePlayer1(){return this.scorePlayer1;}
-    public int getScorePlayer2(){return this.scorePlayer2;}
-
-    public void updatePlayer1ScoreFromDatabase(int scorePlayer1){
-        this.scorePlayer1 = scorePlayer1;
-    }
-
-    public void updatePlayer2ScoreFromDatabase(int scorePlayer2){
-        this.scorePlayer2 = scorePlayer2;
-    }
 }

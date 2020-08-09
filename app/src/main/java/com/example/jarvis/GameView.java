@@ -37,9 +37,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
     private boolean wasReset;
 
     private boolean isHost;
+    private int mode;
 
 
-    public GameView(Activity parentActivity, String roomName, boolean isHost) {
+    public GameView(Activity parentActivity, String roomName, boolean isHost, int mode) {
         super( parentActivity.getApplicationContext());
         getHolder().addCallback( this);
 
@@ -48,28 +49,35 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
         player1 = new Player( screenWidth / 2, screenHeight - Player.playerOffSet, "Renato");
         player2 = new Player( screenWidth / 2, Player.playerOffSet - Player.height, "Lovro");
         ball = new Ball();
-        score = new Score( 7, parentActivity, thread);
+        score = new Score( 7, parentActivity, thread, this);
         this.parentActivity = parentActivity;
 
         this.roomName = roomName;
         this.wasReset = false;
         this.isHost = isHost;
+        this.mode = mode;
 
-        database = new PongGameDatabase(isHost, roomName);
-        player2MessageRef = FirebaseDatabase.getInstance().getReference("rooms/" + roomName + "/message");
-        setPlayer2MessageRefListener();
+        if(mode == 1) {
+            database = new PongGameDatabase(isHost, roomName);
+            player2MessageRef = FirebaseDatabase.getInstance().getReference("rooms/" + roomName + "/message");
+            setPlayer2MessageRefListener();
 
-        if(isHost)
-            player2MessageRef.setValue("");
-        else player2MessageRef.setValue("joined");
+            if (isHost)
+                player2MessageRef.setValue("");
+            else player2MessageRef.setValue("joined");
+        }
 
         setFocusable( true);
     }
 
     public void update() {
-        database.update(player1, player2 ,ball, score);
+        if(mode == 1)
+            database.update(player1, player2 ,ball, score);
+        else{
+            player2.update();
+            ball.update(player1, player2, score);
+        }
         player1.update();
-
         score.update( player1, player2);
     }
 
@@ -148,5 +156,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
 
             }
         });
+    }
+
+    public void setWasReset(boolean b){
+        wasReset = b;
     }
 }
