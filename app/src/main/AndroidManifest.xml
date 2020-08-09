@@ -10,11 +10,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".PongGameActivity"></activity>
         <activity android:name=".PongRoomActivity" />
         <activity
             android:name=".PongActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"/>
         <activity android:name=".MainActivity" />
         <activity android:name=".DontPressMeActivity" />
         <activity

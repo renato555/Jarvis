@@ -11,10 +11,10 @@ public class Player {
 
     private double wantX;
 
-    public static final float width = 300.f;
-    public static final float height = 40.f;
-    public static final float imaginaryHeight = 80;
-    public static final float playerOffSet = 100;
+    public static final float width = (float) 0.25 * GameView.screenWidth;
+    public static final float height = (float) 0.03 * GameView.screenHeight;
+    public static final float imaginaryHeight = 2 * height;
+    public static final float playerOffSet =(float) 0.1 * GameView.screenHeight;
 
     public Player( float startingX, float startingY, String playerName){
         positionX = startingX;
@@ -22,7 +22,6 @@ public class Player {
         this.playerName = playerName;
 
         wantX = startingX;
-
     }
 
     public void update(){
@@ -31,7 +30,7 @@ public class Player {
     }
     
     public void draw( Canvas canvas, Paint paint){
-        //draw a rectange at x, y ( x is in the midle)
+        //draw a rectangle at x, y ( x is in the middle)
         canvas.drawRect( positionX - (width /2), positionY, positionX + (width / 2), positionY + height, paint);
     }
 

@@ -14,7 +14,7 @@ public class Ball {
     private float velocityMultiplier = 1.1f;
     private boolean bounceDirection; //if true ball is going towards player1 else player2
 
-    private float radius = 20;
+    private float radius = (float) 0.02 * GameView.screenWidth;
 
     public Ball() {
         //center the ball in the screen and pick velocity
