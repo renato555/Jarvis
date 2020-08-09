@@ -79,7 +79,7 @@ public class Ball {
         this.positionY = newPositionY;
     }
 
-    private void resetBall () {
+    public void resetBall () {
         positionX = GameView.screenWidth / 2;
         positionY = GameView.screenHeight / 2;
 

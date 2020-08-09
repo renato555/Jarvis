@@ -66,28 +66,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
         setFocusable( true);
     }
 
-    private void setPlayer2MessageRefListener() {
-        player2MessageRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(!wasReset){
-                    if(snapshot.getValue() instanceof String && ((String) snapshot.getValue()).equals("")){
-                        thread.setPause(true);
-                    }else {
-                        thread.setPause(false);
-                        score.resetScore();
-                        wasReset = true;
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-    }
-
     public void update() {
         database.update(player1, player2 ,ball, score);
         player1.update();
@@ -132,9 +110,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
     }
 
     @Override
-    public void surfaceChanged(@NonNull SurfaceHolder surfaceHolder, int i, int i1, int i2) {
-
-    }
+    public void surfaceChanged(@NonNull SurfaceHolder surfaceHolder, int i, int i1, int i2) {}
 
     @Override
     public void surfaceDestroyed(@NonNull SurfaceHolder surfaceHolder) {
@@ -150,5 +126,27 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
             }
             retry = false;
         }
+    }
+
+    private void setPlayer2MessageRefListener() {
+        player2MessageRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(!wasReset){
+                    if(snapshot.getValue() instanceof String && ((String) snapshot.getValue()).equals("")){
+                        thread.setPause(true);
+                    }else {
+                        thread.setPause(false);
+                        score.resetScore();
+                        wasReset = true;
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 }
