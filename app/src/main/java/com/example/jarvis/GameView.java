@@ -7,12 +7,19 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.AsyncTask;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import androidx.annotation.NonNull;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class GameView extends SurfaceView implements SurfaceHolder.Callback{
     public static final int screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
@@ -27,15 +34,16 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
     private Score score;
 
     private PongGameDatabase database;
+    private DatabaseReference player2MessageRef;
 
-    private boolean isHost;
+    private String roomName;
+    private boolean wasReset;
 
     public GameView(Activity parentActivity, String roomName, boolean isHost) {
         super( parentActivity.getApplicationContext());
         getHolder().addCallback( this);
 
         //initialize variables
-
         thread = new MainThread( getHolder(), this);
         player1 = new Player( screenWidth / 2, screenHeight - Player.playerOffSet, "Renato");
         player2 = new Player( screenWidth / 2, Player.playerOffSet - Player.height, "Lovro");
@@ -43,18 +51,51 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
         score = new Score( 7, parentActivity, thread);
         this.parentActivity = parentActivity;
 
+        this.roomName = roomName;
+        wasReset = false;
+
         database = new PongGameDatabase(isHost, roomName);
+
+        player2MessageRef = FirebaseDatabase.getInstance().getReference("rooms/" + roomName + "/message");
+        if(!isHost){
+            player2MessageRef.setValue("Joined");
+        }else player2MessageRef.setValue("");
         setFocusable( true);
     }
 
     public void update() {
         database.update(player1, player2 ,ball);
         player1.update();
-        player2.update();
 
         ball.update( player1, player2, score);
+
         score.update( player1, player2);
+
     }
+
+//    private boolean waitForPlayer2() {
+//        player2MessageRef.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                if(!wasReset && ((String) snapshot.getValue()) != null) {
+//                    if (((String) snapshot.getValue()).equals("")) {
+//                        thread.setPause(true);
+//                    }else {
+//                        thread.setPause(false);
+//                        score.resetScore();
+//                        wasReset = true;
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//                thread.setPause(false);
+//            }
+//        });
+//
+//        return wasReset;
+//    }
 
     //handle multi touch events
     @Override

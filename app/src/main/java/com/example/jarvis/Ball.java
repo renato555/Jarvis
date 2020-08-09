@@ -26,8 +26,8 @@ public class Ball {
         if (positionX + radius >= GameView.screenWidth || positionX - radius <= 0) {
             velocityX *= -1;
         }
-        //bounce off player1
 
+        //bounce off player1
         float x1 = player1.getPositionX();
         float y1 = player1.getPositionY();
         if(  ( positionX >= x1 - Player.width / 2 && positionX <= x1 + Player.width / 2) && ( positionY + radius >= y1 && positionY + radius <= y1 + Player.imaginaryHeight) && bounceDirection){
@@ -35,8 +35,8 @@ public class Ball {
             velocityY *= velocityMultiplier; //speed up in y direction
             bounceDirection = false;
         }
-        //bounce off player2
 
+        //bounce off player2
         float x2 = player2.getPositionX();
         float y2 = player2.getPositionY();
         if(  ( positionX >= x2 - Player.width / 2 && positionX <= x2 + Player.width / 2) && ( positionY - radius <= y2 + Player.height  && positionY - radius >= y2 + Player.height - Player.imaginaryHeight) && !bounceDirection){
@@ -62,14 +62,6 @@ public class Ball {
     public void draw(Canvas canvas, Paint paint) {
         //draw a circle at x, y
         canvas.drawCircle(positionX, positionY, radius, paint);
-    }
-
-    private void pickVelocity() {
-//        velocityX = (float) (Math.random() * 10);
-//        velocityY = (float) (Math.random() * 10);
-
-        velocityX = 0;
-        velocityY = 0;
     }
 
     public float getPositionX() {

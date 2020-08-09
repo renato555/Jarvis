@@ -68,7 +68,6 @@ public class Score {
 
             builder.show();
         });
-
     }
 
     public void increaseScorePlayer1(){
@@ -77,5 +76,10 @@ public class Score {
 
     public void increaseScorePlayer2(){
         scorePlayer2++;
+    }
+
+    public void resetScore(){
+        this.scorePlayer1 = 0;
+        this.scorePlayer2 = 0;
     }
 }

@@ -6,15 +6,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 public class PongActivity extends AppCompatActivity {
+
+    private boolean isHost;
+    private String roomName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        Log.i("Test", "Creating PongActivity");
-        String roomName;
-        boolean isHost;
 
         // TODO: 05/08/2020 na temelju moda pokrenuti drugacije konfiguracije ponga. ( HOST-1, JOIN-2, 2 PLAYERS-3)  
         Intent intent = getIntent();
@@ -25,5 +27,15 @@ public class PongActivity extends AppCompatActivity {
         else isHost = false;
 
         setContentView( new GameView( this, roomName, isHost));
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        //Delete room when no players remain in it
+        DatabaseReference roomRef = FirebaseDatabase.getInstance().getReference("rooms/" + roomName);
+        roomRef.removeValue();
+
     }
 }

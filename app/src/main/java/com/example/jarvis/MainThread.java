@@ -30,7 +30,8 @@ public class MainThread extends Thread{
                     if(!isLocked) {
                         canvas = surfaceHolder.lockCanvas();
                         isLocked = true;
-                    }                    synchronized ( surfaceHolder){
+                    }
+                    synchronized ( surfaceHolder){
                         //game heartbeat
                         gameView.update();
                         gameView.draw( canvas);

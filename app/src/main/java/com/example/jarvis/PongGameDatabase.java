@@ -52,18 +52,16 @@ public class PongGameDatabase {
 
     public void update(Player player1, Player player2, Ball ball) {
 
-
+        //draw every third
         if (counter % 3 == 0) {
-            //Only the host writes ball coordinates
+
             if (isHost) {
+                //Host writes his position and ball position to database
                 player1Ref.setValue((double) player1.getPositionX() / GameView.screenWidth);
                 ballXRef.setValue((double) ball.getPositionX() / GameView.screenWidth);
                 ballYRef.setValue((double) ball.getPositionY() / GameView.screenHeight);
-            } else {
-                player2Ref.setValue((double) player1.getPositionX() / GameView.screenWidth);
-            }
 
-            if (isHost) {
+                //Host pulls opponent position from database when changed
                 player2Ref.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -76,7 +74,38 @@ public class PongGameDatabase {
                         // do nothing
                     }
                 });
+
+                //Host pulls ball position
+                ballXRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if(snapshot.getValue() instanceof Double && snapshot.getValue() != null)
+                            ball.updateBallXPositionFromDatabase((float) (GameView.screenWidth * round((double) snapshot.getValue(), 2)));
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        //do nothing
+                    }
+                });
+                ballYRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if(snapshot.getValue() instanceof Double && snapshot.getValue() != null)
+                            ball.updateBallYPositionFromDatabase((float) (GameView.screenHeight * round((double) snapshot.getValue(), 2)));
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        //do nothing
+                    }
+                });
+
             } else {
+                //Guest writes only his position to database
+                player2Ref.setValue((double) player1.getPositionX() / GameView.screenWidth);
+
+                //Guest pulls opponent position
                 player1Ref.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -89,10 +118,13 @@ public class PongGameDatabase {
                         //do nothing
                     }
                 });
+
+                //Guest pulls ball position
                 ballXRef.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        ball.updateBallXPositionFromDatabase((float) (GameView.screenWidth * (1 - round((double) snapshot.getValue(), 2))));
+                        if(snapshot.getValue() instanceof Double && snapshot.getValue() != null)
+                            ball.updateBallXPositionFromDatabase((float) (GameView.screenWidth * (1 - round((double) snapshot.getValue(), 2))));
                     }
 
                     @Override
@@ -103,7 +135,8 @@ public class PongGameDatabase {
                 ballYRef.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        ball.updateBallYPositionFromDatabase((float) (GameView.screenHeight * (1 - round((double) snapshot.getValue(), 2))));
+                        if(snapshot.getValue() instanceof Double && snapshot.getValue() != null)
+                            ball.updateBallYPositionFromDatabase((float) (GameView.screenHeight * (1 - round((double) snapshot.getValue(), 2))));
                     }
 
                     @Override
