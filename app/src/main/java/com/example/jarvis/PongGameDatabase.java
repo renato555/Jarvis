@@ -35,8 +35,8 @@ public class PongGameDatabase {
 
         player1Ref.setValue( Double.MIN_VALUE);
         player2Ref.setValue(Double.MIN_VALUE);
-        ballXRef.setValue(Double.MIN_VALUE);
-        ballYRef.setValue(Double.MIN_VALUE);
+        ballXRef.setValue(Double.valueOf(0));
+        ballYRef.setValue(Double.valueOf(0));
 
         this.isHost = isHost;
 
@@ -52,8 +52,8 @@ public class PongGameDatabase {
 
     public void update(Player player1, Player player2, Ball ball) {
 
-        //draw every third
-        if (counter % 3 == 0) {
+        //update every third
+        if (true) {
 
             if (isHost) {
                 //Host writes his position and ball position to database
@@ -124,7 +124,7 @@ public class PongGameDatabase {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if(snapshot.getValue() instanceof Double && snapshot.getValue() != null)
-                            ball.updateBallXPositionFromDatabase((float) (GameView.screenWidth * (1 - round((double) snapshot.getValue(), 2))));
+                            ball.updateBallXPositionFromDatabase((float) (GameView.screenWidth * (1 - ((double) snapshot.getValue()))));
                     }
 
                     @Override
@@ -136,7 +136,7 @@ public class PongGameDatabase {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if(snapshot.getValue() instanceof Double && snapshot.getValue() != null)
-                            ball.updateBallYPositionFromDatabase((float) (GameView.screenHeight * (1 - round((double) snapshot.getValue(), 2))));
+                            ball.updateBallYPositionFromDatabase((float) (GameView.screenHeight * (1 - ((double) snapshot.getValue()))));
                     }
 
                     @Override

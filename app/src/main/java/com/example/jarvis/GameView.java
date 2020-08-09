@@ -1,13 +1,10 @@
 package com.example.jarvis;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.os.AsyncTask;
-import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -39,6 +36,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
     private String roomName;
     private boolean wasReset;
 
+
     public GameView(Activity parentActivity, String roomName, boolean isHost) {
         super( parentActivity.getApplicationContext());
         getHolder().addCallback( this);
@@ -52,50 +50,48 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
         this.parentActivity = parentActivity;
 
         this.roomName = roomName;
-        wasReset = false;
+        this.wasReset = false;
 
         database = new PongGameDatabase(isHost, roomName);
-
         player2MessageRef = FirebaseDatabase.getInstance().getReference("rooms/" + roomName + "/message");
-        if(!isHost){
-            player2MessageRef.setValue("Joined");
-        }else player2MessageRef.setValue("");
+        //setPlayer2MessageRefListener();
+
+        if(isHost)
+            player2MessageRef.setValue("");
+        else player2MessageRef.setValue("joined");
+
         setFocusable( true);
     }
 
+    private void setPlayer2MessageRefListener() {
+        player2MessageRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(!wasReset){
+                    if(snapshot.getValue() instanceof String && ((String) snapshot.getValue()).equals("")){
+                        thread.setPause(true);
+                    }else {
+                        thread.setPause(false);
+                        score.resetScore();
+                        wasReset = true;
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
     public void update() {
+        ball.update(player1, player2, score);
         database.update(player1, player2 ,ball);
         player1.update();
 
-        ball.update( player1, player2, score);
-
         score.update( player1, player2);
-
     }
-
-//    private boolean waitForPlayer2() {
-//        player2MessageRef.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                if(!wasReset && ((String) snapshot.getValue()) != null) {
-//                    if (((String) snapshot.getValue()).equals("")) {
-//                        thread.setPause(true);
-//                    }else {
-//                        thread.setPause(false);
-//                        score.resetScore();
-//                        wasReset = true;
-//                    }
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//                thread.setPause(false);
-//            }
-//        });
-//
-//        return wasReset;
-//    }
 
     //handle multi touch events
     @Override
@@ -111,6 +107,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
         return true;
     }
 
+    private int counter = 1;
+
     @Override
     public void draw( Canvas canvas){
         if( canvas != null){
@@ -118,9 +116,10 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
             Paint paint = new Paint();
             paint.setColor( Color.rgb( 255, 255, 255));
 
+            ball.draw( canvas, paint);
             player1.draw( canvas, paint);
             player2.draw( canvas, paint);
-            ball.draw( canvas, paint);
+            
             score.draw( canvas, paint);
             canvas.drawLine( 0, screenHeight / 2, screenWidth, screenHeight /2, paint);
         }

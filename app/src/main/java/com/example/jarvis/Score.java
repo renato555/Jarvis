@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.os.Handler;
+import android.util.Log;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
@@ -70,16 +71,19 @@ public class Score {
         });
     }
 
-    public void increaseScorePlayer1(){
-        scorePlayer1++;
-    }
+    public void increaseScorePlayer1(){ scorePlayer1++; }
 
-    public void increaseScorePlayer2(){
-        scorePlayer2++;
-    }
+    public void increaseScorePlayer2(){ scorePlayer2++; }
 
     public void resetScore(){
         this.scorePlayer1 = 0;
         this.scorePlayer2 = 0;
+    }
+
+    public int getScorePlayer1(){
+        return scorePlayer1;
+    }
+    public int getScorePlayer2(){
+        return scorePlayer2;
     }
 }
