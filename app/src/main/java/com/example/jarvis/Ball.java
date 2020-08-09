@@ -44,6 +44,7 @@ public class Ball {
             velocityY *= velocityMultiplier; //speed up in y direction
             bounceDirection = true;
         }
+
         if (positionY >= GameView.screenHeight) {
             //player2 scored
             score.increaseScorePlayer2();

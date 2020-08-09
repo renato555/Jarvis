@@ -62,6 +62,7 @@ public class PongRoomActivity extends AppCompatActivity {
                 //Start game
                 Intent intent = new Intent(getApplicationContext(), PongActivity.class);
                 intent.putExtra("RoomName", roomName);
+                intent.putExtra("mode", 1);
                 startActivity(intent);
             }
         });

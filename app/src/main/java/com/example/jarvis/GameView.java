@@ -50,6 +50,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
         player2 = new Player( screenWidth / 2, Player.playerOffSet - Player.height, "Lovro");
         ball = new Ball();
         score = new Score( 7, parentActivity, thread, this);
+        score.setScorePlayer1(0);
+        score.setScorePlayer2(0);
         this.parentActivity = parentActivity;
 
         this.roomName = roomName;
