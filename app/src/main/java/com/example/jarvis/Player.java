@@ -45,6 +45,7 @@ public class Player {
 
     public void updatePositionFromDatabase(float newPositionX){
         this.positionX =(float) newPositionX;
+        this.wantX = (float) newPositionX;
     }
     public String getPlayerName(){ return playerName;}
 }

@@ -79,11 +79,4 @@ public class Score {
         this.scorePlayer1 = 0;
         this.scorePlayer2 = 0;
     }
-
-    public int getScorePlayer1(){
-        return scorePlayer1;
-    }
-    public int getScorePlayer2(){
-        return scorePlayer2;
-    }
 }

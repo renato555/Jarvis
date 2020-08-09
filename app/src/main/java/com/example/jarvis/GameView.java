@@ -36,6 +36,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
     private String roomName;
     private boolean wasReset;
 
+    private boolean isHost;
+
 
     public GameView(Activity parentActivity, String roomName, boolean isHost) {
         super( parentActivity.getApplicationContext());
@@ -51,10 +53,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
 
         this.roomName = roomName;
         this.wasReset = false;
+        this.isHost = isHost;
 
         database = new PongGameDatabase(isHost, roomName);
         player2MessageRef = FirebaseDatabase.getInstance().getReference("rooms/" + roomName + "/message");
-        //setPlayer2MessageRefListener();
+        setPlayer2MessageRefListener();
 
         if(isHost)
             player2MessageRef.setValue("");
@@ -86,8 +89,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
     }
 
     public void update() {
-        ball.update(player1, player2, score);
-        database.update(player1, player2 ,ball);
+        database.update(player1, player2 ,ball, score);
         player1.update();
 
         score.update( player1, player2);
@@ -107,8 +109,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
         return true;
     }
 
-    private int counter = 1;
-
     @Override
     public void draw( Canvas canvas){
         if( canvas != null){
@@ -119,7 +119,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
             ball.draw( canvas, paint);
             player1.draw( canvas, paint);
             player2.draw( canvas, paint);
-            
+
             score.draw( canvas, paint);
             canvas.drawLine( 0, screenHeight / 2, screenWidth, screenHeight /2, paint);
         }
