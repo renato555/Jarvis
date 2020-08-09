@@ -78,4 +78,15 @@ public class Score {
         this.scorePlayer1 = 0;
         this.scorePlayer2 = 0;
     }
+
+    public int getScorePlayer1(){return this.scorePlayer1;}
+    public int getScorePlayer2(){return this.scorePlayer2;}
+
+    public void updatePlayer1ScoreFromDatabase(int scorePlayer1){
+        this.scorePlayer1 = scorePlayer1;
+    }
+
+    public void updatePlayer2ScoreFromDatabase(int scorePlayer2){
+        this.scorePlayer2 = scorePlayer2;
+    }
 }
