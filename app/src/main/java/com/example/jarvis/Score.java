@@ -62,8 +62,7 @@ public class Score {
             });
 
             builder.setNegativeButton("Play again", ( dialog, which) -> {
-                scorePlayer2 = 0;
-                scorePlayer1 = 0;
+                resetScore();
                 thread.setPause( false);
             });
 
