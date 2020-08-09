@@ -113,7 +113,7 @@ public class PongGameDatabase {
                 score.increaseScorePlayer2();
                 ball.resetBall();
             }
-            
+
             if (ball.getPositionY() <= 0) {
                 //player1 scored
                 score.increaseScorePlayer1();

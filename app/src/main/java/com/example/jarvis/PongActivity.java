@@ -13,6 +13,7 @@ public class PongActivity extends AppCompatActivity {
 
     private boolean isHost;
     private String roomName;
+    private int mode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +27,9 @@ public class PongActivity extends AppCompatActivity {
             isHost = true;
         else isHost = false;
 
-        setContentView( new GameView( this, roomName, isHost));
+        mode = intent.getIntExtra("mode", 0);
+
+        setContentView( new GameView( this, roomName, isHost, mode));
     }
 
     @Override
