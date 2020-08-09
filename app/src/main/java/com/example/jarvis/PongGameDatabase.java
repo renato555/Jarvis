@@ -38,6 +38,7 @@ public class PongGameDatabase {
         this.isHost = isHost;
     }
 
+
     public void update(Player player1, Player player2, Ball ball, Score score) {
 
         if (isHost) {
@@ -45,8 +46,6 @@ public class PongGameDatabase {
             player1Ref.setValue((double) player1.getPositionX() / GameView.screenWidth);
             ballXRef.setValue((double) ball.getPositionX() / GameView.screenWidth);
             ballYRef.setValue((double) ball.getPositionY() / GameView.screenHeight);
-//            player1ScoreRef.setValue((int) score.getScorePlayer1());
-//            player2ScoreRef.setValue((int) score.getScorePlayer2());
 
             //Host pulls opponent position from database when changed
             player2Ref.addValueEventListener(new ValueEventListener() {
@@ -108,17 +107,17 @@ public class PongGameDatabase {
                 }
             });
 
-            if (ball.getPositionY() >= GameView.screenHeight) {
-                //player2 scored
-                score.increaseScorePlayer2();
-                ball.resetBall();
-            }
+            updateScoresForPlayer2(score, ball);
+        }
+    }
 
-            if (ball.getPositionY() <= 0) {
-                //player1 scored
-                score.increaseScorePlayer1();
-                ball.resetBall();
-            }
+    private void updateScoresForPlayer2(Score score, Ball ball){
+        if (ball.getPositionY() >= GameView.screenHeight) {
+            //player2 scored
+            score.increaseScorePlayer2();
+        }else if (ball.getPositionY() <= 0) {
+            //player1 scored
+            score.increaseScorePlayer1();
         }
     }
 }

@@ -27,7 +27,7 @@ public class PongActivity extends AppCompatActivity {
             isHost = true;
         else isHost = false;
 
-        mode = intent.getIntExtra("mode", 0);
+        mode = intent.getExtras().getInt("mode");
 
         setContentView( new GameView( this, roomName, isHost, mode));
     }
