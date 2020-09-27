@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.webkit.MimeTypeMap;
 
 import org.jsoup.Jsoup;
@@ -266,13 +267,20 @@ public class ConnectionWithWebsite {
                 String calendarPage = getPageContent( strings[0]);
                 Document doc = Jsoup.parse( calendarPage);
                 Elements el = doc.getElementsByTag( "a");
-                Element downloadLink = el.get( 40); // Preuzmi u iCal formatu je na indexu 40
+                Element downloadLink = null;
+                for( int i = 0; i < el.size(); ++i){
+                    if( el.get( i).ownText().equals( "Preuzmi u iCal formatu")){
+                        downloadLink = el.get( i);
+                    }
+                }
 
                 String url = downloadLink.attr( "href");
                 downloadFile( url);
             } catch (IOException e) {
                 e.printStackTrace();
             }catch( IndexOutOfBoundsException e){
+                e.printStackTrace();
+            }catch( NullPointerException e){
                 e.printStackTrace();
             }
             return null;
